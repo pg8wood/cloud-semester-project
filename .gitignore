@@ -1,0 +1,6 @@
+# Exclude build and deployment directories
+
+build/
+dist/ 
+
+.DS_Store
