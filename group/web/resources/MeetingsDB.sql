@@ -7,7 +7,11 @@
  * Created: Mar 22, 2017
  */
 
-DROP TABLE IF EXISTS Meeting, User, Meeting_Users;
+SET FOREIGN_KEY_CHECKS=0; 
+DROP TABLE User; 
+DROP TABLE Meeting; 
+DROP TABLE Meeting_Users;
+SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE User
 (
@@ -38,7 +42,7 @@ CREATE TABLE Meeting
         zipcode SMALLINT(5) NOT NULL,
         owner_id INT UNSIGNED,
         FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
-        topic VARCHAR(64).
+        topic VARCHAR(64),
         description VARCHAR(256)
 );
 
@@ -50,3 +54,15 @@ CREATE TABLE Meeting_Users
         FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE,
         UNIQUE(user_id, meeting_id)
 );
+
+INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email) VALUES 
+('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu'),
+('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com');
+
+INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description) VALUES
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', 'This is a preloaded meeting to test functionality');
+
+INSERT INTO Meeting_Users (user_id, meeting_id) VALUES 
+('1', '1'),
+('2', '1');
+
