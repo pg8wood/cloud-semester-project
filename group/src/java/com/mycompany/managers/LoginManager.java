@@ -126,8 +126,8 @@ public class LoginManager implements Serializable {
             // Initialize the session map with user properties of interest
             initializeSessionMap(user);
 
-            // Redirect to show the Profile page
-            return "Profile.xhtml?faces-redirect=true";
+            // Redirect to show the My Meetings page
+            return "MyMeetings.xhtml?faces-redirect=true";
         }
     }
 
