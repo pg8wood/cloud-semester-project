@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -48,6 +51,14 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 
 public class User implements Serializable {
+
+    @JoinTable(name = "Meeting_Users", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "meeting_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Meeting> meetingCollection;
+    @OneToMany(mappedBy = "ownerId")
+    private Collection<Meeting> meetingCollection1;
 
     // User was a reserved keyword in SQL in 1999, but not any more.
 
@@ -352,6 +363,24 @@ public class User implements Serializable {
 
         // Returned String is the one shown in the p:dataTable under the User Id column in UserFiles.xhtml.
         return id.toString();
+    }
+
+    @XmlTransient
+    public Collection<Meeting> getMeetingCollection() {
+        return meetingCollection;
+    }
+
+    public void setMeetingCollection(Collection<Meeting> meetingCollection) {
+        this.meetingCollection = meetingCollection;
+    }
+
+    @XmlTransient
+    public Collection<Meeting> getMeetingCollection1() {
+        return meetingCollection1;
+    }
+
+    public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
+        this.meetingCollection1 = meetingCollection1;
     }
 
 }

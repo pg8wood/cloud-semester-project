@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateMeetingTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{meetingController.selected.id}" title="#{bundle.CreateMeetingTitle_id}" required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_address1}" for="address1" />
+                    <h:inputText id="address1" value="#{meetingController.selected.address1}" title="#{bundle.CreateMeetingTitle_address1}" required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_address1}"/>
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_address2}" for="address2" />
+                    <h:inputText id="address2" value="#{meetingController.selected.address2}" title="#{bundle.CreateMeetingTitle_address2}" />
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_city}" for="city" />
+                    <h:inputText id="city" value="#{meetingController.selected.city}" title="#{bundle.CreateMeetingTitle_city}" required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_city}"/>
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_state}" for="state" />
+                    <h:inputText id="state" value="#{meetingController.selected.state}" title="#{bundle.CreateMeetingTitle_state}" required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_state}"/>
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_zipcode}" for="zipcode" />
+                    <h:inputText id="zipcode" value="#{meetingController.selected.zipcode}" title="#{bundle.CreateMeetingTitle_zipcode}" required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_zipcode}"/>
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_topic}" for="topic" />
+                    <h:inputText id="topic" value="#{meetingController.selected.topic}" title="#{bundle.CreateMeetingTitle_topic}" />
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_description}" for="description" />
+                    <h:inputText id="description" value="#{meetingController.selected.description}" title="#{bundle.CreateMeetingTitle_description}" />
+                    <h:outputLabel value="#{bundle.CreateMeetingLabel_ownerId}" for="ownerId" />
+                    <h:selectOneMenu id="ownerId" value="#{meetingController.selected.ownerId}" title="#{bundle.CreateMeetingTitle_ownerId}" >
+                        <f:selectItems value="#{userController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{meetingController.create}" value="#{bundle.CreateMeetingSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{meetingController.prepareList}" value="#{bundle.CreateMeetingShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateMeetingIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
