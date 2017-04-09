@@ -3,106 +3,181 @@
 Created by Patrick Gatewood on 2017.04.08 
 Copyright © 2017 Patrick Gatewood. All rights reserved.
 -->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+    ]>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+          xmlns:h="http://xmlns.jcp.org/jsf/html"
+          xmlns:f="http://xmlns.jcp.org/jsf/core"
+          xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
-        <!-- CSS for meetings -->
-        <h:head>
-            <h:outputStylesheet library="css" name="meetingStyles.css" />
-        </h:head>
+        <ui:composition>
+            <!-- CSS for meetings -->
+            <h:head>
+                <h:outputStylesheet library="css" name="meetingStyles.css" />
+            </h:head>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
-        <div id="meetingWrapper" align="center">
-            <!-- Meeting Invitation Preview with Respond Button -->
-            <h1>Meeting Title</h1>
-            <p>Beginning of meeting description. Lorem ipsum blah blah trails off... 
-                <span>This is the rest of the text, and it will be showed after the user clicks "Respond"</span></p>
-            <p:commandButton value="Respond"></p:commandButton>
-            <br /><br />
+            <div id="meetingWrapper" align="center">
+                <!-- Meeting Invitation Preview with Respond Button -->
+                <h1>Meeting Title</h1>
+                <p>Beginning of meeting description. Lorem ipsum blah blah trails off... 
+                    This is the rest of the text, and it will be showed after the user clicks "Respond"
+                </p>
+                <p:commandButton value="Respond" action="#{meetingInvitationController.setResponding(true)}" oncomplete="PF('dayPanel').show()" styleClass="commandButton" />
+                <br /><br />
 
-            <!-- Response section: user indicates their availability date-wise -->
-            <hr />
-            <h4>When can you make it?</h4>
-            
-            <!-- Can't go button --> 
-            <p:commandLink class="declineLink">
-                <i id="declineIcon" class="fa fa-times" aria-hidden="true"></i>
-                <div class="declineText">Can't go</div>
-            </p:commandLink>
-            
-            <!-- Div that floats left in order to force #horizontalScrollArea
-            to fill the content width up to #declineLine -->
-            <div style="float: left;"></div>
+                <!-- Response section: user indicates their availability date-wise -->
+                <p:panel visible="false" widgetVar="dayPanel" styleClass="noBorderPanel">
+                    <hr />
+                    <h4>When can you make it?</h4>
 
-            <!-- TODO make one button and get suggested dates from Meeting object.
-            Also give user a hint that this area is scrollable.-->
-            <p:scrollPanel id="horizontalScrollArea" mode="native">
-                 <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Saturday</em>
-                        <strong>September</strong>
-                        <span>20</span>
-                    </time>
-                </p:commandLink>
+                    <!-- Can't go button --> 
+                    <p:commandLink class="declineLink">
+                        <i id="declineIcon" class="fa fa-times" aria-hidden="true"></i>
+                        <div class="declineText">Can't go</div>
+                    </p:commandLink>
 
-                <!-- The following commandLinks are for example so delete them once
-                we're getting all the dates from the backend -->
-                <!--
-                *******************************************************************
-                -->
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Sunday</em>
-                        <strong>September</strong>
-                        <span>21</span>
-                    </time>
-                </p:commandLink>
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Monday</em>
-                        <strong>September</strong>
-                        <span>22</span>
-                    </time>
-                </p:commandLink>
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Tuesday</em>
-                        <strong>September</strong>
-                        <span>23</span>
-                    </time>
-                </p:commandLink>
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Tuesday</em>
-                        <strong>September</strong>
-                        <span>23</span>
-                    </time>
-                </p:commandLink>
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Tuesday</em>
-                        <strong>September</strong>
-                        <span>23</span>
-                    </time>
-                </p:commandLink>
-                <p:commandLink class="calendarLink">
-                    <time datetime="2014-09-20" class="icon">
-                        <em>Tuesday</em>
-                        <strong>September</strong>
-                        <span>23</span>
-                    </time>
-                </p:commandLink>
-                <!--*******************************************************************
-                -->
-            </p:scrollPanel>
+                    <!-- Div that floats left in order to force #horizontalScrollArea
+                    to fill the content width up to #declineLine -->
+                    <div style="float: left;"></div>
 
-        </div> <!-- #meetingWrapper -->
+                    <!-- TODO make one button and get suggested dates from Meeting object.
+                    Also give user a hint that this area is scrollable.-->
+                    <p:scrollPanel id="horizontalScrollArea" mode="native">
+                        <p:commandLink class="calendarLink" onclick="PF('timePanel').show()">
+                            <time datetime="2014-09-20" class="icon">
+                                <em>Saturday</em>
+                                <strong>September</strong>
+                                <span>20</span>
+                            </time>
+                        </p:commandLink>
 
-    </ui:composition>
-</html>
+                        <!-- 
+                        *********************************************************
+                        The following commandLinks are for example so delete them 
+                        once we're getting all the dates from the backend 
+                        *********************************************************
+                        -->
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Sunday</em>
+                                <strong>September</strong>
+                                <span>21</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Monday</em>
+                                <strong>September</strong>
+                                <span>22</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <!--
+                        ***********************
+                        Delete up to this line 
+                        ***********************
+                        -->
+                    </p:scrollPanel>
+
+                    <!-- Available time options shown after the user selects a date --> 
+                    <br />
+                    <hr />
+
+                    <p:panel visible="false" widgetVar="timePanel" styleClass="noBorderPanel">
+                        <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" styleClass="availableTimesTable">
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="8:00 AM"></h:outputText>
+                            </div>
+
+                            <!-- 
+                            *********************************************************
+                            The following On/Off switches are for example so delete 
+                            them once we're getting all the dates from the backend 
+                            *********************************************************
+                            -->
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="9:00 AM"></h:outputText>
+                            </div>
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="9:30 AM"></h:outputText>
+                            </div>
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="12:45 PM"></h:outputText>
+                            </div>
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="2:00 PM"></h:outputText>
+                            </div>
+
+                            <!--
+                            ***********************
+                            Delete up to this line 
+                            ***********************
+                            -->
+                        </p:panelGrid>
+                    </p:panel> <!-- .timePanel -->
+                </p:panel> <!-- .dayPanel -->
+            </div> <!-- #meetingWrapper -->
+
+        </ui:composition>
+    </html>
