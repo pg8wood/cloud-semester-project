@@ -38,10 +38,10 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
                         <!-- Welcome the user if signed in -->
                         <c:if test="#{accountManager.isLoggedIn() == true}">
-                            <h1>Hello, #{accountManager.selected.firstName}</h1>
+                            <p>Hello, #{accountManager.selected.firstName}</p>
                         </c:if>
                         <c:if test="#{accountManager.isLoggedIn() == false}">
-                            <h1>Hello, Guest</h1>
+                            <p>Hello, Guest</p>
                         </c:if>
 
                     </td>
@@ -64,15 +64,15 @@ Copyright © 2017 Osman Balci. All rights reserved.
                             <h:commandLink action="#{accountManager.logout()}" styleClass="arialTen" >
                                 <i class="fa fa-sign-out">&nbsp;</i>Sign Out
                             </h:commandLink>&nbsp;&nbsp;
+                            
+                            <!-- Clicking "My Meetings" displays the Profile.xhtml file -->
+                            <h:link outcome="MyMeetings" styleClass="arialTen">
+                                <i class="fa fa-calendar">&nbsp;</i>My Meetings
+                            </h:link>&nbsp;&nbsp;
 
                             <!-- Clicking "My Account" displays the Profile.xhtml file -->
                             <h:link outcome="Profile" styleClass="arialTen">
                                 <i class="fa fa-user">&nbsp;</i>My Account
-                            </h:link>&nbsp;&nbsp;
-
-                            <!-- Clicking "My Files" displays the UserFiles.xhtml file -->
-                            <h:link outcome="UserFiles" styleClass="arialTen">
-                                <i class="fa fa-files-o">&nbsp;</i>My Files
                             </h:link>&nbsp;&nbsp;
                         </c:if>
 

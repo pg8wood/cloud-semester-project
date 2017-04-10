@@ -11,52 +11,95 @@ Copyright © 2017 Erin Kocis. All rights reserved.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition>
-        <!-- Upcoming Meeting box -->
-        <div style="text-align:center">
-            <h1>Meeting Title</h1>
-        </div>
-        <p>
-            July 17 at 7:00 AM
-            <span style="float:right; text-decoration:none;"><a href="#location">Burrus Hall</a></span>
-        </p>            
-        <p text-align="left">
-            Meeting Description...
-        </p>
-        <hr/>
-        <!-- Participants portion -->
-        <div style="text-align:center">
-            <h2>Participants</h2>
-        </div>
-        <center>
-            <h:panelGrid id="panel" columns="6" cellpadding="10" cellspacing="1">
-                <h:graphicImage value="http://i92.photobucket.com/albums/l1/immortalje/icons/hp/hp23_ac4.png" width="100" height="100"/>
-                <h:outputText value="Albus Dumbledore"/>
-                <h:graphicImage value="http://d3n8a8pro7vhmx.cloudfront.net/eighthdayinstitute/pages/300/meta_images/original/Gandalf_with_Pipe_Square.jpg?1435585780" width="100" height="100"/>
-                <h:outputText value="Gandalf"/>
-                <h:graphicImage value="http://manta.cs.vt.edu/balci/Site/logo/OsmanBalci.jpg" width="100" height="100"/>
-                <h:outputText value="Osman Balci"/>
-            </h:panelGrid>
-        </center>
+        <!-- CSS for meetings -->
+        <h:head>
+            <h:outputStylesheet library="css" name="meetingStyles.css" />
+        </h:head>
+  
+        <div id="meetingTop" class="meetingWrapper" align="center">
+            <!-- Upcoming Meeting box -->
+            <div style="text-align:center">
+                <h2>Meeting Title</h2>
+            </div>
+            <p>
+                July 17 at 7:00 AM
+                <span style="float:right; text-decoration:none;"><a href="#location">Burruss Hall</a></span>
+            </p>            
+            <p text-align="left">
+                Meeting Description...
+            </p>
 
-        <hr/>
-        <!-- Attachments portion -->
-        <div style="text-align:center">
-            <h2>Attachments</h2>
-            Any files uploaded to the meeting will be displayed here.
-        </div>
+            <p:commandButton widgetVar="seeMoreButton" value="See More" onclick="PF('moreInfoPanel').show(); initMap()" oncomplete="PF('seeMoreButton').disable()" styleClass="commandButton" />
+            
+            <br /><br />
 
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <!-- Response section: user indicates their availability date-wise -->
+            <p:panel visible="false" widgetVar="moreInfoPanel" styleClass="noBorderPanel" closable="true" >
 
-        <hr/>
-        <!-- Location portion -->
-        <div style="text-align:center">
-            <h2 id="location">Location</h2>
-            100 Example Ave, Suite 208
-        </div>
-        
-        <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" />
-        
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <hr/>
+                <!-- Participants portion -->
+                <div style="text-align:center">
+                    <h2>Participants</h2>
+                </div>
+                <center>
+                    <h:panelGrid id="panel" columns="6" cellpadding="10" cellspacing="1">
+                        <h:graphicImage value="http://i92.photobucket.com/albums/l1/immortalje/icons/hp/hp23_ac4.png" width="100" height="100"/>
+                        <h:outputText value="Albus Dumbledore"/>
+                        <h:graphicImage value="http://d3n8a8pro7vhmx.cloudfront.net/eighthdayinstitute/pages/300/meta_images/original/Gandalf_with_Pipe_Square.jpg?1435585780" width="100" height="100"/>
+                        <h:outputText value="Gandalf"/>
+                        <h:graphicImage value="http://manta.cs.vt.edu/balci/Site/logo/OsmanBalci.jpg" width="100" height="100"/>
+                        <h:outputText value="Osman Balci"/>
+                    </h:panelGrid>
+                </center>
+
+                <hr/>
+                <!-- Attachments portion -->
+                <div style="text-align:center">
+                    <h2>Attachments</h2>
+                    Any files uploaded to the meeting will be displayed here.
+                </div>
+
+                <hr/>
+                <!-- Location portion -->
+                <div style="text-align:center">
+                    <h2 id="location">Location</h2>
+                    100 Example Ave, Suite 208
+                </div>
+
+                <br />
+
+                <!-- Google Maps panel -->
+                <div id="map"></div>
+
+                <script>
+                    function initMap() {
+                        var uluru = {lat: -25.363, lng: 131.044};
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 4,
+                            center: uluru
+                        });
+                        var marker = new google.maps.Marker({
+                            position: uluru,
+                            map: map
+                        });
+
+                        var marker = new google.maps.Marker({
+                            position: uluru,
+                            map: map
+                        });
+                    }
+                </script>
+
+                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
+
+                <!-- End Google Maps panel -->
+
+                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel').close()" oncomplete="PF('seeMoreButton').enable()" styleClass="commandButton"/>
+
+
+
+            </p:panel>
+        </div> <!-- #meetingWrapper -->
+
     </ui:composition>
 </html>

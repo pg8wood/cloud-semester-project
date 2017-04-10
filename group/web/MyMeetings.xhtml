@@ -3,13 +3,41 @@
 Created by Patrick Gatewood on 2017.03.26 
 Copyright © 2017 Patrick Gatewood. All rights reserved.
 -->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- Do not enter tags before the composition line since they are ignored by JSF -->
+
+    <!-- This page is constructed based on the siteTemplate -->
+    <ui:composition template="template/siteTemplate.xhtml">
+        <ui:define name="title">
+            <!-- Set the page title -->
+            <h:outputText value="My Meetings"></h:outputText>
+        </ui:define>   
+
+        <!-- Create the content for this page below -->
+        <ui:define name="editableContent">
+            <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
+
+            <div class="sidebarLeft">
+                <div class="sidebarContent">
+                TODO make sidebar
+            </div>
+            </div>
+            <script src="resources/js/navbarScroller.js"></script>
+
+            <div class="main" align="center">
+                <h1>Invitations</h1>
+                <ui:include src="meetings/MeetingInvitation.xhtml"/>
+                <br />
+                <h1>Upcoming Meetings</h1>
+                <ui:include src="meetings/UpcomingMeeting.xhtml"/>
+            </div>
+            <!--</div>-->
+
+        </ui:define>
+    </ui:composition>
 </html>

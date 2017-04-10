@@ -20,13 +20,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
-            <div id="meetingWrapper" align="center">
+            <div id="meetingWrapper" class="meetingWrapper" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
-                <h1>Meeting Title</h1>
-                <p>Beginning of meeting description. Lorem ipsum blah blah trails off... 
-                    This is the rest of the text, and it will be showed after the user clicks "Respond"
+                <h2>Meeting Title</h2>
+                <p>Beginning of meeting description. Lorem ipsum blah blah trails off... This is the rest of the text, and it will be showed after the user clicks "Respond"
                 </p>
-                <p:commandButton value="Respond" action="#{meetingInvitationController.setResponding(true)}" oncomplete="PF('dayPanel').show()" styleClass="commandButton" />
+                <p:commandButton widgetVar="respondButton" value="Respond" oncomplete="PF('dayPanel').show()" onclick="PF('respondButton').disable()" styleClass="commandButton"/>
+
                 <br /><br />
 
                 <!-- Response section: user indicates their availability date-wise -->
@@ -109,74 +109,87 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         ***********************
                         -->
                     </p:scrollPanel>
+                </p:panel>
 
-                    <!-- Available time options shown after the user selects a date --> 
+                <!-- Available time options shown after the user selects a date --> 
+                <p:panel visible="false" widgetVar="timePanel" styleClass="noBorderPanel">
                     <br />
                     <hr />
 
-                    <p:panel visible="false" widgetVar="timePanel" styleClass="noBorderPanel">
-                        <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" styleClass="availableTimesTable">
-                            <!-- On/Off switch -->
-                            <div style="height: 1em;">
-                                <label class="switch">
-                                    <input type="checkbox" />
-                                    <div class="slider round"></div>
-                                </label>
-                                &nbsp;
-                                <h:outputText value="8:00 AM"></h:outputText>
-                            </div>
+                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" styleClass="availableTimesTable">
+                        <!-- On/Off switch -->
+                        <div style="height: 1em;">
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                            &nbsp;
+                            <h:outputText value="8:00 AM"></h:outputText>
+                        </div>
 
-                            <!-- 
-                            *********************************************************
-                            The following On/Off switches are for example so delete 
-                            them once we're getting all the dates from the backend 
-                            *********************************************************
-                            -->
-                            <!-- On/Off switch -->
-                            <div style="height: 1em;">
-                                <label class="switch">
-                                    <input type="checkbox" />
-                                    <div class="slider round"></div>
-                                </label>
-                                &nbsp;
-                                <h:outputText value="9:00 AM"></h:outputText>
-                            </div>
-                            <!-- On/Off switch -->
-                            <div style="height: 1em;">
-                                <label class="switch">
-                                    <input type="checkbox" />
-                                    <div class="slider round"></div>
-                                </label>
-                                &nbsp;
-                                <h:outputText value="9:30 AM"></h:outputText>
-                            </div>
-                            <!-- On/Off switch -->
-                            <div style="height: 1em;">
-                                <label class="switch">
-                                    <input type="checkbox" />
-                                    <div class="slider round"></div>
-                                </label>
-                                &nbsp;
-                                <h:outputText value="12:45 PM"></h:outputText>
-                            </div>
-                            <!-- On/Off switch -->
-                            <div style="height: 1em;">
-                                <label class="switch">
-                                    <input type="checkbox" />
-                                    <div class="slider round"></div>
-                                </label>
-                                &nbsp;
-                                <h:outputText value="2:00 PM"></h:outputText>
-                            </div>
+                        <!-- 
+                        *********************************************************
+                        The following On/Off switches are for example so delete 
+                        them once we're getting all the dates from the backend 
+                        *********************************************************
+                        -->
+                        <!-- On/Off switch -->
+                        <div style="height: 1em;">
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                            &nbsp;
+                            <h:outputText value="9:00 AM"></h:outputText>
+                        </div>
+                        <!-- On/Off switch -->
+                        <div style="height: 1em;">
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                            &nbsp;
+                            <h:outputText value="9:30 AM"></h:outputText>
+                        </div>
+                        <!-- On/Off switch -->
+                        <div style="height: 1em;">
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                            &nbsp;
+                            <h:outputText value="12:45 PM"></h:outputText>
+                        </div>
+                        <!-- On/Off switch -->
+                        <div style="height: 1em;">
+                            <label class="switch">
+                                <input type="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                            &nbsp;
+                            <h:outputText value="2:00 PM"></h:outputText>
+                        </div>
 
-                            <!--
-                            ***********************
-                            Delete up to this line 
-                            ***********************
-                            -->
-                        </p:panelGrid>
-                    </p:panel> <!-- .timePanel -->
-                </p:panel> <!-- .dayPanel -->
+                        <!--
+                        ***********************
+                        Delete up to this line 
+                        ***********************
+                        -->
+                    </p:panelGrid>
+
+                    <!--<div align="center">-->
+                        <p:commandButton value="Submit all selected times" onclick="hideInvitation('meetingWrapper')" styleClass="commandButton"></p:commandButton>
+                    <!--</div>-->
+
+                    <!-- Hide the invitation after the user has submitted -->
+                    <script type="text/javascript">
+                        function hideInvitation(id) {
+                            var e = document.getElementById(id);
+                            e.innerHTML = '<p>You have submitted your response for this invitation.</p>';
+                        }
+                    </script>
+                </p:panel> <!-- .timePanel -->
+                <!--</p:panel>  .dayPanel -->
             </div> <!-- #meetingWrapper -->
 
         </ui:composition>

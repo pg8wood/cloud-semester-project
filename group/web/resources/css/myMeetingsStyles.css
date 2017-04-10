@@ -1,0 +1,66 @@
+/*********************************************
+Cascading Style Sheets (CSS) Style Definitions
+Composed by Patrick Gatewood on April 8, 2017.
+*********************************************/
+
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
+
+html, body {
+    background-color: #79879b;
+}
+
+h1 {
+    font-size: 40pt;
+    font-family: Fredericka the Great;
+    color: white;
+}
+
+h2 {
+    font-size: 15pt;
+    color: #4f4f4f;
+}
+
+/*
+==============
+Sidebar styles
+==============
+*/
+.sidebarLeft {
+    background: #a4acba;
+    float: left;
+    width: 150px;
+
+    /* Height is longer than viewport in order to compensate for
+    repositioning caused by fixing the sidebar *only* after scrolling */
+    height: 110vh;
+
+    /* Undo margins inherited from #editableContent in siteStyles.css */
+    margin-left: -20px;
+    margin-top: -16px;
+}
+
+.sidebarContent {
+    margin: 20px;
+}
+
+/* fixed sidebar applied dynamtically with JS */ 
+.fixed {  position: fixed; top: 0; }
+
+/*
+==================
+End Sidebar styles
+==================
+*/
+
+.myMeetingsWrapper {
+    height:100%;
+    overflow: hidden;
+}
+
+.main {
+    margin-left: 150px; 
+    min-height: 100%;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
