@@ -20,6 +20,10 @@ h2 {
     color: #4f4f4f;
 }
 
+form {
+    display: inline;
+}
+
 /*
 ==============
 Sidebar styles

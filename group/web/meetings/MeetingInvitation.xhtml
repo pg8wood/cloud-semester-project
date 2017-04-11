@@ -36,7 +36,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                     <!-- Can't go button --> 
                     <p:commandLink class="declineLink">
-                        <i id="declineIcon" class="fa fa-times" aria-hidden="true"></i>
+                        <i id="declineIcon" class="fa fa-times" aria-hidden="true" onclick="hideInvitation('meetingWrapper')"></i>
                         <div class="declineText">Can't go</div>
                     </p:commandLink>
 
@@ -47,6 +47,17 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <!-- TODO make one button and get suggested dates from Meeting object.
                     Also give user a hint that this area is scrollable.-->
                     <p:scrollPanel id="horizontalScrollArea" mode="native">
+                         <!-- Link to be rendered if the user shows a new date -->
+                        <p:panel id="newDatePanel" visible="false">
+                            <p:commandLink id="newDateCalendarLink" class="calendarLink" onclick="PF('timePanel').show()">
+                                <time datetime="2014-09-20" class="icon">
+                                    <em>TEST</em>
+                                    <strong>TEST</strong>
+                                    <span>TEST</span>
+                                </time>
+                            </p:commandLink>
+                        </p:panel>
+                         
                         <p:commandLink class="calendarLink" onclick="PF('timePanel').show()">
                             <time datetime="2014-09-20" class="icon">
                                 <em>Saturday</em>
@@ -109,6 +120,22 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         ***********************
                         -->
                     </p:scrollPanel>
+
+                    <!-- Create new date -->
+                    <br />
+                    <p:outputLabel for="event" value="New date: " />
+                    &nbsp;&nbsp;
+                    <p:calendar id="event" value="#{myMeetingsController.newDate}">
+                        <p:ajax event="dateSelect" listener="#{myMeetingsController.onDateSelect}" async="true" oncomplete="showNewDate()" update="newDatePanel" />
+                    </p:calendar>
+
+                    <!-- Function to show the newly-added date -->
+                    <script type="text/javascript">
+                        function showNewDate() {
+                            $('#newDatePanel').addClass('newDatePanel');
+                        }
+                    </script>
+
                 </p:panel>
 
                 <!-- Available time options shown after the user selects a date --> 
@@ -116,7 +143,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <br />
                     <hr />
 
-                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" styleClass="availableTimesTable">
+                    <p:panelGrid columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
                         <!-- On/Off switch -->
                         <div style="height: 1em;">
                             <label class="switch">
@@ -177,9 +204,17 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         -->
                     </p:panelGrid>
 
-                    <!--<div align="center">-->
-                        <p:commandButton value="Submit all selected times" onclick="hideInvitation('meetingWrapper')" styleClass="commandButton"></p:commandButton>
-                    <!--</div>-->
+                    <p:outputLabel value="Enter new time" for="newTime" />
+                    &nbsp;
+                    <p:inputText id="newTime" value=""
+                                 required="false" styleClass="" label="New Time">
+                    </p:inputText>
+
+                    <br/>
+                    <p:commandButton value="Submit all selected times" onclick="hideInvitation('meetingWrapper')" styleClass="commandButton"></p:commandButton>
+                    &nbsp;&nbsp;
+                    <p:commandButton value="I can't make it" onclick="hideInvitation('meetingWrapper')" styleClass="commandButton"></p:commandButton>
+
 
                     <!-- Hide the invitation after the user has submitted -->
                     <script type="text/javascript">

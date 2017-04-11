@@ -203,6 +203,15 @@ End styles for On/Off switch
     width: 100%;
 }
 
+.ui-panel .newDatePanel {
+    display: inline-block;
+    background-color: #a4acba; 
+    
+    /* Match panel margins with .calendarLink margins */
+    margin-left: -17px;
+    margin-right: -17px;
+}
+
 /* Hide disabled buttons */
 .ui-button[disabled] {
     visibility: hidden;
