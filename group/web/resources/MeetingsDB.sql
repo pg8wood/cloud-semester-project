@@ -38,7 +38,7 @@ CREATE TABLE Meeting
         zipcode SMALLINT(5) NOT NULL,
         owner_id INT UNSIGNED,
         FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
-        topic VARCHAR(64),
+        topic VARCHAR(64).
         description VARCHAR(256)
 );
 

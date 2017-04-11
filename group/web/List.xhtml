@@ -14,7 +14,7 @@ Copyright © 2016 Osman Balci. All rights reserved.
 
     <!-- This page is constructed based on the siteTemplate -->
     <ui:composition template="/template/siteTemplate.xhtml">
-        
+
         <ui:define name="title">
             <!-- Set the page title -->
             <h:outputText value="My Meetings"></h:outputText>
@@ -31,17 +31,17 @@ Copyright © 2016 Osman Balci. All rights reserved.
                 -->
                 <p:growl id="growl" life="4000" />
 
-                <h:form id="CompanyListForm">
-                    
-                    <p:panel header="#{bundle.ListCompanyTitle}">
+                <h:form id="MeetingListForm">
+
+                    <p:panel header="My Meetings">
 
                         <!-- Read about p:dataTable in the PrimeFaces User Guide and learn about it:
                         http://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf
                         
                         The table is displayed as sorted in the order of database Primary Key (id) values.
                         -->
-                        <p:dataTable id="datalist" value="#{companyController.items}" var="item"
-                                     selectionMode="single" selection="#{companyController.selected}"
+                        <p:dataTable id="datalist" value="#{meetingController.items}" var="item"
+                                     selectionMode="single" selection="#{meetingController.selected}"
                                      paginator="true"
                                      rowKey="#{item.id}"
                                      rows="5"
@@ -49,8 +49,8 @@ Copyright © 2016 Osman Balci. All rights reserved.
                                      styleClass="dataTable"
                                      >
 
-                            <p:ajax event="rowSelect"   update="createButton deleteButton"/>
-                            <p:ajax event="rowUnselect" update="createButton deleteButton"/>
+                            <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                            <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
                             <!-- No need for the user to be concerned about the database Primary Key id,
                             which is auto-generated on the server side. 
@@ -128,8 +128,18 @@ Copyright © 2016 Osman Balci. All rights reserved.
 
                             <f:facet name="footer">
                                 <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" 
-                                                 styleClass="commandButton" actionListener="#{companyController.prepareCreate}" 
-                                                 update=":CompanyCreateForm" oncomplete="PF('CompanyCreateDialog').show()"/>
+                                                 styleClass="commandButton" actionListener="#{meetingController.prepareCreate}" 
+                                                 update=":MeetingCreateForm" oncomplete="PF('MeetingCreateDialog').show()"/>
+
+                                <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" 
+                                                 styleClass="commandButton" update=":MeetingViewForm" 
+                                                 oncomplete="PF('MeetingViewDialog').show()" 
+                                                 disabled="#{empty meetingController.selected}"/>
+
+                                <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" 
+                                                 styleClass="commandButton" update=":MeetingEditForm" 
+                                                 oncomplete="PF('MeetingEditDialog').show()" 
+                                                 disabled="#{empty meetingController.selected}"/>
 
                                 <!-- 
                                 ***************************************************
@@ -137,11 +147,11 @@ Copyright © 2016 Osman Balci. All rights reserved.
                                 *************************************************** 
                                 -->
                                 <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" 
-                                                 styleClass="commandButton" actionListener="#{companyController.destroy}" 
-                                                 update=":growl,datalist" disabled="#{empty companyController.selected}">
+                                                 styleClass="commandButton" actionListener="#{meetingController.destroy}" 
+                                                 update=":growl,datalist" disabled="#{empty meetingController.selected}">
 
                                     <p:confirm header="Confirmation" 
-                                               message="Are you sure you want to permanently delete the company from the database?" 
+                                               message="Are you sure you want to permanently delete the Meeting from the database?" 
                                                icon="ui-icon-alert" />
                                 </p:commandButton>
 
@@ -163,11 +173,13 @@ Copyright © 2016 Osman Balci. All rights reserved.
                 </h:form>
 
                 <!-- Clicking the Create button displays the included Create.xhtml file in a dialog window on top of this page. -->
-                <ui:include src="CreateMeeting.xhtml"/>
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="View.xhtml"/>
+                <ui:include src="Edit.xhtml"/>
 
             </div>
         </ui:define>
-        
+
     </ui:composition>
 
 </html>
