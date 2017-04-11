@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Patrick Gatewood on 2017.04.10  * 
+ * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -21,10 +24,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Balci
- */
 @Entity
 @Table(name = "User")
 @XmlRootElement
@@ -49,7 +48,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class User implements Serializable {
 
-    // User was a reserved keyword in SQL in 1999, but not any more.
+    @JoinTable(name = "Meeting_Users", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "meeting_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Meeting> meetingCollection;
+    @OneToMany(mappedBy = "ownerId")
+    private Collection<Meeting> meetingCollection1;
+
+    // User was a reserved keyword in SQL in 1999, but not anymore.
 
     /*
     ========================================================
@@ -352,6 +359,24 @@ public class User implements Serializable {
 
         // Returned String is the one shown in the p:dataTable under the User Id column in UserFiles.xhtml.
         return id.toString();
+    }
+
+    @XmlTransient
+    public Collection<Meeting> getMeetingCollection() {
+        return meetingCollection;
+    }
+
+    public void setMeetingCollection(Collection<Meeting> meetingCollection) {
+        this.meetingCollection = meetingCollection;
+    }
+
+    @XmlTransient
+    public Collection<Meeting> getMeetingCollection1() {
+        return meetingCollection1;
+    }
+
+    public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
+        this.meetingCollection1 = meetingCollection1;
     }
 
 }

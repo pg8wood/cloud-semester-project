@@ -34,9 +34,9 @@ Sidebar styles
     repositioning caused by fixing the sidebar *only* after scrolling */
     height: 110vh;
 
-    /* Undo margins inherited from #editableContent in siteStyles.css */
-    margin-left: -20px;
+    /* Undo margin inherited from #editableContent in siteStyles.css */
     margin-top: -16px;
+    clear: both;
 }
 
 .sidebarContent {
@@ -62,5 +62,11 @@ End Sidebar styles
     min-height: 100%;
     padding-left: 75px;
     padding-right: 75px;
+}
+
+/* Prevent footer from overlapping with sidebar */
+#footer {
+    margin-left: 150px;
+    width: calc(100% - 150px);
 }
 

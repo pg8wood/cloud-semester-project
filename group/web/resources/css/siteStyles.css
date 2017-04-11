@@ -28,6 +28,10 @@ html, body {
     -o-background-size: cover;      /* For Opera */
     background-size: cover;         /* Generic */
     background-repeat: no-repeat;   /* Do not repeat the image */
+    
+    /* Undo page extra page width added by scrollbar */
+    margin-right: -10px; 
+    margin-left: -10px;
 
     width: 100%;                    /* Set page width horizontally 100% */
     height: 100%;                   /* Set page height vertically 100% */
