@@ -6,12 +6,16 @@ package com.mycompany.entityClasses;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -45,9 +49,18 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findBySecurityQuestion", query = "SELECT u FROM User u WHERE u.securityQuestion = :securityQuestion")
     , @NamedQuery(name = "User.findBySecurityAnswer", query = "SELECT u FROM User u WHERE u.securityAnswer = :securityAnswer")
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+    
 })
 
 public class User implements Serializable {
+
+    @JoinTable(name = "Meeting_Users", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "meeting_id", referencedColumnName = "id")})
+    @ManyToMany
+    private List<Meeting> meetings;
+    @OneToMany(mappedBy = "ownerId")
+    private List<Meeting> meetingsOwned;
 
     // User was a reserved keyword in SQL in 1999, but not any more.
 
@@ -353,5 +366,25 @@ public class User implements Serializable {
         // Returned String is the one shown in the p:dataTable under the User Id column in UserFiles.xhtml.
         return id.toString();
     }
+
+    @XmlTransient
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetingCollection) {
+        this.meetings = meetingCollection;
+    }
+
+    @XmlTransient
+    public List<Meeting> getMeetingsOwned() {
+        return meetingsOwned;
+    }
+
+    public void setMeetingsOwned(List<Meeting> meetingCollection1) {
+        this.meetingsOwned = meetingCollection1;
+    }
+    
+    
 
 }
