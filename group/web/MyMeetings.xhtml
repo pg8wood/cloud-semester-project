@@ -33,13 +33,15 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
             <div class="main" align="center">
                 <h1>Invitations</h1>
                 <!-- TODO figure out a way to represent if a user has accepted a meeting invitation or not -->
-                <ui:include src="meetings/MeetingInvitation.xhtml"/>
+               <ui:include src="meetings/MeetingInvitation.xhtml"/>
                 <br />
                 <h1>Upcoming Meetings</h1>
                 <!-- TODO figure out a way to represent if a user has accepted a meeting invitation or not
                 gonna wait until meeting creation is finished to implement this-->
-                <!--<p:repeat value="#{myMeetingsController.getLoggedInUserMeetings()}" var="meeting" varStatus="" offset="0" step="1" size="#{myMeetingsController.getLoggedInUserMeetings().size()}">-->
+                <p:repeat value="#{accountManager.selected.meetings}" offset="0" step="1" size="#{accountManager.selected.meetings.size()}" var="meeting" varStatus="status"> 
                     <ui:include src="meetings/UpcomingMeeting.xhtml"/>
+                    <br />
+                </p:repeat>
                 <!--</p:repeat>-->
             </div>
             <!--</div>-->

@@ -1,11 +1,12 @@
 /*
- * Created by Patrick Gatewood on 2017.04.10  * 
- * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ * Created by Osman Balci on 2017.01.28  * 
+ * Copyright © 2017 Osman Balci. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,10 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author Balci
+ */
 @Entity
 @Table(name = "User")
 @XmlRootElement
@@ -44,6 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findBySecurityQuestion", query = "SELECT u FROM User u WHERE u.securityQuestion = :securityQuestion")
     , @NamedQuery(name = "User.findBySecurityAnswer", query = "SELECT u FROM User u WHERE u.securityAnswer = :securityAnswer")
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+    
 })
 
 public class User implements Serializable {
@@ -52,11 +58,11 @@ public class User implements Serializable {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "meeting_id", referencedColumnName = "id")})
     @ManyToMany
-    private Collection<Meeting> meetingCollection;
+    private List<Meeting> meetings;
     @OneToMany(mappedBy = "ownerId")
-    private Collection<Meeting> meetingCollection1;
+    private List<Meeting> meetingsOwned;
 
-    // User was a reserved keyword in SQL in 1999, but not anymore.
+    // User was a reserved keyword in SQL in 1999, but not any more.
 
     /*
     ========================================================
@@ -316,6 +322,8 @@ public class User implements Serializable {
     public void setUserFileCollection(Collection<UserFile> userFileCollection) {
         this.userFileCollection = userFileCollection;
     }
+    
+    
 
     /*
     ================
@@ -362,21 +370,23 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Meeting> getMeetingCollection() {
-        return meetingCollection;
+    public List<Meeting> getMeetings() {
+        return meetings;
     }
 
-    public void setMeetingCollection(Collection<Meeting> meetingCollection) {
-        this.meetingCollection = meetingCollection;
+    public void setMeetings(List<Meeting> meetingCollection) {
+        this.meetings = meetingCollection;
     }
 
     @XmlTransient
-    public Collection<Meeting> getMeetingCollection1() {
-        return meetingCollection1;
+    public List<Meeting> getMeetingsOwned() {
+        return meetingsOwned;
     }
 
-    public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
-        this.meetingCollection1 = meetingCollection1;
+    public void setMeetingsOwned(List<Meeting> meetingCollection1) {
+        this.meetingsOwned = meetingCollection1;
     }
+    
+    
 
 }

@@ -1,11 +1,12 @@
 /*
- * Created by Patrick Gatewood on 2017.04.10  * 
- * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ * Created by Alex Martin on 2017.04.11  * 
+ * Copyright © 2017 Alex Martin. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author PatrickGatewood
+ * @author alexmartin
  */
 @Entity
 @Table(name = "Meeting")
@@ -76,8 +77,8 @@ public class Meeting implements Serializable {
     @Size(max = 256)
     @Column(name = "description")
     private String description;
-    @ManyToMany(mappedBy = "meetingCollection")
-    private Collection<User> userCollection;
+    @ManyToMany(mappedBy = "meetings")
+    private List<User> users;
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @ManyToOne
     private User ownerId;
@@ -162,12 +163,12 @@ public class Meeting implements Serializable {
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public List<User> getUserCollection() {
+        return users;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setUserCollection(List<User> userCollection) {
+        this.users = userCollection;
     }
 
     public User getOwnerId() {
