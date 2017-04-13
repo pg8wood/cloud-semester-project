@@ -1,6 +1,5 @@
 package com.mycompany.jsfClasses;
 
-import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.User;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;

@@ -6,7 +6,6 @@ package com.mycompany.entityClasses;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findBySecurityQuestion", query = "SELECT u FROM User u WHERE u.securityQuestion = :securityQuestion")
     , @NamedQuery(name = "User.findBySecurityAnswer", query = "SELECT u FROM User u WHERE u.securityAnswer = :securityAnswer")
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
-    
 })
 
 public class User implements Serializable {
@@ -58,9 +56,9 @@ public class User implements Serializable {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "meeting_id", referencedColumnName = "id")})
     @ManyToMany
-    private List<Meeting> meetings;
+    private Collection<Meeting> meetingCollection;
     @OneToMany(mappedBy = "ownerId")
-    private List<Meeting> meetingsOwned;
+    private Collection<Meeting> meetingCollection1;
 
     // User was a reserved keyword in SQL in 1999, but not any more.
 
@@ -368,23 +366,21 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public List<Meeting> getMeetings() {
-        return meetings;
+    public Collection<Meeting> getMeetingCollection() {
+        return meetingCollection;
     }
 
-    public void setMeetings(List<Meeting> meetingCollection) {
-        this.meetings = meetingCollection;
+    public void setMeetingCollection(Collection<Meeting> meetingCollection) {
+        this.meetingCollection = meetingCollection;
     }
 
     @XmlTransient
-    public List<Meeting> getMeetingsOwned() {
-        return meetingsOwned;
+    public Collection<Meeting> getMeetingCollection1() {
+        return meetingCollection1;
     }
 
-    public void setMeetingsOwned(List<Meeting> meetingCollection1) {
-        this.meetingsOwned = meetingCollection1;
+    public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
+        this.meetingCollection1 = meetingCollection1;
     }
-    
-    
 
 }
