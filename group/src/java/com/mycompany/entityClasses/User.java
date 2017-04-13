@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Erin Kocis on 2017.04.13  * 
+ * Copyright © 2017 Erin Kocis. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Balci
+ * @author Erin
  */
 @Entity
 @Table(name = "User")

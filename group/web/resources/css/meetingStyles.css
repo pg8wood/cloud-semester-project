@@ -1,0 +1,229 @@
+/*********************************************
+Cascading Style Sheets (CSS) Style Definitions
+Composed by Patrick Gatewood on April 8, 2017.
+*********************************************/
+
+/* Style for the meeting card */
+.meetingWrapper {
+    background-color: #a4acba;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+/* Horizontally-scrollable area */
+#horizontalScrollArea {
+    border: none;
+    height: auto;
+    white-space: nowrap;
+    background-color: #a4acba;
+}
+
+/* Style to build Calendar icon */
+.calendarLink {
+    text-decoration: none;
+    display:inline-block;
+    margin: 10px;
+}
+
+time.icon
+{
+    font-size: 1em; /* icon size */
+    display: block;
+    position: relative;
+    width: 7em;
+    height: 7em;
+    background-color: #fff;
+    border-radius: 0.6em;
+    box-shadow: 0 1px 0 #bdbdbd, 0 2px 0 #fff, 0 3px 0 #bdbdbd, 0 4px 0 #fff, 0 5px 0 #bdbdbd, 0 0 0 1px #bdbdbd;
+    overflow: hidden;
+}
+
+time.icon *
+{
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    font-style: normal;
+    text-align: center;
+}
+
+time.icon strong
+{
+    position: absolute;
+    top: 0;
+    padding: 0.4em 0;
+    color: #fff;
+    background-color: #fd9f1b;
+    border-bottom: 1px dashed #f37302;
+    box-shadow: 0 2px 0 #fd9f1b;
+}
+
+time.icon em
+{
+    position: absolute;
+    bottom: 0.3em;
+    color: #fd9f1b;
+}
+
+time.icon span
+{
+    font-size: 2.8em;
+    letter-spacing: -0.05em;
+    padding-top: 0.8em;
+    color: #2f2f2f;
+}
+
+/* "Can't go" button */
+.declineLink {
+    border-left: thick solid black;
+    color: black;
+    float: right;
+    overflow: auto;
+    text-decoration: none;
+}
+
+#declineIcon {
+    font-size: 7em; /* icon size */
+    /*float: right;*/ 
+    display: inline-block;
+    width: 1em; /* Match width and height of time.icon */
+    height: 1em; 
+}
+
+.declineText {
+    display: block;
+}
+
+/*
+====================================================
+Styles for On/Off switch modified from: 
+https://www.w3schools.com/howto/howto_css_switch.asp
+====================================================
+*/
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #C0757E;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #8FBC8F;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/*
+----------------------------
+End styles for On/Off switch
+----------------------------
+*/
+
+.availableTimesTable {
+    /*border-radius: 20px;*/
+    float: left;
+    width: 100%;
+    /*margin-left: -41px;*/ 
+}
+
+/* Styled column containing the On/Off switches */
+.columnOne {
+    /*border: none;*/
+    vertical-align: top;
+    width: 60px;
+}
+
+/* Hide the borders of both columns */
+.columnOne, .columnTwo {
+    height: 2.5em; 
+    border-style: hidden !important;
+}
+
+.meetingWrapper .noBorderPanel {
+    border-style: hidden !important;
+    background-color: #a4acba;
+}
+
+/* Match table style with parent style */
+.noBorderPanel .availableTimesTable .ui-panelgrid-cell {
+    background-color: #a4acba;   
+    /*width: 100%;*/
+}
+
+.noBorderPanel {
+    width: 100%;
+}
+
+.ui-panel .newDatePanel {
+    display: inline-block;
+    background-color: #a4acba; 
+    
+    /* Match panel margins with .calendarLink margins */
+    margin-left: -17px;
+    margin-right: -17px;
+}
+
+/* Hide disabled buttons */
+.ui-button[disabled] {
+    visibility: hidden;
+}
+
+#map {
+   width: 100%;
+   height: 400px;
+   background-color: grey;
+ }
+ 
+
+
+
+
