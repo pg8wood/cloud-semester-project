@@ -1,6 +1,7 @@
 /*
- * Created by Alex Martin on 2017.04.11  * 
- * Copyright © 2017 Alex Martin. All rights reserved. * 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.mycompany.sessionBeans;
 
@@ -11,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author alexmartin
+ * @author Jason
  */
 @Stateless
 public class MeetingFacade extends AbstractFacade<Meeting> {

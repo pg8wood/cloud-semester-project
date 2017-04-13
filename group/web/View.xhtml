@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Created by Osman Balci on 2016.11.22 
+Copyright © 2016 Osman Balci. All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MeetingViewDlg" widgetVar="MeetingViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Edit">
+
+            <h:form id="MeetingViewForm" class="ui-datatable-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
+
+                        <!-- No need for the user to be concerned about the database Primary Key id, 
+                        which is auto-generated on the server side.
+                        
+                        <h:outputText value="#{bundle.ViewMeetingLabel_id}"/>
+                        <h:outputText value="#{meetingController.selected.id}" title="#{bundle.ViewMeetingTitle_id}"/>
+                        -->
+
+                        <h:outputText value="Address1"/>
+                        <h:outputText value="#{meetingController.selected.address1}" title="Address1"/>
+
+                        <h:outputText value="City"/>
+                        <h:outputText value="#{meetingController.selected.city}" title="City"/>
+
+                        <h:outputText value="State"/>
+                        <h:outputText value="#{meetingController.selected.state}" title="State"/>
+
+                        <h:outputText value="Zip Code"/>
+                        <h:outputText value="#{meetingController.selected.zipcode}" title="Zip Code"/>
+
+                        <h:outputText value="Topic"/>
+                        <h:outputText value="#{meetingController.selected.topic}" title="Topic"/>
+
+                        <h:outputText value="Description"/>
+                        <h:outputText value="#{meetingController.selected.description}" title="Description"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <p:spacer height="10"/> 
+                    <div align="center">
+                        <!-- CLOSE button -->   
+                        <p:commandButton value="#{bundle.Close}" onclick="MeetingViewDialog.hide()" styleClass="commandButton" icon="ui-icon-close"/>
+                    </div>
+                </h:panelGroup>
+                
+            </h:form>
+            
+        </p:dialog>
+    </ui:composition>
+</html>
