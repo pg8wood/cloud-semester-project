@@ -1,6 +1,7 @@
 /*
- * Created by Alex Martin on 2017.04.11  * 
- * Copyright © 2017 Alex Martin. All rights reserved. * 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.mycompany.entityClasses;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author alexmartin
+ * @author Jason
  */
 @Entity
 @Table(name = "Meeting")
@@ -40,8 +43,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByState", query = "SELECT m FROM Meeting m WHERE m.state = :state")
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
-    , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")})
+    , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
+    
+})
 public class Meeting implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
+    private List<MeetingUsers> meetingUsersList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,8 +85,8 @@ public class Meeting implements Serializable {
     @Size(max = 256)
     @Column(name = "description")
     private String description;
-    @ManyToMany(mappedBy = "meetings")
-    private List<User> users;
+    @ManyToMany(mappedBy = "meetingCollection")
+    private Collection<User> userCollection;
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @ManyToOne
     private User ownerId;
@@ -163,12 +171,12 @@ public class Meeting implements Serializable {
     }
 
     @XmlTransient
-    public List<User> getUserCollection() {
-        return users;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setUserCollection(List<User> userCollection) {
-        this.users = userCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     public User getOwnerId() {
@@ -202,6 +210,15 @@ public class Meeting implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.entityClasses.Meeting[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<MeetingUsers> getMeetingUsersList() {
+        return meetingUsersList;
+    }
+
+    public void setMeetingUsersList(List<MeetingUsers> meetingUsersList) {
+        this.meetingUsersList = meetingUsersList;
     }
     
 }

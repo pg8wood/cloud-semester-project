@@ -50,6 +50,8 @@ CREATE TABLE Meeting_Users
 (
         user_id INT UNSIGNED NOT NULL,
         meeting_id INT UNSIGNED NOT NULL,
+        PRIMARY KEY (user_id, meeting_id),
+        response BOOLEAN,
         FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
         FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE,
         UNIQUE(user_id, meeting_id)
@@ -62,7 +64,7 @@ INSERT INTO User (username, password, first_name, middle_name, last_name, addres
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description) VALUES
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', 'This is a preloaded meeting to test functionality');
 
-INSERT INTO Meeting_Users (user_id, meeting_id) VALUES 
-('1', '1'),
-('2', '1');
-
+INSERT INTO Meeting_Users (user_id, meeting_id, response) VALUES 
+('1', '1', TRUE),
+('2', '1', FALSE);
+('2', '1', TRUE);
