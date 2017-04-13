@@ -36,7 +36,11 @@ Copyright © 2017 Osman Balci. All rights reserved.
                                         </div>-->
 
                     <h3>Lazy Schedule</h3>
+<<<<<<< HEAD
                     <p:schedule value="#{calendarManager.lazyEventModel}" widgetVar="myschedule" timeZone="GMT-4 "style="width:1000px">
+=======
+                    <p:schedule value="#{calendarManager.lazyEventModel}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
+>>>>>>> master
                         <p:ajax event="dateSelect" listener="#{calendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
                         <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
                     </p:schedule>
