@@ -66,9 +66,5 @@ INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, descriptio
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response) VALUES 
 ('1', '1', TRUE),
-<<<<<<< HEAD
 ('2', '1', FALSE);
-=======
 ('2', '1', TRUE);
->>>>>>> master
-
