@@ -1,6 +1,6 @@
 /*
- * Created by Patrick Gatewood on 2017.04.10  * 
- * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ * Created by Erin Kocis on 2017.04.13  * 
+ * Copyright © 2017 Erin Kocis. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
@@ -24,6 +24,10 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author Erin
+ */
 @Entity
 @Table(name = "User")
 @XmlRootElement
@@ -56,7 +60,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "ownerId")
     private Collection<Meeting> meetingCollection1;
 
-    // User was a reserved keyword in SQL in 1999, but not anymore.
+    // User was a reserved keyword in SQL in 1999, but not any more.
 
     /*
     ========================================================

@@ -1,12 +1,15 @@
 /*
- * Created by Patrick Gatewood on 2017.04.10  * 
- * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.mycompany.entityClasses;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author PatrickGatewood
+ * @author Jason
  */
 @Entity
 @Table(name = "Meeting")
@@ -39,8 +43,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByState", query = "SELECT m FROM Meeting m WHERE m.state = :state")
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
-    , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")})
+    , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
+    
+})
 public class Meeting implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
+    private List<MeetingUsers> meetingUsersList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -201,6 +210,15 @@ public class Meeting implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.entityClasses.Meeting[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<MeetingUsers> getMeetingUsersList() {
+        return meetingUsersList;
+    }
+
+    public void setMeetingUsersList(List<MeetingUsers> meetingUsersList) {
+        this.meetingUsersList = meetingUsersList;
     }
     
 }

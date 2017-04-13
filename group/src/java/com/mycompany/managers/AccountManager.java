@@ -36,7 +36,6 @@ bean as a JSF controller class. Contexts and Dependency Injection (CDI)
 beans annotated with @Named is the preferred approach, because CDI 
 enables Java EE-wide dependency injection. CDI bean is a bean managed
 by the CDI container. 
-
 Within JSF XHTML pages, this bean will be referenced by using the name
 'accountManager'. Actually, the default name is the class name starting
 with a lower case letter and value = 'accountManager' is optional;
@@ -61,11 +60,9 @@ as long as the user's established HTTP session is alive.
 --------------------------------------------------------------------------
 Marking the AccountManager class as "implements Serializable" implies that
 instances of the class can be automatically serialized and deserialized. 
-
 Serialization is the process of converting a class instance (object)
 from memory into a suitable format for storage in a file or memory buffer, 
 or for transmission across a network connection link.
-
 Deserialization is the process of recreating a class instance (object)
 in memory from the format under which it was stored.
 --------------------------------------------------------------------------
