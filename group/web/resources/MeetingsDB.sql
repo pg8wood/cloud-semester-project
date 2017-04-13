@@ -50,6 +50,7 @@ CREATE TABLE Meeting_Users
 (
         user_id INT UNSIGNED NOT NULL,
         meeting_id INT UNSIGNED NOT NULL,
+        PRIMARY KEY (user_id, meeting_id),
         response BOOLEAN,
         FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
         FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE,
@@ -65,5 +66,5 @@ INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, descriptio
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response) VALUES 
 ('1', '1', TRUE),
+('2', '1', FALSE);
 ('2', '1', TRUE);
-
