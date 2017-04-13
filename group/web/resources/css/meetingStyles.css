@@ -12,7 +12,7 @@ Composed by Patrick Gatewood on April 8, 2017.
 }
 
 /* Horizontally-scrollable area */
-#horizontalScrollArea {
+div .horizontalScrollArea {
     border: none;
     height: auto;
     white-space: nowrap;
@@ -84,7 +84,7 @@ time.icon span
     text-decoration: none;
 }
 
-#declineIcon {
+.declineLink i {
     font-size: 7em; /* icon size */
     /*float: right;*/ 
     display: inline-block;
