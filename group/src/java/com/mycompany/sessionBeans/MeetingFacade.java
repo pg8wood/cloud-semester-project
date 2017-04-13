@@ -6,6 +6,7 @@
 package com.mycompany.sessionBeans;
 
 import com.mycompany.entityClasses.Meeting;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,12 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
     public MeetingFacade() {
         super(Meeting.class);
+    }
+    
+    // Instance methods
+    
+    public Meeting getMeetingById(int id) {
+        return ((Meeting)getEntityManager().createNamedQuery("Meeting.findById").setParameter("id", id).getSingleResult());
     }
     
 }
