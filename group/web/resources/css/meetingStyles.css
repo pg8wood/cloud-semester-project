@@ -170,8 +170,8 @@ End styles for On/Off switch
 
 .availableTimesTable {
     /*border-radius: 20px;*/
-    float: left;
-    width: 100%;
+    /*float: left;*/
+    /*width: 100%;*/
     /*margin-left: -41px;*/ 
 }
 
@@ -179,6 +179,10 @@ End styles for On/Off switch
 .columnOne {
     /*border: none;*/
     vertical-align: top;
+    /*width: 60px;*/
+}
+
+.columnTwo {
     width: 60px;
 }
 

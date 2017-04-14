@@ -27,10 +27,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Jason
- */
 @Entity
 @Table(name = "Meeting")
 @XmlRootElement
@@ -105,6 +101,11 @@ public class Meeting implements Serializable {
         this.state = state;
         this.zipcode = zipcode;
     }
+    
+    
+    // -------------------
+    // Setters and getters
+    // -------------------
 
     public Integer getId() {
         return id;

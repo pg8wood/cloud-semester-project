@@ -22,117 +22,116 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
             <div id="meetingWrapper#{meetingInvitation.id}" class="meetingWrapper" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
-                <h2>Meeting Title</h2>
-                <p>Beginning of meeting description. Lorem ipsum blah blah trails off... This is the rest of the text, and it will be showed after the user clicks "Respond"
-                </p>
+                <h2>#{meetingInvitation.topic}</h2>
+                <p style="text-align: center">#{meetingInvitation.description}</p>
                 <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').show()" styleClass="commandButton"/>
 
                 <!-- Response section: user indicates their availability date-wise -->
                 <p:panel class="dayPanel#{meetingInvitation.id}" visible="false" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
-                        <hr />
-                        <h4>When can you make it?</h4>
+                    <hr />
+                    <h4>When can you make it?</h4>
 
-                        <!-- Can't go button --> 
-                        <p:commandLink class="declineLink">
-                            <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')"></i>
-                            <div class="declineText">Can't go</div>
+                    <!-- Can't go button --> 
+                    <p:commandLink class="declineLink">
+                        <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')"></i>
+                        <div class="declineText">Can't go</div>
+                    </p:commandLink>
+
+                    <!-- Div that floats left in order to force #horizontalScrollArea
+                    to fill the content width up to #declineLine -->
+                    <div style="float: left;"></div>
+
+                    <!-- TODO make one button and get suggested dates from Meeting object.
+                    Also give user a hint that this area is scrollable.-->
+                    <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
+                        <!-- Link to be rendered if the user shows a new date -->
+                        <p:panel id="newDatePanel#{meetingInvitation.id}" visible="false">
+                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}#{meetingInvitation.id}').show()">
+                                <time datetime="2014-01-01" class="icon">
+                                    <em>TEST</em>
+                                    <strong>TEST</strong>
+                                    <span>TEST</span>
+                                </time>
+                            </p:commandLink>
+                        </p:panel>
+
+                        <p:commandLink class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                            <time datetime="2014-09-20" class="icon">
+                                <em>Saturday</em>
+                                <strong>September</strong>
+                                <span>20</span>
+                            </time>
                         </p:commandLink>
 
-                        <!-- Div that floats left in order to force #horizontalScrollArea
-                        to fill the content width up to #declineLine -->
-                        <div style="float: left;"></div>
+                        <!-- 
+                        *********************************************************
+                        The following commandLinks are for example so delete them 
+                        once we're getting all the dates from the backend 
+                        *********************************************************
+                        -->
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Sunday</em>
+                                <strong>September</strong>
+                                <span>21</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Monday</em>
+                                <strong>September</strong>
+                                <span>22</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <p:commandLink class="calendarLink">
+                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <em>Tuesday</em>
+                                <strong>September</strong>
+                                <span>23</span>
+                            </time>
+                        </p:commandLink>
+                        <!--
+                        ***********************
+                        Delete up to this line 
+                        ***********************
+                        -->
+                    </p:scrollPanel>
 
-                        <!-- TODO make one button and get suggested dates from Meeting object.
-                        Also give user a hint that this area is scrollable.-->
-                        <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
-                            <!-- Link to be rendered if the user shows a new date -->
-                            <p:panel id="newDatePanel#{meetingInvitation.id}" visible="false">
-                                <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}#{meetingInvitation.id}').show()">
-                                    <time datetime="2014-09-20" class="icon">
-                                        <em>TEST</em>
-                                        <strong>TEST</strong>
-                                        <span>TEST</span>
-                                    </time>
-                                </p:commandLink>
-                            </p:panel>
+                    <!-- Create new date -->
+                    <br />
+                    <p:outputLabel for="event" value="New date: " />
+                    &nbsp;&nbsp;
+                    <p:calendar id="event#{meetingInvitation.id}" value="#{myMeetingsController.newDate}">
+                        <p:ajax event="dateSelect" listener="#{myMeetingsController.onDateSelect}" async="true" oncomplete="showNewDate()" update="newDatePanel" />
+                    </p:calendar>
 
-                            <p:commandLink class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}#{meetingInvitation.id}').show()">
-                                <time datetime="2014-09-20" class="icon">
-                                    <em>Saturday</em>
-                                    <strong>September</strong>
-                                    <span>20</span>
-                                </time>
-                            </p:commandLink>
-
-                            <!-- 
-                            *********************************************************
-                            The following commandLinks are for example so delete them 
-                            once we're getting all the dates from the backend 
-                            *********************************************************
-                            -->
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Sunday</em>
-                                    <strong>September</strong>
-                                    <span>21</span>
-                                </time>
-                            </p:commandLink>
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Monday</em>
-                                    <strong>September</strong>
-                                    <span>22</span>
-                                </time>
-                            </p:commandLink>
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Tuesday</em>
-                                    <strong>September</strong>
-                                    <span>23</span>
-                                </time>
-                            </p:commandLink>
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Tuesday</em>
-                                    <strong>September</strong>
-                                    <span>23</span>
-                                </time>
-                            </p:commandLink>
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Tuesday</em>
-                                    <strong>September</strong>
-                                    <span>23</span>
-                                </time>
-                            </p:commandLink>
-                            <p:commandLink class="calendarLink">
-                                <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                    <em>Tuesday</em>
-                                    <strong>September</strong>
-                                    <span>23</span>
-                                </time>
-                            </p:commandLink>
-                            <!--
-                            ***********************
-                            Delete up to this line 
-                            ***********************
-                            -->
-                        </p:scrollPanel>
-
-                        <!-- Create new date -->
-                        <br />
-                        <p:outputLabel for="event" value="New date: " />
-                        &nbsp;&nbsp;
-                        <p:calendar id="event#{meetingInvitation.id}" value="#{myMeetingsController.newDate}">
-                            <p:ajax event="dateSelect" listener="#{myMeetingsController.onDateSelect}" async="true" oncomplete="showNewDate()" update="newDatePanel" />
-                        </p:calendar>
-
-                        <!-- Function to show the newly-added date -->
-                        <script type="text/javascript">
-                            function showNewDate() {
-                                $('#newDatePanel#{meetingInvitation.id}').addClass('newDatePanel');
-                            }
-                        </script>
+                    <!-- Function to show the newly-added date -->
+                    <script type="text/javascript">
+                        function showNewDate() {
+                            $('#newDatePanel#{meetingInvitation.id}').addClass('newDatePanel');
+                        }
+                    </script>
                 </p:panel> <!-- .dayPanel -->
 
 
@@ -176,6 +175,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             &nbsp;
                             <h:outputText value="9:30 AM"></h:outputText>
                         </div>
+                        
                         <!-- On/Off switch -->
                         <div style="height: 1em;">
                             <label class="switch">
@@ -201,6 +201,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         ***********************
                         -->
                     </p:panelGrid>
+                    
+                    <br />  
 
                     <p:outputLabel value="Enter new time" for="newTime" />
                     &nbsp;
