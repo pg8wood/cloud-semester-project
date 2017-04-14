@@ -29,10 +29,10 @@ public class MeetingController implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
-    
+
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
-    
+
     private List<Meeting> items = null;
     private Meeting selected;
 
@@ -53,10 +53,10 @@ public class MeetingController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private MeetingFacade getMeetingFacade() {
+    public MeetingFacade getMeetingFacade() {
         return meetingFacade;
     }
-    
+
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
     }
@@ -132,43 +132,98 @@ public class MeetingController implements Serializable {
     public List<Meeting> getItemsAvailableSelectOne() {
         return getMeetingFacade().findAll();
     }
-    
+
     /**
      * Gets all unaccepted meeting invitations for a user
-     * 
+     *
      * @param user the logged in user
      * @return the list of meetings
      */
     public List<Meeting> getMeetingInvitations(User user) {
         List<MeetingUsers> meetingUsers = getMeetingUsersFacade().getMeetingInvitations(user);
         List<Meeting> meetingInvitations = new ArrayList();
-        
+
         // Add the users to the list
-        for (MeetingUsers invitation: meetingUsers) {
+        for (MeetingUsers invitation : meetingUsers) {
             meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
         }
-        
+
         return meetingInvitations;
     }
-    
+
     /**
      * Gets all meetings that the user has responded to
-     * 
+     *
      * @param user the logged in user
      * @return the list of meetings
      */
     public List<Meeting> getUpcomingMeetings(User user) {
         List<MeetingUsers> meetingUsers = getMeetingUsersFacade().getUpcomingMeetings(user);
         List<Meeting> meetingInvitations = new ArrayList();
-        
+
         // Add the users to the list
-        for (MeetingUsers invitation: meetingUsers) {
+        for (MeetingUsers invitation : meetingUsers) {
             meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
         }
-        
+
         return meetingInvitations;
     }
-    
+
+    public String getDayOfWeek(int day) {
+        switch (day) {
+            case 0:
+                return "Monday";
+            case 1:
+                return "Tuesday";
+            case 2:
+                return "Wednesday";
+            case 3:
+                return "Thursday";
+            case 4:
+                return "Friday";
+            case 5:
+                return "Saturday";
+            case 6:
+                return "Sunday";
+            default:
+                return "";
+        }
+    }
+
+    public String getMonthName(int month) {
+        switch (month) {
+            case 1:
+                return "January";
+            case 2:
+                return "February";
+            case 3:
+                return "March";
+            case 4:
+                return "April";
+            case 5:
+                return "May";
+            case 6:
+                return "June";
+            case 7:
+                return "July";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "October";
+            case 11:
+                return "November";
+            case 12:
+                return "December";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Gets the day of the week associated with a date.
+     */
     @FacesConverter(forClass = Meeting.class)
     public static class MeetingControllerConverter implements Converter {
 

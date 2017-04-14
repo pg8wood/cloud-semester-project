@@ -65,10 +65,10 @@ INSERT INTO User (username, password, first_name, middle_name, last_name, addres
 ('patrick', '1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com');
 
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots) VALUES
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', '2017-04-13[8:00 AM, 9:00 AM, 12:30 PM, 1:45 PM];2014-04-15[10:30 AM, 11:45 AM, 12:00 PM]'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', '2017-04-13[8:00 AM, 9:00 AM, 12:30 PM, 1:45 PM];2014-04-15[10:30 AM, 11:45 AM, 12:00 PM]'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', '2017-04-13[8:00 AM, 9:00 AM, 12:30 PM, 1:45 PM];2014-04-15[10:30 AM, 11:45 AM, 12:00 PM]'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', '2017-04-13[8:00 AM, 9:00 AM, 12:30 PM, 1:45 PM];2014-04-15[10:30 AM, 11:45 AM, 12:00 PM]');
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', '2017-04-13,8:00 AM,9:00 AM,12:30 PM,1:45 PM;2014-04-15,10:30 AM,11:45 AM,12:00 PM'),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', '2017-04-13,8:00 AM,9:00 AM,12:30 PM,1:45 PM;2014-04-15,10:30 AM,11:45 AM,12:00 PM'),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', '2017-04-13,8:00 AM,9:00 AM,12:30 PM,1:45 PM;2014-04-15,10:30 AM,11:45 AM,12:00 PM'),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', '2017-04-13,8:00 AM,9:00 AM,12:30 PM,1:45 PM;2014-04-15,10:30 AM,11:45 AM,12:00 PM');
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUES 
 ('1', '1', TRUE, ''),

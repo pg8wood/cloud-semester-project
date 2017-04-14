@@ -46,7 +46,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
                         <!-- Link to be rendered if the user shows a new date -->
                         <p:panel id="newDatePanel#{meetingInvitation.id}" visible="false">
-                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}#{meetingInvitation.id}').show()">
+                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
                                 <time datetime="2014-01-01" class="icon">
                                     <em>TEST</em>
                                     <strong>TEST</strong>
@@ -55,62 +55,68 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             </p:commandLink>
                         </p:panel>
 
-                        <p:commandLink class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                            <time datetime="2014-09-20" class="icon">
-                                <em>Saturday</em>
-                                <strong>September</strong>
-                                <span>20</span>
-                            </time>
-                        </p:commandLink>
+                        <!-- Get an array representation of the HashMap mapping
+                        days to lists of times and store it in timesByDateMap -->
+                        <ui:param name="timesByDateMap" value="#{meetingController.getMeetingFacade().getTimeslotsForMeetingInvitation(meetingInvitation).keySet()}" />
+                        
+                        <p:repeat value="#{timesByDateMap.toArray()}" offset="0" step="1" size="#{timesByDateMap.size()}" var="timeslot" varStatus="status"> 
+                            <p:commandLink class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                <time datetime="" class="icon">
+                                    <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
+                                    <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
+                                    <span>#{timeslot.getDate()}</span>
+                                </time>
+                            </p:commandLink>
+                        </p:repeat>
 
                         <!-- 
                         *********************************************************
                         The following commandLinks are for example so delete them 
                         once we're getting all the dates from the backend 
-                        *********************************************************
+                        *********************************************************x
                         -->
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Sunday</em>
-                                <strong>September</strong>
-                                <span>21</span>
-                            </time>
-                        </p:commandLink>
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Monday</em>
-                                <strong>September</strong>
-                                <span>22</span>
-                            </time>
-                        </p:commandLink>
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Tuesday</em>
-                                <strong>September</strong>
-                                <span>23</span>
-                            </time>
-                        </p:commandLink>
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Tuesday</em>
-                                <strong>September</strong>
-                                <span>23</span>
-                            </time>
-                        </p:commandLink>
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Tuesday</em>
-                                <strong>September</strong>
-                                <span>23</span>
-                            </time>
-                        </p:commandLink>
-                        <p:commandLink class="calendarLink">
-                            <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
-                                <em>Tuesday</em>
-                                <strong>September</strong>
-                                <span>23</span>
-                            </time>
-                        </p:commandLink>
+                        <!--                        <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Sunday</em>
+                                                        <strong>September</strong>
+                                                        <span>21</span>
+                                                    </time>
+                                                </p:commandLink>
+                                                <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Monday</em>
+                                                        <strong>September</strong>
+                                                        <span>22</span>
+                                                    </time>
+                                                </p:commandLink>
+                                                <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Tuesday</em>
+                                                        <strong>September</strong>
+                                                        <span>23</span>
+                                                    </time>
+                                                </p:commandLink>
+                                                <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Tuesday</em>
+                                                        <strong>September</strong>
+                                                        <span>23</span>
+                                                    </time>
+                                                </p:commandLink>
+                                                <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Tuesday</em>
+                                                        <strong>September</strong>
+                                                        <span>23</span>
+                                                    </time>
+                                                </p:commandLink>
+                                                <p:commandLink class="calendarLink">
+                                                    <time datetime="2014-09-20" class="icon" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                                                        <em>Tuesday</em>
+                                                        <strong>September</strong>
+                                                        <span>23</span>
+                                                    </time>
+                                                </p:commandLink>-->
                         <!--
                         ***********************
                         Delete up to this line 
@@ -175,7 +181,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             &nbsp;
                             <h:outputText value="9:30 AM"></h:outputText>
                         </div>
-                        
+
                         <!-- On/Off switch -->
                         <div style="height: 1em;">
                             <label class="switch">
@@ -201,7 +207,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         ***********************
                         -->
                     </p:panelGrid>
-                    
+
                     <br />  
 
                     <p:outputLabel value="Enter new time" for="newTime" />
