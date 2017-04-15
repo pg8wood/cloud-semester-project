@@ -24,13 +24,12 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
                 <p style="text-align: center">#{meetingInvitation.description}</p>
-                <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').show()" styleClass="commandButton"/>
+                <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" styleClass="commandButton"/>
 
                 <!-- Response section: user indicates their availability date-wise -->
-                <p:panel class="dayPanel#{meetingInvitation.id}" visible="false" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="true" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                     <hr />
                     <h4>When can you make it?</h4>
-
                     <!-- Can't go button --> 
                     <p:commandLink class="declineLink">
                         <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')"></i>
@@ -45,8 +44,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     Also give user a hint that this area is scrollable.-->
                     <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
                         <!-- Link to be rendered if the user shows a new date -->
-                        <p:panel id="newDatePanel#{meetingInvitation.id}" visible="false">
-                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                        <p:panel id="newDatePanel#{meetingInvitation.id}" toggleable="true" closable="true" collapsed="true">
+                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()" >
                                 <time datetime="2014-01-01" class="icon">
                                     <em>TEST</em>
                                     <strong>TEST</strong>
@@ -55,12 +54,12 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             </p:commandLink>
                         </p:panel>
 
-                        <!-- Get an array representation of the HashMap mapping
-                        days to lists of times and store it in timesByDateMap -->
-                        <ui:param name="timesByDateMap" value="#{meetingController.getMeetingFacade().getTimeslotsForMeetingInvitation(meetingInvitation).keySet()}" />
-                        
-                        <p:repeat value="#{timesByDateMap.toArray()}" offset="0" step="1" size="#{timesByDateMap.size()}" var="timeslot" varStatus="status"> 
-                            <p:commandLink class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()">
+                        <!-- Get list of times for the selected meetingInvitation -->
+                        <ui:param name="times" value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
+
+                        <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
+                            <!-- TODO set selected date and use that later to show times -->
+                            <p:commandLink  class="calendarLink" actionListener="#{meetingController.setSelectedDate(timeSlot)}" onclick="PF('timePanel#{meetingInvitation.id}').expand()">
                                 <time datetime="" class="icon">
                                     <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
                                     <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
@@ -140,22 +139,23 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </script>
                 </p:panel> <!-- .dayPanel -->
 
-
                 <!-- Available time options shown after the user selects a date --> 
-                <p:panel visible="false" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                <p:panel toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="true" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                     <br />
                     <hr />
 
                     <p:panelGrid columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
-                        <!-- On/Off switch -->
-                        <div style="height: 1em;">
-                            <label class="switch">
-                                <input type="checkbox" />
-                                <div class="slider round"></div>
-                            </label>
-                            &nbsp;
-                            <h:outputText value="8:00 AM"></h:outputText>
-                        </div>
+                        <p:repeat value="#{times}" offset="#{times.indexOf(meetingController.selectedDate)}" step="1" size="#{meetingController.getNumberOfTimesForDay(times, meetingController.selectedDate)}" var="timeslot" varStatus="status"> 
+                            <!-- On/Off switch -->
+                            <div style="height: 1em;">
+                                <label class="switch">
+                                    <input type="checkbox" />
+                                    <div class="slider round"></div>
+                                </label>
+                                &nbsp;
+                                <h:outputText value="8:00 AM"></h:outputText>
+                            </div>
+                        </p:repeat>
 
                         <!-- 
                         *********************************************************
@@ -164,42 +164,42 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         *********************************************************
                         -->
                         <!-- On/Off switch -->
-                        <div style="height: 1em;">
-                            <label class="switch">
-                                <input type="checkbox" />
-                                <div class="slider round"></div>
-                            </label>
-                            &nbsp;
-                            <h:outputText value="9:00 AM"></h:outputText>
-                        </div>
-                        <!-- On/Off switch -->
-                        <div style="height: 1em;">
-                            <label class="switch">
-                                <input type="checkbox" />
-                                <div class="slider round"></div>
-                            </label>
-                            &nbsp;
-                            <h:outputText value="9:30 AM"></h:outputText>
-                        </div>
-
-                        <!-- On/Off switch -->
-                        <div style="height: 1em;">
-                            <label class="switch">
-                                <input type="checkbox" />
-                                <div class="slider round"></div>
-                            </label>
-                            &nbsp;
-                            <h:outputText value="12:45 PM"></h:outputText>
-                        </div>
-                        <!-- On/Off switch -->
-                        <div style="height: 1em;">
-                            <label class="switch">
-                                <input type="checkbox" />
-                                <div class="slider round"></div>
-                            </label>
-                            &nbsp;
-                            <h:outputText value="2:00 PM"></h:outputText>
-                        </div>
+                        <!--                        <div style="height: 1em;">
+                                                    <label class="switch">
+                                                        <input type="checkbox" />
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    &nbsp;
+                                                    <h:outputText value="9:00 AM"></h:outputText>
+                                                </div>
+                                                 On/Off switch 
+                                                <div style="height: 1em;">
+                                                    <label class="switch">
+                                                        <input type="checkbox" />
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    &nbsp;
+                                                    <h:outputText value="9:30 AM"></h:outputText>
+                                                </div>
+                        
+                                                 On/Off switch 
+                                                <div style="height: 1em;">
+                                                    <label class="switch">
+                                                        <input type="checkbox" />
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    &nbsp;
+                                                    <h:outputText value="12:45 PM"></h:outputText>
+                                                </div>
+                                                 On/Off switch 
+                                                <div style="height: 1em;">
+                                                    <label class="switch">
+                                                        <input type="checkbox" />
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    &nbsp;
+                                                    <h:outputText value="2:00 PM"></h:outputText>
+                                                </div>-->
 
                         <!--
                         ***********************

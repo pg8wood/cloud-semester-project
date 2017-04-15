@@ -5,9 +5,12 @@
         <group>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingFacade.java</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/Meeting.java</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/MeetingUsers.java</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/meetings/MeetingInvitation.xhtml</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/resources/MeetingsDB.sql</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingUsersFacade.java</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingController.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/MyMeetings.xhtml</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/resources/css/siteStyles.css</file>
         </group>
     </open-files>
 </project-private>

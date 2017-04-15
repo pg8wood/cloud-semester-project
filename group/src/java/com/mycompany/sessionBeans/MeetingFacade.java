@@ -27,11 +27,13 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     }
 
     // Instance fields
-    private HashMap<Date, List<String>> timesByDateMap;
+//    private HashMap<Date, List<String>> timesByDateMap;
+    private List<Date> dateList;
 
     public MeetingFacade() {
         super(Meeting.class);
-        timesByDateMap = null;
+        dateList = new ArrayList();
+//        timesByDateMap = null;
     }
 
     // ----------------
@@ -41,62 +43,109 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      * Gets the meeting's timeslots and de-serializes them
      */
     public void deserializeTimeslots(Meeting meeting) {
-        timesByDateMap = new HashMap<>();
-        Scanner dateScanner = new Scanner(meeting.getTimeslots());
-        dateScanner.useDelimiter(";");
+        dateList = new ArrayList();
+        
+        Scanner serializedStringScan = new Scanner(meeting.getTimeslots());
+        serializedStringScan.useDelimiter(",");
 
-        // Iterate over timeslot String getting dates
-        while (dateScanner.hasNext()) {
-            List<String> timesList = new ArrayList();
-            Scanner timeScanner = new Scanner(dateScanner.next());
-            timeScanner.useDelimiter(",");
+        while (serializedStringScan.hasNext()) {
+            Scanner dateScan = new Scanner(serializedStringScan.next());
+            /* Serialized dates are stored in the database in the form: 
+           java.util.Date.toString(),java.util.date.toString,... */
+            String dayOfWeek = dateScan.next();
+            String monthName = dateScan.next();
+            int dayNumber = dateScan.nextInt();
 
-            // Create a Date object to serve as the HashMap Key
-            String dateString = timeScanner.next();
-            Scanner dateScan = new Scanner(dateString);
-            dateScan.useDelimiter("-");
-            Date calendarDate = new Date();
+            // Time is stored in the form HH:MM:SS
+            Scanner timeScan = new Scanner(dateScan.next());
+            timeScan.useDelimiter(":");
+            int hour = timeScan.nextInt();
+            int minute = timeScan.nextInt();
+            // No need to store seconds
 
-            // dateString format is YYYY-MM-DD
-            calendarDate.setYear(dateScan.nextInt());
-            calendarDate.setMonth(dateScan.nextInt());
-            calendarDate.setDate(dateScan.nextInt());
+            // Skip time zone
+            dateScan.next();
 
-            // Store the times
-            while (timeScanner.hasNext()) {
-                timesList.add(timeScanner.next());
-            }
+            int year = dateScan.nextInt();
 
-            // Map the calendarDate to the list of times
-            timesByDateMap.put(calendarDate, timesList);
+            // Store the parsed Dates into the list
+            dateList.add(new Date(year, getMonthInt(monthName), dayNumber, hour, minute));
+        }
+    }
+
+    private int getDayOfWeekInt(String dayName) {
+        switch (dayName) {
+            case "Sun":
+                return 0;
+            case "Mon":
+                return 1;
+            case "Tue":
+                return 2;
+            case "Wed":
+                return 3;
+            case "Thu":
+                return 4;
+            case "Fri":
+                return 5;
+            case "Sat":
+                return 6;
+            default:
+                return 0;
+        }
+    }
+
+    private int getMonthInt(String monthName) {
+        switch (monthName) {
+            case "Jan":
+                return 0;
+            case "Feb":
+                return 1;
+            case "Mar":
+                return 2;
+            case "Apr":
+                return 3;
+            case "May":
+                return 4;
+            case "Jun":
+                return 5;
+            case "Jul":
+                return 6;
+            case "Aug":
+                return 7;
+            case "Sep":
+                return 8;
+            case "Oct":
+                return 9;
+            case "Nov":
+                return 10;
+            case "Dec":
+                return 11;
+            default:
+                return 0;
         }
     }
     
-     /**
-     * Gets a Date object's string representation in the format YYYY-MM-DD
+    /**
+     * Gets all the available timeslots for a given meeting.
      * 
-     * @param calendarDate the Date object to interpret
-     * @return String the string representation of the Date object
+     * @param meeting The meeting to examine
+     * @return ArrayList<Date> the list of available timeslots
      */
-//    public String getDateString(Date calendarDate) {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(Integer.toString(calendarDate.YEAR));
-//        sb.append("-");
-//        sb.append(Integer.toString(calendarDate.MONTH));
-//        sb.append("-");
-//        sb.append(Integer.toString(calendarDate.DAY_OF_MONTH));
-//        
-//        return sb.toString();
-//    }
-    
-    public HashMap<Date, List<String>> getTimeslotsForMeetingInvitation(Meeting invitation) {
-        deserializeTimeslots(invitation);
-        return timesByDateMap;
+    public ArrayList<Date> getTimeslotsForMeeting(Meeting meeting) {
+        deserializeTimeslots(meeting);
+        return (ArrayList<Date>)dateList;
+    }
+
+    public List<Date> getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(List<Date> dateList) {
+        this.dateList = dateList;
     }
 
     /**
      * Gets a specified meeting that a user is a part of
-     *
      * @param id the meeting's id
      * @return Meeting the meeting
      */

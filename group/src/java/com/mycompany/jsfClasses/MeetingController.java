@@ -10,6 +10,7 @@ import com.mycompany.sessionBeans.MeetingUsersFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -35,8 +36,10 @@ public class MeetingController implements Serializable {
 
     private List<Meeting> items = null;
     private Meeting selected;
+    private Date selectedDate;
 
     public MeetingController() {
+        selectedDate = null;
     }
 
     public Meeting getSelected() {
@@ -133,6 +136,20 @@ public class MeetingController implements Serializable {
         return getMeetingFacade().findAll();
     }
 
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+
+        if (selectedDate != null) {
+            System.out.printf("Date set to %s", selectedDate.toString());
+        } else {
+            System.out.println("Date set to NULL!!!");
+        }
+    }
+
     /**
      * Gets all unaccepted meeting invitations for a user
      *
@@ -169,22 +186,81 @@ public class MeetingController implements Serializable {
         return meetingInvitations;
     }
 
+    /**
+     * Gets the number of times associated with a particular date
+     *
+     * @param times the list of times to examine
+     * @param day
+     * @return
+     */
+    public int getNumberOfTimesForDay(List<Date> times, Date day) {
+        int dateStartIndex = times.indexOf(day);
+        int numberOfTimes = 0;
+
+        if (dateStartIndex >= 0) {
+            for (int i = dateStartIndex; i < times.size(); i++) {
+//            try {
+                if (times.get(i).getYear() == day.getYear()
+                        && times.get(i).getMonth() == day.getMonth()
+                        && times.get(i).getDate() == day.getDate()) {
+                    numberOfTimes++;
+                    System.out.println(numberOfTimes);
+                } else {
+                    break;
+                }
+//            } catch (Exception e) {
+//                System.out.printf("\n\n\nFailed at i = %d, size = %d", i, times.size());
+//            }
+            }
+        }
+
+        if (day == null) {
+            System.out.println("\n\n\nWARNING: DAY IS NULL");
+        } else {
+            System.out.printf("\n\nNumber of times for day %d in list: ", day.getDate());
+            System.out.println(times.toString());
+        }
+
+        return numberOfTimes;
+    }
+
+    /**
+     * Gets a list of unique days in dateList
+     *
+     * @prereq: dateList must be sorted in chronological order
+     * @param meeting the meeting to examine
+     * @return ArraList<Date> a list containing unique days only
+     */
+    public ArrayList<Date> getUniqueDateListForMeeting(Meeting meeting) {
+        ArrayList<Date> uniqueDays = new ArrayList<>();
+
+        for (Date d : getMeetingFacade().getTimeslotsForMeeting(meeting)) {
+            if (uniqueDays.isEmpty()) {
+                uniqueDays.add(d);
+            } else if (uniqueDays.get(uniqueDays.size() - 1).getDate() != d.getDate()) {
+                uniqueDays.add(d);
+            }
+        }
+
+        return uniqueDays;
+    }
+
     public String getDayOfWeek(int day) {
         switch (day) {
             case 0:
-                return "Monday";
+                return "Sun";
             case 1:
-                return "Tuesday";
+                return "Mon";
             case 2:
-                return "Wednesday";
+                return "Tue";
             case 3:
-                return "Thursday";
+                return "Wed";
             case 4:
-                return "Friday";
+                return "Thu";
             case 5:
-                return "Saturday";
+                return "Fri";
             case 6:
-                return "Sunday";
+                return "Sat";
             default:
                 return "";
         }
@@ -192,29 +268,29 @@ public class MeetingController implements Serializable {
 
     public String getMonthName(int month) {
         switch (month) {
-            case 1:
+            case 0:
                 return "January";
-            case 2:
+            case 1:
                 return "February";
-            case 3:
+            case 2:
                 return "March";
-            case 4:
+            case 3:
                 return "April";
-            case 5:
+            case 4:
                 return "May";
-            case 6:
+            case 5:
                 return "June";
-            case 7:
+            case 6:
                 return "July";
-            case 8:
+            case 7:
                 return "August";
-            case 9:
+            case 8:
                 return "September";
-            case 10:
+            case 9:
                 return "October";
-            case 11:
+            case 10:
                 return "November";
-            case 12:
+            case 11:
                 return "December";
             default:
                 return "";

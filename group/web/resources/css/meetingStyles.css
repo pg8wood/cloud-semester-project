@@ -216,6 +216,11 @@ End styles for On/Off switch
     margin-right: -17px;
 }
 
+/* Override ugly default PrimeFaces panel header color */
+div .ui-panel {
+    background-color: #a4acba;
+}
+
 /* Hide disabled buttons */
 .ui-button[disabled] {
     visibility: hidden;
