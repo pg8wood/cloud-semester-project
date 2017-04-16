@@ -1,11 +1,16 @@
 package com.mycompany.jsfClasses;
 
 import com.mycompany.entityClasses.Meeting;
+import com.mycompany.entityClasses.MeetingUsers;
+import com.mycompany.entityClasses.User;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
 import com.mycompany.sessionBeans.MeetingFacade;
+import com.mycompany.sessionBeans.MeetingUsersFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -24,11 +29,17 @@ import javax.faces.convert.FacesConverter;
 public class MeetingController implements Serializable {
 
     @EJB
-    private com.mycompany.sessionBeans.MeetingFacade ejbFacade;
+    private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
+
+    @EJB
+    private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
+
     private List<Meeting> items = null;
     private Meeting selected;
+    private Date selectedDate;
 
     public MeetingController() {
+        selectedDate = null;
     }
 
     public Meeting getSelected() {
@@ -45,8 +56,12 @@ public class MeetingController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private MeetingFacade getFacade() {
-        return ejbFacade;
+    public MeetingFacade getMeetingFacade() {
+        return meetingFacade;
+    }
+
+    private MeetingUsersFacade getMeetingUsersFacade() {
+        return meetingUsersFacade;
     }
 
     public Meeting prepareCreate() {
@@ -76,7 +91,7 @@ public class MeetingController implements Serializable {
 
     public List<Meeting> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getMeetingFacade().findAll();
         }
         return items;
     }
@@ -86,9 +101,9 @@ public class MeetingController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    getMeetingFacade().edit(selected);
                 } else {
-                    getFacade().remove(selected);
+                    getMeetingFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -110,17 +125,181 @@ public class MeetingController implements Serializable {
     }
 
     public Meeting getMeeting(java.lang.Integer id) {
-        return getFacade().find(id);
+        return getMeetingFacade().find(id);
     }
 
     public List<Meeting> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
+        return getMeetingFacade().findAll();
     }
 
     public List<Meeting> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
+        return getMeetingFacade().findAll();
     }
 
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+
+        if (selectedDate != null) {
+            System.out.printf("Date set to %s", selectedDate.toString());
+        } else {
+            System.out.println("Date set to NULL!!!");
+        }
+    }
+
+    /**
+     * Gets all unaccepted meeting invitations for a user
+     *
+     * @param user the logged in user
+     * @return the list of meetings
+     */
+    public List<Meeting> getMeetingInvitations(User user) {
+        List<MeetingUsers> meetingUsers = getMeetingUsersFacade().getMeetingInvitations(user);
+        List<Meeting> meetingInvitations = new ArrayList();
+
+        // Add the users to the list
+        for (MeetingUsers invitation : meetingUsers) {
+            meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
+        }
+
+        return meetingInvitations;
+    }
+
+    /**
+     * Gets all meetings that the user has responded to
+     *
+     * @param user the logged in user
+     * @return the list of meetings
+     */
+    public List<Meeting> getUpcomingMeetings(User user) {
+        List<MeetingUsers> meetingUsers = getMeetingUsersFacade().getUpcomingMeetings(user);
+        List<Meeting> meetingInvitations = new ArrayList();
+
+        // Add the users to the list
+        for (MeetingUsers invitation : meetingUsers) {
+            meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
+        }
+
+        return meetingInvitations;
+    }
+
+    /**
+     * Gets the number of times associated with a particular date
+     *
+     * @param times the list of times to examine
+     * @param day
+     * @return
+     */
+    public int getNumberOfTimesForDay(List<Date> times, Date day) {
+        int dateStartIndex = times.indexOf(day);
+        int numberOfTimes = 0;
+
+        if (dateStartIndex >= 0) {
+            for (int i = dateStartIndex; i < times.size(); i++) {
+//            try {
+                if (times.get(i).getYear() == day.getYear()
+                        && times.get(i).getMonth() == day.getMonth()
+                        && times.get(i).getDate() == day.getDate()) {
+                    numberOfTimes++;
+                    System.out.println(numberOfTimes);
+                } else {
+                    break;
+                }
+//            } catch (Exception e) {
+//                System.out.printf("\n\n\nFailed at i = %d, size = %d", i, times.size());
+//            }
+            }
+        }
+
+        if (day == null) {
+            System.out.println("\n\n\nWARNING: DAY IS NULL");
+        } else {
+            System.out.printf("\n\nNumber of times for day %d in list: ", day.getDate());
+            System.out.println(times.toString());
+        }
+
+        return numberOfTimes;
+    }
+
+    /**
+     * Gets a list of unique days in dateList
+     *
+     * @prereq: dateList must be sorted in chronological order
+     * @param meeting the meeting to examine
+     * @return ArraList<Date> a list containing unique days only
+     */
+    public ArrayList<Date> getUniqueDateListForMeeting(Meeting meeting) {
+        ArrayList<Date> uniqueDays = new ArrayList<>();
+
+        for (Date d : getMeetingFacade().getTimeslotsForMeeting(meeting)) {
+            if (uniqueDays.isEmpty()) {
+                uniqueDays.add(d);
+            } else if (uniqueDays.get(uniqueDays.size() - 1).getDate() != d.getDate()) {
+                uniqueDays.add(d);
+            }
+        }
+
+        return uniqueDays;
+    }
+
+    public String getDayOfWeek(int day) {
+        switch (day) {
+            case 0:
+                return "Sun";
+            case 1:
+                return "Mon";
+            case 2:
+                return "Tue";
+            case 3:
+                return "Wed";
+            case 4:
+                return "Thu";
+            case 5:
+                return "Fri";
+            case 6:
+                return "Sat";
+            default:
+                return "";
+        }
+    }
+
+    public String getMonthName(int month) {
+        switch (month) {
+            case 0:
+                return "January";
+            case 1:
+                return "February";
+            case 2:
+                return "March";
+            case 3:
+                return "April";
+            case 4:
+                return "May";
+            case 5:
+                return "June";
+            case 6:
+                return "July";
+            case 7:
+                return "August";
+            case 8:
+                return "September";
+            case 9:
+                return "October";
+            case 10:
+                return "November";
+            case 11:
+                return "December";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Gets the day of the week associated with a date.
+     */
     @FacesConverter(forClass = Meeting.class)
     public static class MeetingControllerConverter implements Converter {
 
