@@ -20,6 +20,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
     @PersistenceContext(unitName = "groupPU")
     private EntityManager em;
+    private Date selectedDate;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -143,6 +144,16 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     public void setDateList(List<Date> dateList) {
         this.dateList = dateList;
     }
+
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+    
+    
 
     /**
      * Gets a specified meeting that a user is a part of
