@@ -97,13 +97,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <!--<h:form id="test#{meetingInvitation.id}">-->
                             <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
                              <!-- On/Off switch --> 
-                            <div style="height: 1em;">
+                            <div style="height: 3em;">
                                 <label class="switch">
                                     <input type="checkbox" />
                                     <div class="slider round"></div>
                                 </label>
                                 &nbsp;
-                                <h:outputText value="8:00 AM"></h:outputText>
+                                <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
                             </div>
                         </p:repeat>
                         <!--</h:form>-->

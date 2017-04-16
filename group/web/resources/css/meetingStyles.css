@@ -176,10 +176,13 @@ End styles for On/Off switch
 }
 
 /* Styled column containing the On/Off switches */
-.columnOne {
+.columnOne * {
     /*border: none;*/
-    vertical-align: top;
+    vertical-align: inherit;
     /*width: 60px;*/
+}
+.onOffLabel {
+   font-size: 1em;
 }
 
 .columnTwo {
