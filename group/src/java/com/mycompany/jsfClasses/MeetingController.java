@@ -163,11 +163,14 @@ public class MeetingController implements Serializable {
         this.isResponding = isResponding;
     }
     
-    
+    public boolean shouldHideTimeForMeeting(Meeting meeting) {
+        return meeting.equals(this.selected);
+    }
 
-    public String setSelectedDate(Date selectedDate, String toUpdate) {
+    public String setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
         this.selectedDate = selectedDate;
         this.isResponding = true;
+        this.selected = selected;
 
 //        System.out.println("updating: " + toUpdate);
 //        RequestContext context = RequestContext.getCurrentInstance();
