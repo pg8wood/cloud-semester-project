@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/resources/css/meetingStyles.css</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/UserFileController.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/meetings/MeetingInvitation.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingInvitationController.java</file>
+            <file>file:/C:/Users/Erin/Google%20Drive/NetBeansProjects/cloud-semester-project/group/web/SendEmail.xhtml</file>
+            <file>file:/C:/Users/Erin/Google%20Drive/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/cdibeans/Person.java</file>
+            <file>file:/C:/Users/Erin/Google%20Drive/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/validators/EmailAddressValidator.java</file>
+            <file>file:/C:/Users/Erin/Google%20Drive/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/cdibeans/EmailSender.java</file>
         </group>
     </open-files>
 </project-private>
