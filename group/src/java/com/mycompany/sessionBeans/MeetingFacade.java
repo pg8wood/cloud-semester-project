@@ -129,6 +129,31 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     }
     
     /**
+     * Gets a String representation of the meeting's time 
+     * 
+     * @param meetingDate the date of the meeting to examine
+     * @return String the meeting's time in String format
+     */
+    public String getMeetingString(Date meetingDate) {
+        StringBuilder sb = new StringBuilder();
+        
+       if (meetingDate.getHours() > 12) {
+           sb.append(Integer.toString(meetingDate.getHours()))
+                   .append(":")
+                   .append(String.format("%02d", meetingDate.getMinutes()))
+                   .append(" AM");
+       }
+       else {
+           sb.append(Integer.toString(meetingDate.getHours() % 12))
+                   .append(":")
+                   .append(String.format("%02d", meetingDate.getMinutes()))
+                   .append(" PM");
+       }
+       
+       return sb.toString();
+    }
+    
+    /**
      * Gets all the available timeslots for a given meeting.
      * 
      * @param meeting The meeting to examine

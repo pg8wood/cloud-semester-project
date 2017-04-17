@@ -28,7 +28,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" styleClass="commandButton"/>
 
                 <!-- Response section: user indicates their availability date-wise -->
-                <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.isResponding}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                     <hr />
                     <h4>When can you make it?</h4>
                     <!-- Can't go button --> 
@@ -60,7 +60,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                         <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
                             <!-- Clicking this link updates the collapsed time panel and displays it -->
-                            <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId)}" oncomplete="PF('timePanel#{meetingInvitation.id}').expand()" process="@all" ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}">
+                            <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" oncomplete="PF('timePanel#{meetingInvitation.id}').expand()" process="@all" ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}">
                                 <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
                                 <!--<f:ajax render="@all"/>-->
                                 <time datetime="" class="icon">
@@ -89,7 +89,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 </p:panel>  <!-- .dayPanel -->
 
                 <!-- Available time options shown after the user selects a date --> 
-                <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.isResponding}" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                     <br />
                     <hr />
 
@@ -97,13 +97,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <!--<h:form id="test#{meetingInvitation.id}">-->
                             <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
                              <!-- On/Off switch --> 
-                            <div style="height: 1em;">
+                            <div style="height: 3em;">
                                 <label class="switch">
                                     <input type="checkbox" />
                                     <div class="slider round"></div>
                                 </label>
                                 &nbsp;
-                                <h:outputText value="8:00 AM"></h:outputText>
+                                <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
                             </div>
                         </p:repeat>
                         <!--</h:form>-->
