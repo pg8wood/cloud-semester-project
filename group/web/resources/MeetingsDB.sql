@@ -29,6 +29,7 @@ CREATE TABLE User
     security_question INT NOT NULL, /* Refers to the number of the selected security question */
     security_answer VARCHAR (128) NOT NULL,
     email VARCHAR (128) NOT NULL, 
+    userPhoto VARCHAR (255) NOT NULL,   
     PRIMARY KEY (id)
 );
 
@@ -59,16 +60,17 @@ CREATE TABLE Meeting_Users
         UNIQUE(user_id, meeting_id)
 );
 
-INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email) VALUES 
-('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu'),
-('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com'),
-('patrick', '1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com');
+INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email, userPhoto) VALUES 
+('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu', 'spongebob.jpg'),
+('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'Gandalf.jpg'),
+('patrick', '1', 'Patrick', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'penguin.png');
 
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots) VALUES
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992');
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
+('900 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meeting!', '5: This is a meeting to test functionality', 'Fri Jan 10 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992');
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUES 
 ('1', '1', TRUE, ''),
@@ -76,4 +78,7 @@ INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUE
 ('3', '1', TRUE, ''),
 ('3', '2', TRUE, ''),
 ('3', '3', FALSE, ''),
-('3', '4', FALSE, '');
+('3', '4', FALSE, ''),
+('3', '5', TRUE, ''),
+('1', '5', TRUE, ''),
+('2', '5', TRUE, '');
