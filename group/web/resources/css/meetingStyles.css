@@ -12,7 +12,7 @@ Composed by Patrick Gatewood on April 8, 2017.
 }
 
 /* Horizontally-scrollable area */
-#horizontalScrollArea {
+div .horizontalScrollArea {
     border: none;
     height: auto;
     white-space: nowrap;
@@ -84,7 +84,7 @@ time.icon span
     text-decoration: none;
 }
 
-#declineIcon {
+.declineLink i {
     font-size: 7em; /* icon size */
     /*float: right;*/ 
     display: inline-block;
@@ -170,15 +170,22 @@ End styles for On/Off switch
 
 .availableTimesTable {
     /*border-radius: 20px;*/
-    float: left;
-    width: 100%;
+    /*float: left;*/
+    /*width: 100%;*/
     /*margin-left: -41px;*/ 
 }
 
 /* Styled column containing the On/Off switches */
-.columnOne {
+.columnOne * {
     /*border: none;*/
-    vertical-align: top;
+    vertical-align: inherit;
+    /*width: 60px;*/
+}
+.onOffLabel {
+   font-size: 1em;
+}
+
+.columnTwo {
     width: 60px;
 }
 
@@ -206,10 +213,15 @@ End styles for On/Off switch
 .ui-panel .newDatePanel {
     display: inline-block;
     background-color: #a4acba; 
-    
+
     /* Match panel margins with .calendarLink margins */
     margin-left: -17px;
     margin-right: -17px;
+}
+
+/* Override ugly default PrimeFaces panel header color */
+div .ui-panel {
+    background-color: #a4acba;
 }
 
 /* Hide disabled buttons */
@@ -217,12 +229,34 @@ End styles for On/Off switch
     visibility: hidden;
 }
 
-#map {
-   width: 100%;
-   height: 400px;
-   background-color: grey;
- }
- 
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.caption {
+    display: block;
+}
+
+/* User profile photos for participants */
+.profilePhoto {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 25px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.map {
+    width: 100%;
+    height: 400px;
+    background-color: grey;
+}
+
 
 
 

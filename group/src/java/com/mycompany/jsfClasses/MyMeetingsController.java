@@ -53,9 +53,9 @@ public class MyMeetingsController implements Serializable {
 //        newDateString = format.format(event.getObject());
     }
 
-    public List<Meeting> getLoggedInUserMeetings() {
-        return (List<Meeting>) loggedInUser.getMeetingCollection();
-    }
+//    public List<Meeting> getLoggedInUserMeetings() {
+//        return (List<Meeting>) loggedInUser.getMeetingCollection();
+//    }
 
     public Date getNewDate() {
         return newDate;
