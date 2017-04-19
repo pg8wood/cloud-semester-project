@@ -7,7 +7,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE User; 
 DROP TABLE Meeting; 
 DROP TABLE Meeting_Users;
-DROP TALBE Meeting_File;
+DROP TABLE MeetingFile;
 SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE User
@@ -57,12 +57,6 @@ CREATE TABLE Meeting_Users
         UNIQUE(user_id, meeting_id)
 );
 
-
-INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email, userPhoto) VALUES 
-('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu', 'spongebob.jpg'),
-('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'Gandalf.jpg'),
-('patrick', '1', 'Patrick', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'penguin.png');
-
 CREATE TABLE MeetingFile
 (
        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -70,6 +64,12 @@ CREATE TABLE MeetingFile
        meeting_id INT UNSIGNED,
        FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
 );
+
+
+INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email, userPhoto) VALUES 
+('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu', 'spongebob.jpg'),
+('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'Gandalf.jpg'),
+('patrick', '1', 'Patrick', 'Eugene', 'Gatewood', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'penguin.png');
 
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots) VALUES
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
