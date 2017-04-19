@@ -114,9 +114,21 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         });
                     }
                 </script>
+<<<<<<< Updated upstream
                 <!-- End Google Maps panel -->
 
                 <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
+=======
+
+<!--                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>-->
+
+                <!-- End Google Maps panel -->
+
+                <p:commandButton value="Render map" onclick="initMap()" />
+                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel').close()" oncomplete="PF('seeMoreButton').enable()" styleClass="commandButton"/>
+
+
+>>>>>>> Stashed changes
 
             </p:panel>
         </div> <!-- #meetingWrapper -->
