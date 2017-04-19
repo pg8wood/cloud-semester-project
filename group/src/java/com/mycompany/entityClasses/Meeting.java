@@ -6,8 +6,12 @@
 package com.mycompany.entityClasses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,10 +31,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Jason
- */
 @Entity
 @Table(name = "Meeting")
 @XmlRootElement
@@ -44,9 +44,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
     , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
-    
+
 })
 public class Meeting implements Serializable {
+
+    @Size(max = 256)
+    @Column(name = "timeslots")
+    private String timeslots;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
     private List<MeetingUsers> meetingUsersList;
@@ -74,7 +78,7 @@ public class Meeting implements Serializable {
     @NotNull
     @Size(min = 1, max = 2)
     @Column(name = "state")
-    private String state;
+    private String state; 
     @Basic(optional = false)
     @NotNull
     @Column(name = "zipcode")
@@ -91,7 +95,11 @@ public class Meeting implements Serializable {
     @ManyToOne
     private User ownerId;
 
+//    // Instance fields
+//    private HashMap<Calendar, List<String>> timesByDateMap;
+
     public Meeting() {
+//        timesByDateMap = new HashMap<>();
     }
 
     public Meeting(Integer id) {
@@ -104,8 +112,66 @@ public class Meeting implements Serializable {
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+//        this.timesByDateMap = null;
     }
 
+    // ----------------
+    // Instance methods 
+    // ----------------
+    
+    /**
+     * Gets the meeting's timeslots and de-serializes them
+     */
+//    public void deserializeTimeslots() {
+//        timesByDateMap = new HashMap<>();
+//        Scanner dateScanner = new Scanner(getTimeslots());
+//        dateScanner.useDelimiter(";");
+//
+//        // Iterate over timeslot String getting dates
+//        while (dateScanner.hasNext()) {
+//            List<String> timesList = new ArrayList();
+//            Scanner timeScanner = new Scanner(dateScanner.next());
+//            timeScanner.useDelimiter(",");
+//
+//            // Create a Calendar object to serve as the HashMap Key
+//            String dateString = timeScanner.next();
+//            Scanner dateScan = new Scanner(dateString);
+//            dateScan.useDelimiter("-");
+//            Calendar calendarDate = Calendar.getInstance();
+//            
+//            // dateString format is YYYY-MM-DD
+//            calendarDate.set(dateScan.nextInt(), dateScan.nextInt(), dateScan.nextInt());
+//            
+//            // Store the times
+//            while (timeScanner.hasNext()) {
+//                timesList.add(timeScanner.next());
+//            }
+//
+//            // Map the calendarDate to the list of times
+//            timesByDateMap.put(calendarDate, timesList);
+//        }
+//    }
+    
+//    /**
+//     * Gets a Calendar object's string representation in the format YYYY-MM-DD
+//     * 
+//     * @param calendarDate the Calendar object to interpret
+//     * @return String the string representation of the Calendar object
+//     */
+//    public String getCalendarString(Calendar calendarDate) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(Integer.toString(calendarDate.YEAR));
+//        sb.append("-");
+//        sb.append(Integer.toString(calendarDate.MONTH));
+//        sb.append("-");
+//        sb.append(Integer.toString(calendarDate.DAY_OF_MONTH));
+//        
+//        return sb.toString();
+//    }
+
+    // -------------------
+    // Setters and getters
+    // -------------------
     public Integer getId() {
         return id;
     }
@@ -187,6 +253,18 @@ public class Meeting implements Serializable {
         this.ownerId = ownerId;
     }
 
+//    public HashMap<Calendar, List<String>> getTimesByDateMap() {
+//        if (timesByDateMap == null) {
+//            deserializeTimeslots();
+//        }
+//        
+//        return timesByDateMap;
+//    }
+//
+//    public void setTimesByDateMap(HashMap<Calendar, List<String>> timesByDateMap) {
+//        this.timesByDateMap = timesByDateMap;
+//    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -220,5 +298,13 @@ public class Meeting implements Serializable {
     public void setMeetingUsersList(List<MeetingUsers> meetingUsersList) {
         this.meetingUsersList = meetingUsersList;
     }
-    
+
+    public String getTimeslots() {
+        return timeslots;
+    }
+
+    public void setTimeslots(String timeslots) {
+        this.timeslots = timeslots;
+    }
+
 }

@@ -15,26 +15,29 @@ Copyright © 2017 Erin Kocis. All rights reserved.
         <h:head>
             <h:outputStylesheet library="css" name="meetingStyles.css" />
         </h:head>
-  
-        <div id="meetingTop" class="meetingWrapper" align="center">
+
+        <div id="meetingTop#{upcomingMeeting.id}" class="meetingWrapper" align="center">
             <!-- Upcoming Meeting box -->
             <div style="text-align:center">
-                <h2>Meeting Title</h2>
+                <h2>#{upcomingMeeting.topic}</h2>
             </div>
             <p>
                 July 17 at 7:00 AM
-                <span style="float:right; text-decoration:none;"><a href="#location">Burruss Hall</a></span>
+                <span style="float:right; text-decoration:none;">
+                    <a href="#location#{upcomingMeeting.id}">#{upcomingMeeting.address1} 
+                        <br />
+                        #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a></span>
             </p>            
             <p text-align="left">
-                Meeting Description...
+                #{upcomingMeeting.description}
             </p>
 
-            <p:commandButton widgetVar="seeMoreButton" value="See More" onclick="PF('moreInfoPanel').show(); initMap()" oncomplete="PF('seeMoreButton').disable()" styleClass="commandButton" />
-            
+            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+
             <br /><br />
 
             <!-- Response section: user indicates their availability date-wise -->
-            <p:panel visible="false" widgetVar="moreInfoPanel" styleClass="noBorderPanel" closable="true" >
+            <p:panel visible="false" widgetVar="moreInfoPanel#{upcomingMeeting.id}" styleClass="noBorderPanel" closable="true" >
 
                 <hr/>
                 <!-- Participants portion -->
@@ -42,14 +45,33 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <h2>Participants</h2>
                 </div>
                 <center>
-                    <h:panelGrid id="panel" columns="6" cellpadding="10" cellspacing="1">
-                        <h:graphicImage value="http://i92.photobucket.com/albums/l1/immortalje/icons/hp/hp23_ac4.png" width="100" height="100"/>
-                        <h:outputText value="Albus Dumbledore"/>
-                        <h:graphicImage value="http://d3n8a8pro7vhmx.cloudfront.net/eighthdayinstitute/pages/300/meta_images/original/Gandalf_with_Pipe_Square.jpg?1435585780" width="100" height="100"/>
-                        <h:outputText value="Gandalf"/>
-                        <h:graphicImage value="http://manta.cs.vt.edu/balci/Site/logo/OsmanBalci.jpg" width="100" height="100"/>
-                        <h:outputText value="Osman Balci"/>
-                    </h:panelGrid>
+                    <!-- Div that floats left in order to force #horizontalScrollArea
+                    to fill the content width up to #declineLine -->
+                    <div style="float: left;"></div>
+
+                    <!-- TODO make one button and get suggested dates from Meeting object.
+                    Also give user a hint that this area is scrollable.-->
+                    <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}" styleClass="horizontalScrollArea" mode="native">
+                        <!-- Get list of times for the selected meetingInvitation -->
+                        <ui:param name="participants" value="#{meetingController.getMeetingFacade().getParticipantList(upcomingMeeting)}" />
+
+                        <p:repeat value="#{participants}" offset="0" step="1" size="#{participants.size()}" var="participant" varStatus="status"> 
+                            <div class="item">
+                                <h:graphicImage class="profilePhoto" value="#{participant.getUserPhotoFilePath()}" />
+                                <h:outputText class="caption" value="#{participant.firstName} #{participant.lastName}" />
+                            </div>
+                        </p:repeat>
+                    </p:scrollPanel>
+                    <!--  
+                  <h:panelGrid id="panel#{upcomingMeeting.id}" columns="6" cellpadding="10" cellspacing="1">
+                      <h:graphicImage value="http://i92.photobucket.com/albums/l1/immortalje/icons/hp/hp23_ac4.png" width="100" height="100"/>
+                      <h:outputText value="Albus Dumbledore"/>
+                      <h:graphicImage value="http://d3n8a8pro7vhmx.cloudfront.net/eighthdayinstitute/pages/300/meta_images/original/Gandalf_with_Pipe_Square.jpg?1435585780" width="100" height="100"/>
+                      <h:outputText value="Gandalf"/>
+                      <h:graphicImage value="http://manta.cs.vt.edu/balci/Site/logo/OsmanBalci.jpg" width="100" height="100"/>
+                      <h:outputText value="Osman Balci"/>
+                  </h:panelGrid>
+                    -->
                 </center>
 
                 <hr/>
@@ -62,19 +84,22 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <hr/>
                 <!-- Location portion -->
                 <div style="text-align:center">
-                    <h2 id="location">Location</h2>
-                    100 Example Ave, Suite 208
+                    <h2 id="location#{upcomingMeeting.id}">Location</h2>
+                    #{upcomingMeeting.address1} 
+                    <br />
+                    #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}
                 </div>
 
                 <br />
 
                 <!-- Google Maps panel -->
-                <div id="map"></div>
+                <div id="map#{upcomingMeeting.id}" class="map"></div>
 
                 <script>
-                    function initMap() {
+                    function initMap(id) {
                         var uluru = {lat: -25.363, lng: 131.044};
-                        var map = new google.maps.Map(document.getElementById('map'), {
+                        var mapId = 'map' + id;
+                        var map = new google.maps.Map(document.getElementById(mapId), {
                             zoom: 4,
                             center: uluru
                         });
@@ -89,14 +114,9 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         });
                     }
                 </script>
-
-                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-
                 <!-- End Google Maps panel -->
 
-                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel').close()" oncomplete="PF('seeMoreButton').enable()" styleClass="commandButton"/>
-
-
+                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
 
             </p:panel>
         </div> <!-- #meetingWrapper -->
