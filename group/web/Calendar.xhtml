@@ -22,31 +22,30 @@ Copyright © 2017 Osman Balci. All rights reserved.
             <h:form>
                 <p:growl id="messages" showDetail="true" />
 
-                <h:panelGrid columnClasses="value">
-                    <!--                    <div align="right">
-                    
-                                            <p:schedule id="schedule" value="#{calendarManager.eventModel}" widgetVar="myschedule" timeZone="GMT+2" style="width:1000px">
-                    
-                                                <p:ajax event="dateSelect" listener="#{CalendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                                                <p:ajax event="eventSelect" listener="#{CalendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                                                <p:ajax event="eventMove" listener="#{CalendarManager.onEventMove}" update="messages" />
-                                                <p:ajax event="eventResize" listener="#{CalendarManager.onEventResize}" update="messages" />
-                    
-                                            </p:schedule>
-                                        </div>-->
+                <div align="center">
+                    <h:panelGrid columnClasses="value">
+                        <!--                    <div align="right">
+                        
+                                                <p:schedule id="schedule" value="#{calendarManager.eventModel}" widgetVar="myschedule" timeZone="GMT+2" style="width:1000px">
+                        
+                                                    <p:ajax event="dateSelect" listener="#{CalendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                                                    <p:ajax event="eventSelect" listener="#{CalendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                                                    <p:ajax event="eventMove" listener="#{CalendarManager.onEventMove}" update="messages" />
+                                                    <p:ajax event="eventResize" listener="#{CalendarManager.onEventResize}" update="messages" />
+                        
+                                                </p:schedule>
+                                            </div>-->
 
-                    <h3>Lazy Schedule</h3>
+                        <p:schedule value="#{calendarManager.getLazyEventModel(accountManager.selected)}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
 
-                    <p:schedule value="#{calendarManager.lazyEventModel}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
-
-                        <p:ajax event="dateSelect" listener="#{calendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                        <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                    </p:schedule>
-                </h:panelGrid>
-
+                            <p:ajax event="dateSelect" listener="#{calendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                            <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                        </p:schedule>
+                    </h:panelGrid>
+                </div>
 
             </h:form>
-            
+
 
             <ui:include src="MeetingDetails.xhtml"/>
         </ui:define>
