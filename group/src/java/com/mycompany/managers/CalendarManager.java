@@ -9,6 +9,8 @@ package com.mycompany.managers;
  *
  * @author Jeff
  */
+import com.mycompany.entityClasses.Meeting;
+import com.mycompany.entityClasses.User;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,16 +58,29 @@ public class CalendarManager implements Serializable {
         return eventModel;
     }
 
-    public ScheduleModel getLazyEventModel() {
+    public ScheduleModel getLazyEventModel(User user) {
+        System.out.print(user);
         if (lazyEventModel == null) {
             lazyEventModel = new LazyScheduleModel() {
 
                 @Override
                 public void loadEvents(Date start, Date end) {
-                    addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-                    addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-                    addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-                    addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+                    addEvent(new DefaultScheduleEvent("Cloud Meeting", previousDay8Pm(), previousDay11Pm()));
+                    addEvent(new DefaultScheduleEvent("Mobile Dev Group Meeting", today1Pm(), today6Pm()));
+                    addEvent(new DefaultScheduleEvent("Cool Kids Club", nextDay9Am(), nextDay11Am()));
+                    //addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+
+                    if (user.getMeetingCollection().isEmpty()) {
+                        System.out.print("no meetings");
+                    } else {
+                        int i = 1;
+                        for (Meeting m : user.getMeetingCollection()) {
+                            System.out.print(m.getDescription());
+                            System.out.print("loop meetings " + i);
+                            i++;
+                        }
+                    }
+
                 }
             };
         }
@@ -177,11 +192,6 @@ public class CalendarManager implements Serializable {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
         String time = localDateFormat.format(date);
         return time;
-    }
-
-    public void onDateSelect(SelectEvent selectEvent) {
-
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
