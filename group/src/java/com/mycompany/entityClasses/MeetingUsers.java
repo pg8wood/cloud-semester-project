@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "MeetingUsers.findByUserIdAndResponse", query = "SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response")
 })
 public class MeetingUsers implements Serializable {
+
+    @Size(max = 256)
+    @Column(name = "available_times")
+    private String availableTimes;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -110,6 +115,14 @@ public class MeetingUsers implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.entityClasses.MeetingUsers[ meetingUsersPK=" + meetingUsersPK + " ]";
+    }
+
+    public String getAvailableTimes() {
+        return availableTimes;
+    }
+
+    public void setAvailableTimes(String availableTimes) {
+        this.availableTimes = availableTimes;
     }
     
 }

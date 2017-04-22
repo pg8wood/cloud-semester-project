@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 
 @Named("meetingController")
 @SessionScoped
@@ -34,12 +35,18 @@ public class MeetingController implements Serializable {
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
 
-    private List<Meeting> items = null;
+    private List<Meeting> items;
+    private ArrayList<Date> timesForDay;
     private Meeting selected;
     private Date selectedDate;
+    private boolean isResponding;
 
     public MeetingController() {
+        items = null;
+        timesForDay = null;
+        selected = null;
         selectedDate = null;
+        isResponding = false;
     }
 
     public Meeting getSelected() {
@@ -140,14 +147,46 @@ public class MeetingController implements Serializable {
         return selectedDate;
     }
 
-    public void setSelectedDate(Date selectedDate) {
-        this.selectedDate = selectedDate;
+    public ArrayList<Date> getTimesForDay() {
+        return timesForDay;
+    }
 
+    public void setTimesForDay(ArrayList<Date> timesForDay) {
+        this.timesForDay = timesForDay;
+    }
+
+    public boolean isIsResponding() {
+        return isResponding;
+    }
+
+    public void setIsResponding(boolean isResponding) {
+        this.isResponding = isResponding;
+    }
+    
+    public boolean shouldHideTimeForMeeting(Meeting meeting) {
+        return meeting.equals(this.selected);
+    }
+
+    public String setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
+        this.selectedDate = selectedDate;
+        this.isResponding = true;
+        this.selected = selected;
+
+//        System.out.println("updating: " + toUpdate);
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        context.update(toUpdate + ":timePanel");
         if (selectedDate != null) {
             System.out.printf("Date set to %s", selectedDate.toString());
         } else {
             System.out.println("Date set to NULL!!!");
         }
+        
+        return "MyMeetings.xhtml?faces-redirect=true";
+       
+    }
+
+    public boolean shouldRenderRepeat() {
+        return selectedDate != null;
     }
 
     /**
@@ -187,41 +226,42 @@ public class MeetingController implements Serializable {
     }
 
     /**
-     * Gets the number of times associated with a particular date
+     * Gets the times associated with a particular date
      *
      * @param times the list of times to examine
      * @param day
      * @return
      */
-    public int getNumberOfTimesForDay(List<Date> times, Date day) {
+    public ArrayList<Date> getTimesForDay(List<Date> times, Date day) {
         int dateStartIndex = times.indexOf(day);
-        int numberOfTimes = 0;
+        ArrayList newTimesForDay = new ArrayList();
 
-        if (dateStartIndex >= 0) {
+        if (day != null && dateStartIndex >= 0) {
             for (int i = dateStartIndex; i < times.size(); i++) {
-//            try {
                 if (times.get(i).getYear() == day.getYear()
                         && times.get(i).getMonth() == day.getMonth()
                         && times.get(i).getDate() == day.getDate()) {
-                    numberOfTimes++;
-                    System.out.println(numberOfTimes);
+                    newTimesForDay.add(times.get(i));
                 } else {
                     break;
                 }
-//            } catch (Exception e) {
-//                System.out.printf("\n\n\nFailed at i = %d, size = %d", i, times.size());
-//            }
             }
         }
 
         if (day == null) {
             System.out.println("\n\n\nWARNING: DAY IS NULL");
         } else {
-            System.out.printf("\n\nNumber of times for day %d in list: ", day.getDate());
+
+            if (newTimesForDay.size() > 0) {
+                timesForDay = newTimesForDay;
+                        
+            }
+   
+            System.out.printf("\n\nNumber of times for day %s in list: %d", day.toString(), timesForDay.size());
             System.out.println(times.toString());
         }
 
-        return numberOfTimes;
+        return timesForDay;
     }
 
     /**

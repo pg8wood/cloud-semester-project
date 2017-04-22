@@ -13,6 +13,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
     <!-- This page is constructed based on the siteTemplate -->
     <ui:composition template="template/siteTemplate.xhtml">
+
         <ui:define name="title">
             <!-- Set the page title -->
             <h:outputText value="My Meetings"></h:outputText>
@@ -45,8 +46,11 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <ui:include src="meetings/UpcomingMeeting.xhtml"/>
                     <br />
                 </p:repeat>
+                
+                <!-- Script for Google Maps -->
+                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
+
             </div>
-            <!--</div>-->
 
         </ui:define>
     </ui:composition>

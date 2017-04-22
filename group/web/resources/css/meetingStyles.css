@@ -176,10 +176,13 @@ End styles for On/Off switch
 }
 
 /* Styled column containing the On/Off switches */
-.columnOne {
+.columnOne * {
     /*border: none;*/
-    vertical-align: top;
+    vertical-align: inherit;
     /*width: 60px;*/
+}
+.onOffLabel {
+   font-size: 1em;
 }
 
 .columnTwo {
@@ -210,7 +213,7 @@ End styles for On/Off switch
 .ui-panel .newDatePanel {
     display: inline-block;
     background-color: #a4acba; 
-    
+
     /* Match panel margins with .calendarLink margins */
     margin-left: -17px;
     margin-right: -17px;
@@ -226,12 +229,34 @@ div .ui-panel {
     visibility: hidden;
 }
 
-#map {
-   width: 100%;
-   height: 400px;
-   background-color: grey;
- }
- 
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.caption {
+    display: block;
+}
+
+/* User profile photos for participants */
+.profilePhoto {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 25px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.map {
+    width: 100%;
+    height: 400px;
+    background-color: grey;
+}
+
 
 
 

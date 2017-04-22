@@ -6,6 +6,8 @@
 package com.mycompany.sessionBeans;
 
 import com.mycompany.entityClasses.Meeting;
+import com.mycompany.entityClasses.MeetingUsers;
+import com.mycompany.entityClasses.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
     @PersistenceContext(unitName = "groupPU")
     private EntityManager em;
+    private Date selectedDate;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -126,6 +129,31 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     }
     
     /**
+     * Gets a String representation of the meeting's time 
+     * 
+     * @param meetingDate the date of the meeting to examine
+     * @return String the meeting's time in String format
+     */
+    public String getMeetingString(Date meetingDate) {
+        StringBuilder sb = new StringBuilder();
+        
+       if (meetingDate.getHours() > 12) {
+           sb.append(Integer.toString(meetingDate.getHours()))
+                   .append(":")
+                   .append(String.format("%02d", meetingDate.getMinutes()))
+                   .append(" AM");
+       }
+       else {
+           sb.append(Integer.toString(meetingDate.getHours() % 12))
+                   .append(":")
+                   .append(String.format("%02d", meetingDate.getMinutes()))
+                   .append(" PM");
+       }
+       
+       return sb.toString();
+    }
+    
+    /**
      * Gets all the available timeslots for a given meeting.
      * 
      * @param meeting The meeting to examine
@@ -135,6 +163,23 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         deserializeTimeslots(meeting);
         return (ArrayList<Date>)dateList;
     }
+    
+    /**
+     * Gets all the participants for a given meeting.
+     * 
+     * @param meeting The meeting to examine
+     * @return ArrayList<User> the list of users participating
+     */
+    public ArrayList<User> getParticipantList(Meeting meeting){
+        int meetingId = meeting.getId();
+        List<MeetingUsers> meetingUsers = (List<MeetingUsers>)getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
+        ArrayList<User> participantList = new ArrayList<User>();
+        for (MeetingUsers x : meetingUsers)
+        {
+            participantList.add(x.getUser());
+        }
+        return participantList;
+    }
 
     public List<Date> getDateList() {
         return dateList;
@@ -143,6 +188,16 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     public void setDateList(List<Date> dateList) {
         this.dateList = dateList;
     }
+
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+    
+    
 
     /**
      * Gets a specified meeting that a user is a part of

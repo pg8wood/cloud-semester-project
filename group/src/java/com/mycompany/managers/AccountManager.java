@@ -779,6 +779,43 @@ public class AccountManager implements Serializable {
         
         return relativePhotoFilePath;
     }
+    
+    public String userPhotoSpecificUser(int userId) {
+
+        List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(userId);
+
+        if (photoList.isEmpty()) {
+            /*
+            No user photo exists. Return defaultUserPhoto.png 
+            in CloudStorage/PhotoStorage.
+            */
+            return Constants.DEFAULT_PHOTO_RELATIVE_PATH;
+        }
+
+        /*
+        photoList.get(0) returns the object reference of the first Photo object in the list.
+        getThumbnailFileName() message is sent to that Photo object to retrieve its
+        thumbnail image file name, e.g., 5_thumbnail.jpeg
+         */
+        String thumbnailFileName = photoList.get(0).getThumbnailFileName();
+
+        /*
+        In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
+        Alternate Document Root with the following statement:
+        
+        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
+        
+        in Constants.java file, we defined the relative photo file path as
+        
+        public static final String PHOTOS_RELATIVE_PATH = "CloudStorage/PhotoStorage/";
+        
+        Thus, JSF knows that 'CloudStorage/' is the document root directory.
+        */
+        
+        String relativePhotoFilePath = Constants.PHOTOS_RELATIVE_PATH + thumbnailFileName;
+        
+        return relativePhotoFilePath;
+    }
 
     /*
     Delete both uploaded and thumbnail photo files that belong to the User

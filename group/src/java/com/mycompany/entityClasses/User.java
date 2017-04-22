@@ -1,12 +1,17 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Erin Kocis on 2017.04.17  * 
+ * Copyright © 2017 Erin Kocis. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
+import com.mycompany.managers.Constants;
+import com.mycompany.sessionBeans.UserPhotoFacade;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Balci
+ * @author Erin
  */
 @Entity
 @Table(name = "User")
@@ -51,6 +56,9 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 
 public class User implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<MeetingUsers> meetingUsersCollection;
 
     @JoinTable(name = "Meeting_Users", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
@@ -148,6 +156,12 @@ public class User implements Serializable {
     @Size(min = 1, max = 128)
     @Column(name = "email")
     private String email;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "userPhoto")
+    private String userPhoto;
 
     @OneToMany(mappedBy = "userId")
     private Collection<UserPhoto> userPhotoCollection;
@@ -162,10 +176,12 @@ public class User implements Serializable {
     ===============================================================
      */
     public User() {
+        this.userPhoto = "defaultUserPhoto.png";
     }
 
     public User(Integer id) {
         this.id = id;
+        this.userPhoto = "defaultUserPhoto.png";
     }
 
     public User(Integer id, String username, String password, String firstName, String lastName, String address1, String city, String state, String zipcode, int securityQuestion, String securityAnswer, String email) {
@@ -181,6 +197,7 @@ public class User implements Serializable {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
         this.email = email;
+        this.userPhoto = "defaultUserPhoto.png";
     }
 
     /*
@@ -300,6 +317,19 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+    
+    public String getUserPhotoFilePath()
+    {
+        return Constants.PHOTOS_RELATIVE_PATH + this.userPhoto;
+    }
 
     // The @XmlTransient annotation is used to resolve potential name collisions
     // between a JavaBean property name and a field name.
@@ -337,10 +367,12 @@ public class User implements Serializable {
     }
 
     /**
-     * Checks if the User object identified by 'object' is the same as the User object identified by 'id'
+     * Checks if the User object identified by 'object' is the same as the User
+     * object identified by 'id'
      *
      * @param object The User object identified by 'object'
-     * @return True if the User 'object' and 'id' are the same; otherwise, return False
+     * @return True if the User 'object' and 'id' are the same; otherwise,
+     * return False
      */
     @Override
     public boolean equals(Object object) {
@@ -381,6 +413,15 @@ public class User implements Serializable {
 
     public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
         this.meetingCollection1 = meetingCollection1;
+    }
+
+    @XmlTransient
+    public Collection<MeetingUsers> getMeetingUsersCollection() {
+        return meetingUsersCollection;
+    }
+
+    public void setMeetingUsersCollection(Collection<MeetingUsers> meetingUsersCollection) {
+        this.meetingUsersCollection = meetingUsersCollection;
     }
 
 }
