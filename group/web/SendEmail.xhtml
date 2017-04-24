@@ -71,10 +71,15 @@
 
                     Copied from http://www.primefaces.org/showcase/ui/input/editor.xhtml 
                     together with EditorView.java file.
-                    -->
-
+                    
+                    TODO delete :
                     <p:editor id="editor" widgetVar="editorWidget" value="#{editorView.text}" 
                               width="600" height="350" />
+                    -->
+                    
+                    <p:editor id="editor" widgetVar="editorWidget" value="#{accountManager.selected.prepareEmailBody(0)}" 
+                              width="600" height="350" />
+
                     <br />
 
                     <p:commandButton value="Send Email" icon="ui-icon-mail-closed" ajax="false"

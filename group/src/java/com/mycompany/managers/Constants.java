@@ -22,15 +22,21 @@ public final class Constants {
         Therefore, we use the following two external directories 
         for the storage and retrieval of user's files.
     
-     */
-    public static final String FILES_ABSOLUTE_PATH = "/home/cloudsd/Gatewood/CloudStorage/FileStorage/";  
-    public static final String PHOTOS_ABSOLUTE_PATH = "/home/cloudsd/Gatewood/CloudStorage/PhotoStorage/";
-
-/*
-Windows OS Users should use the following: 
+    Windows OS Users should use the following: 
     public static final String FILES_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\FileStorage\\";  
     public static final String PHOTOS_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\PhotoStorage\\";
-*/
+     */
+    public static final String FILES_ABSOLUTE_PATH = "/home/cloudsd/Gatewood/CloudStorage/FileStorage/";
+    public static final String PHOTOS_ABSOLUTE_PATH = "/home/cloudsd/Gatewood/CloudStorage/PhotoStorage/";
+
+    /*
+    URL to the sign in page
+     */
+    public static final String SIGNIN_URL = "http://localhost:8080/group/SignIn.xhtml";
+    /*
+    URL to the image in the email
+     */
+    public static final String EMAIL_IMAGE = "<img src=\"https://drive.google.com/a/vt.edu/file/d/0B97pytL_OloUOU1Pb3Z5VnJDS28/view?usp=sharing\" style=\"width:200px;height:200px;\">";
 
     /*
     In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
@@ -48,13 +54,12 @@ Windows OS Users should use the following:
     public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
     public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
 
-    
-/*
+    /*
 Windows OS Users should use the following: 
 The same as above. The relative paths are specified in the same way.
-*/
+     */
 
-    /* Temporary filename */
+ /* Temporary filename */
     public static final String TEMP_FILE = "tmp_file";
 
     /* =========== Our Design Decision ===========

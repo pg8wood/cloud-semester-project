@@ -31,7 +31,9 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
             </div>
             <script src="resources/js/navbarScroller.js"></script>
 
+
             <div class="main" align="center">
+
                 <h1>Invitations</h1>
                 <!-- TODO figure out a way to represent if a user has accepted a meeting invitation or not -->
                 <p:repeat value="#{meetingController.getMeetingInvitations(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getMeetingInvitations(accountManager.selected).size()}" var="meetingInvitation" varStatus="status"> 
@@ -46,7 +48,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <ui:include src="meetings/UpcomingMeeting.xhtml"/>
                     <br />
                 </p:repeat>
-                
+
                 <!-- Script for Google Maps -->
                 <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
 

@@ -116,7 +116,7 @@ public class EmailSender {
     public void sendEmail() throws AddressException, MessagingException {
 
         // Obtain the email message body from the PrimeFaces HTML editor
-        emailBody = editorView.getText();
+        //emailBody = editorView.getText();
 
 
         // Set Email Server Properties

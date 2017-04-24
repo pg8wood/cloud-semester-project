@@ -122,6 +122,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     &nbsp;&nbsp;
                     <p:commandButton value="I can't make it" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')" styleClass="commandButton"></p:commandButton>
 
+                    <p:commandButton value="Send Email" icon="ui-icon-mail-closed" ajax="false"
+                                     type="submit" action="#{accountManager.selected.prepareEmail(0)}" />
 
                     <!-- Hide the invitation after the user has submitted -->
                     <script type="text/javascript">
