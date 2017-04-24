@@ -102,6 +102,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                         <!-- DOWNLOAD FILE button -->
                                         <p:commandButton value="Download File" ajax="false" 
                                                          icon="ui-icon-arrowthick-1-s" 
+                                                         onclick="PF('fileDlg#{attachment.id}').hide()"
                                                          styleClass="commandButton" >
 
                                             <p:fileDownload value="#{fileDownloadManager.file}" />
