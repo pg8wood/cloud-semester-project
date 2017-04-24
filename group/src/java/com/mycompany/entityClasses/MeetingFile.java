@@ -117,7 +117,7 @@ public class MeetingFile implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.entityClasses.MeetingFile[ id=" + id + " ]";
+        return "com.mycompany.entityClasses.MeetingFile[ id=" + id + "  meetingId=" + meetingId +"]";
     }
     
 }

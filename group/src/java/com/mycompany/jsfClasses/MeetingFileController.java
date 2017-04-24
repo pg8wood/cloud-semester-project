@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.component.graphicimage.GraphicImage;
 
 @Named("meetingFileController")
 @SessionScoped
@@ -388,9 +389,69 @@ public class MeetingFileController implements Serializable {
     Return Selected File's Relative Path
     ====================================
      */
-    public String selectedFileRelativePath() {
-        return Constants.FILES_RELATIVE_PATH + selected.getFilename();
+    public String getFileRelativePath(MeetingFile attachment) {
+        if (attachment != null) {
+            return Constants.FILES_RELATIVE_PATH + attachment.getFilename();
+        }
+        return "";
     }
+
+    /*
+    ====================================
+    Return icon name for file extension
+    ====================================
+     */
+    public String getFaIconClass(MeetingFile file) {
+        selected = file;
+        
+        if (selected == null) {
+            return "";
+        }
+
+        switch (extensionOfSelectedFileInCaps()) {
+            case "JPG":
+            case "JPEG":
+            case "PNG":
+            case "GIF":
+                // Selected file is an image file
+                return "fa fa-file-image-o";
+            case "PDF":
+                return "fa fa-file-pdf-o";
+            case "MP4":
+            case "MOV":
+            case "M4V":
+                return "fa fa-file-movie-o";
+            case "ZIP":
+                return "fa fa-file-zip-o";
+            default:
+                return "fa fa-file-o";
+        }
+
+    }
+    
+      /*
+    ===================================
+    Return true if file is a video file
+    ===================================
+     */
+    public boolean isVideo() {
+
+        if (selected == null) {
+            return false;
+        }
+
+        switch (extensionOfSelectedFileInCaps()) {
+            case "MP4":
+            case "MOV":
+            case "M4V":
+                return true;
+            default:
+                return false;
+        }
+
+    }
+    
+    
 
     /*
     =============================================
@@ -398,6 +459,10 @@ public class MeetingFileController implements Serializable {
     =============================================
      */
     public boolean isImage() {
+        
+        if (selected == null) {
+            return false;
+        }
 
         fileTypeMessage = "";
 
@@ -419,6 +484,9 @@ public class MeetingFileController implements Serializable {
     ========================================
      */
     public boolean isViewable() {
+        if (selected == null) {
+            return false;
+        }
 
         switch (extensionOfSelectedFileInCaps()) {
             case "CSS":
@@ -443,8 +511,24 @@ public class MeetingFileController implements Serializable {
     =================================================
      */
     public boolean isMP4Video() {
+        if (selected == null) {
+            return false;
+        }
 
         return extensionOfSelectedFileInCaps().equals("MP4");
+    }
+    
+    /*
+    =====================================================================
+    Return True if Selected File is another type of file not handled here
+    =====================================================================
+     */
+    public boolean isOtherFileType() {
+        if (selected == null) {
+            return false;
+        }
+        
+        return !isVideo() && !isViewable() &&! isImage();
     }
 
     /*
@@ -453,6 +537,10 @@ public class MeetingFileController implements Serializable {
     ========================================================
      */
     public String extensionOfSelectedFileInCaps() {
+        
+        if (selected == null) {
+            return "";
+        }
 
         // Obtain the selected filename
         String meetingFileName = selected.getFilename();
@@ -462,6 +550,29 @@ public class MeetingFileController implements Serializable {
 
         // Convert file extension to be in capital letters
         String fileExtensionInCaps = fileExtension.toUpperCase();
+
+        return fileExtensionInCaps;
+    }
+    
+    /*
+    ==========================================================
+    Return Extension of the Selected File in Lowercase Letters
+    ==========================================================
+     */
+    public String extensionOfSelectedFileInLower() {
+        
+        if (selected == null) {
+            return "";
+        }
+
+        // Obtain the selected filename
+        String meetingFileName = selected.getFilename();
+
+        // Extract the file extension from the filename
+        String fileExtension = meetingFileName.substring(meetingFileName.lastIndexOf(".") + 1);
+
+        // Convert file extension to be in capital letters
+        String fileExtensionInCaps = fileExtension.toLowerCase();
 
         return fileExtensionInCaps;
     }

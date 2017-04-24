@@ -6,6 +6,7 @@ import com.mycompany.entityClasses.User;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
 import com.mycompany.sessionBeans.MeetingFacade;
+import com.mycompany.sessionBeans.MeetingFileFacade;
 import com.mycompany.sessionBeans.MeetingUsersFacade;
 
 import java.io.Serializable;
@@ -34,6 +35,9 @@ public class MeetingController implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
+    
+    @EJB
+    private com.mycompany.sessionBeans.MeetingFileFacade meetingFileFacade;
 
     private List<Meeting> items;
     private ArrayList<Date> timesForDay;
@@ -69,6 +73,10 @@ public class MeetingController implements Serializable {
 
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
+    }
+    
+    public MeetingFileFacade getMeetingFileFacade() {
+        return meetingFileFacade;
     }
 
     public Meeting prepareCreate() {

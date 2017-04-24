@@ -48,6 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 public class Meeting implements Serializable {
 
+    @OneToMany(mappedBy = "meetingId")
+    private Collection<MeetingFile> meetingFileCollection;
+
     @Size(max = 256)
     @Column(name = "timeslots")
     private String timeslots;
@@ -305,6 +308,15 @@ public class Meeting implements Serializable {
 
     public void setTimeslots(String timeslots) {
         this.timeslots = timeslots;
+    }
+
+    @XmlTransient
+    public Collection<MeetingFile> getMeetingFileCollection() {
+        return meetingFileCollection;
+    }
+
+    public void setMeetingFileCollection(Collection<MeetingFile> meetingFileCollection) {
+        this.meetingFileCollection = meetingFileCollection;
     }
 
 }

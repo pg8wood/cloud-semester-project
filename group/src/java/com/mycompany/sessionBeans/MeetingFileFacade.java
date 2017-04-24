@@ -37,6 +37,12 @@ public class MeetingFileFacade extends AbstractFacade<MeetingFile> {
         dateList = new ArrayList();
     }
 
+    @Override
+    public void create(MeetingFile m) {
+        System.out.print("meeting: " + m.toString());
+        super.create(m);
+    }
+
     // ----------------
     // Instance methods 
     // ----------------
@@ -47,7 +53,16 @@ public class MeetingFileFacade extends AbstractFacade<MeetingFile> {
      * @return List<MeetingFile> the attachments for the given meeting
      */
     public List<MeetingFile> getMeetingFilesByMeeting(Meeting meeting) {
-        return ((List<MeetingFile>) getEntityManager().createQuery("SELECT m FROM MeetingFile m WHERE m.meetingId = :meetingId").setParameter("meetingId", meeting).getResultList());
+        if (meeting != null) {
+            System.out.println("searching for: " + meeting.toString());
+            System.out.println("\n\n" + getEntityManager().createNamedQuery("MeetingFile.findAll").getResultList().toString());
+            List resultList = ((List<MeetingFile>) getEntityManager().createQuery("SELECT m FROM MeetingFile m WHERE m.meetingId.id = :meeting").setParameter("meeting", meeting.getId()).getResultList());
+            System.out.println("results: " + resultList.toString());
+            
+            return resultList;
+        }
+        
+        return new ArrayList();
     }
 
     public MeetingFile getMeetingFileById(int fileId) {
