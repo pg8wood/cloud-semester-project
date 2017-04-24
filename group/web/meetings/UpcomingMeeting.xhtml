@@ -70,7 +70,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <h:form enctype="multipart/form-data">
                         <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}_2" styleClass="horizontalScrollArea" mode="native">
                             <p:repeat value="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting).size()}" var="attachment" varStatus="status">  
-                                <p:commandLink action="#{meetingFileController.setSelected(attachment)}" ajax="true" oncomplete="PF('fileDlg#{attachment.id}').show()"  >
+                                <p:commandLink action="#{meetingFileController.setSelected(attachment)}" ajax="true" class="commandLinkImage" oncomplete="PF('fileDlg#{attachment.id}').show()"  >
                                     <div class="uploadedFile item" >
                                         <i class="#{meetingFileController.getFaIconClass(attachment)} profilePhoto" /> 
                                         <h:outputText class="caption" value="#{attachment.filename}" />
@@ -85,7 +85,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                                     <!-- iframe shown if the content can be viewed -->
                                     <p:outputPanel rendered="#{meetingFileController.isViewable()}">
-                                        <iframe src="#{meetingFileController.getFileRelativePath(attachment)}" width="600" height="400" scrolling="yes"></iframe>
+                                        <iframe src="#{meetingFileController.getFileRelativePath(attachment)}#page=1&amp;zoom=85" width="800" height="500" scrolling="yes"></iframe>
                                     </p:outputPanel>
 
                                     <!-- Video panel shown if the file is a video -->
@@ -125,7 +125,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
                                          ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
 
-                        <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
+                        <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" 
+                                 widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
                             <div align="center">
                                 <p:fileUpload  fileUploadListener="#{fileUploadManager.handleFileUpload}" multiple="true" 
                                                mode="advanced" sizeLimit="10000000" fileLimit="5"

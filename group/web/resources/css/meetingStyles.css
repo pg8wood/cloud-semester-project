@@ -240,6 +240,11 @@ div.item {
     text-overflow: ellipsis;
 }
 
+/* Remove tiny underline inherited from a:hover */
+.commandLinkImage:hover {
+    text-decoration: none;
+}
+
 /* Styles for modal dialog */ 
 .ui-dialog {
     width: auto !important;
