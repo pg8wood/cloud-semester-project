@@ -32,15 +32,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
             </div>
 
-            <!--CHECK IF THE USER IS THE OWNER OF THE MEETING-->
-<!--            <c:if test="#{upcomingMeeting.isOwner(accountManager.selected.id) == true}">
-                <p>TRUE This account ID is #{accountManager.selected.id}</p>
-                <p> TRUE The owner ID is #{upcomingMeeting.getRealOwnerId()}</p>
-            </c:if>
-            <c:if test="#{upcomingMeeting.isOwner(accountManager.selected.id) == false}">
-                <p>FALSE This account ID is #{accountManager.selected.id}</p>
-                <p>FUCK The owner ID is #{upcomingMeeting.getRealOwnerId()}</p>
-            </c:if>-->
+
 
 <!--            <p>Total invited #{upcomingMeeting.getUserCollection().size()}</p>
             <p>When people can:   #{meetingController.getAllAvailableTimes(upcomingMeeting)}</p>
@@ -97,15 +89,23 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                 </time>
                                 <br></br>
                                 <div>
-                                    
+
                                     <h:outputText value="#{timeslot.getHours()}:#{timeslot.getMinutes()}" style="font-weight:bolder"/>
                                     <h:outputText rendered="#{timeslot.getMinutes() == 0}" value="0" style="font-weight:bolder"/>
                                     <br></br>
                                     <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
                                 </div>
                             </p:commandLink>
-                            
+
                         </p:repeat>
+                        <div>
+
+                            <h:outputText value="Total Number Invited: #{upcomingMeeting.getUserCollection().size()}" style="font-weight:bolder"/>
+                            <br></br>
+                            <h:outputText value="Yet To Respond: #{meetingController.getNotResponded(upcomingMeeting).size()}" style="font-weight:bolder"/>
+                        </div>
+
+
                     </p:scrollPanel>
 
                 </h:form>
