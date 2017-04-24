@@ -19,6 +19,7 @@ div .horizontalScrollArea {
     background-color: #a4acba;
 }
 
+
 /* Style to build Calendar icon */
 .calendarLink {
     text-decoration: none;
@@ -84,7 +85,7 @@ time.icon span
     text-decoration: none;
 }
 
-.declineLink i {
+.declineLink i, .uploadedFile i {
     font-size: 7em; /* icon size */
     /*float: right;*/ 
     display: inline-block;
@@ -182,7 +183,7 @@ End styles for On/Off switch
     /*width: 60px;*/
 }
 .onOffLabel {
-   font-size: 1em;
+    font-size: 1em;
 }
 
 .columnTwo {
@@ -234,10 +235,56 @@ div.item {
     display: inline-block;
     text-align: center;
     width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
+/* Remove tiny underline inherited from a:hover */
+.commandLinkImage:hover {
+    text-decoration: none;
+}
+
+/* Styles for modal dialog */ 
+.ui-dialog {
+    width: auto !important;
+    height: auto !important;
+}
+
+.fileDlg {
+    background-image: none !important;
+}
+
+.fileDlg .ui-dialog-titlebar {
+    background: #83be8b !important;
+}
+
+.ui-dialog {
+    background-image: none;
+    background-color: #DAECDC;
+}
+
+/* End styles for modal dialog */
+
+/* Prevent captions from overflowing their parent containers */
 .caption {
     display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Override file upload styles */
+.styledFileUpload .ui-widget-header {
+    background:  #4f4f4f !important;
+    border: none;
+}
+.styledFileUpload .ui-fileupload-content {
+    background: #a3acbb !important;  
+    border-left: 5px dashed #4f4f4f;
+    border-bottom: 5px dashed #4f4f4f;
+    border-right: 5px dashed #4f4f4f;
+    border-top: none;
 }
 
 /* User profile photos for participants */
@@ -251,13 +298,25 @@ div.item {
     background-size: cover;
 }
 
+/* Google Map and map overlay styles */
+.mapOverlay {
+   background:transparent; 
+   position:relative; 
+   width:100%;
+   height:400px; /* your iframe height */
+   top:400px;  /* your iframe height */
+   margin-top:-400px;  /* your iframe height */
+   z-index: 10;
+}
+
+.noPointerEvents {
+    pointer-events: none;
+}
+
 .map {
     width: 100%;
     height: 400px;
     background-color: grey;
 }
 
-
-
-
-
+/* End Google Map and map overlay styles */

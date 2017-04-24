@@ -1,15 +1,15 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Patrick Gatewood on 2017.04.19  * 
+ * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
  */
 package com.mycompany.managers;
 
-import com.mycompany.entityClasses.User;
-import com.mycompany.entityClasses.UserFile;
-import com.mycompany.sessionBeans.UserFacade;
-import com.mycompany.sessionBeans.UserFileFacade;
+import com.mycompany.entityClasses.Meeting;
+import com.mycompany.entityClasses.MeetingFile;
+import com.mycompany.sessionBeans.MeetingFacade;
+import com.mycompany.sessionBeans.MeetingFileFacade;
 
-import com.mycompany.jsfClasses.UserFileController;
+import com.mycompany.jsfClasses.MeetingFileController;
 import javax.inject.Inject;
 
 import java.io.File;
@@ -28,10 +28,7 @@ import javax.inject.Named;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.event.FileUploadEvent;
 
-/**
- *
- * @author Balci
- */
+
 @Named(value = "fileUploadManager")
 @SessionScoped
 /**
@@ -48,34 +45,37 @@ public class FileUploadManager implements Serializable {
     private UploadedFile uploadedFile;
 
     /*
-    The instance variable 'userFacade' is annotated with the @EJB annotation.
+    The instance variable 'meetingFacade' is annotated with the @EJB annotation.
     The @EJB annotation directs the EJB Container (of the GlassFish AS) to inject (store) the object reference
-    of the UserFacade object, after it is instantiated at runtime, into the instance variable 'userFacade'.
+    of the MeetingFacade object, after it is instantiated at runtime, into the instance variable 'meetingFacade'.
      */
     @EJB
-    private UserFacade userFacade;
+    private MeetingFacade meetingFacade;
 
     /*
-    The instance variable 'userFileFacade' is annotated with the @EJB annotation.
+    The instance variable 'meetingFileFacade' is annotated with the @EJB annotation.
     The @EJB annotation directs the EJB Container (of the GlassFish AS) to inject (store) the object reference 
-    of the UserFileFacade object, after it is instantiated at runtime, into the instance variable 'userFileFacade'.
+    of the MeetingFileFacade object, after it is instantiated at runtime, into the instance variable 'meetingFileFacade'.
      */
     @EJB
-    private UserFileFacade userFileFacade;
+    private MeetingFileFacade meetingFileFacade;
 
     /*
-    The instance variable 'userFileController' is annotated with the @Inject annotation.
+    The instance variable 'meetingFileController' is annotated with the @Inject annotation.
     The @Inject annotation directs the JavaServer Faces (JSF) CDI Container to inject (store) the object reference 
-    of the UserFileController object, after it is instantiated at runtime, into the instance variable 'userFileController'.
+    of the MeetingFileController object, after it is instantiated at runtime, into the instance variable 'meetingFileController'.
     
-    We can do this because we annotated the UserFileController class with @Named to indicate
-    that the CDI container will manage the objects instantiated from the UserFileController class.
+    We can do this because we annotated the MeetingFileController class with @Named to indicate
+    that the CDI container will manage the objects instantiated from the MeetingFileController class.
      */
     @Inject
-    private UserFileController userFileController;
+    private MeetingFileController meetingFileController;
 
     // Resulting FacesMessage produced
     FacesMessage resultMsg;
+    
+    // Selected Meeting 
+    private Meeting selectedMeeting;
 
     /*
     =========================
@@ -92,17 +92,27 @@ public class FileUploadManager implements Serializable {
         this.uploadedFile = uploadedFile;
     }
 
-    public UserFacade getUserFacade() {
-        return userFacade;
+    public MeetingFacade getMeetingFacade() {
+        return meetingFacade;
     }
 
-    public UserFileFacade getUserFileFacade() {
-        return userFileFacade;
+    public MeetingFileFacade getMeetingFileFacade() {
+        return meetingFileFacade;
     }
 
-    public UserFileController getUserFileController() {
-        return userFileController;
+    public MeetingFileController getMeetingFileController() {
+        return meetingFileController;
     }
+
+    public Meeting getSelectedMeeting() {
+        return selectedMeeting;
+    }
+
+    public void setSelectedMeeting(Meeting selected) {
+        this.selectedMeeting = selected;
+    }
+    
+    
 
     /*
     ================
@@ -110,19 +120,22 @@ public class FileUploadManager implements Serializable {
     ================
      */
     public void handleFileUpload(FileUploadEvent event) throws IOException {
-
+        
+        System.out.println("Trying file upload");
+        
         try {
-            String user_name = (String) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSessionMap().get("username");
-
-            User user = getUserFacade().findByUsername(user_name);
+            Meeting meeting = selectedMeeting;
+            
+            System.out.println("meeting: " + selectedMeeting.toString());
 
             /*
-            To associate the file to the user, record "userId_filename" in the database.
-            Since each file has its own primary key (unique id), the user can upload
+            To associate the file to the meeting, record "meetingId_filename" in the database.
+            Since each file has its own primary key (unique id), the meeting can upload
             multiple files with the same name.
              */
-            String userId_filename = user.getId() + "_" + event.getFile().getFileName();
+            String meetingId_filename = meeting.getId() + "_" + event.getFile().getFileName();
+            
+            System.out.println("filename: " + meetingId_filename);
 
             /*
             "The try-with-resources statement is a try statement that declares one or more resources. 
@@ -133,53 +146,57 @@ public class FileUploadManager implements Serializable {
             try (InputStream inputStream = event.getFile().getInputstream();) {
 
                 // The method inputStreamToFile given below writes the uploaded file into the CloudStorage/FileStorage directory.
-                inputStreamToFile(inputStream, userId_filename);
+                inputStreamToFile(inputStream, meetingId_filename);
                 inputStream.close();
             }
 
             /*
-            Create a new UserFile object with attibutes: (See UserFile table definition inputStream DB)
-                <> id = auto generated as the unique Primary key for the user file object
-                <> filename = userId_filename
-                <> user_id = user
+            Create a new MeetingFile object with attibutes: (See MeetingFile table definition inputStream DB)
+                <> id = auto generated as the unique Primary key for the meeting file object
+                <> filename = meetingId_filename
+                <> meeting_id = meeting
              */
-            UserFile newUserFile = new UserFile(userId_filename, user);
+            MeetingFile newMeetingFile = new MeetingFile(meetingId_filename, meeting);
 
             /*
             ==============================================================
-            If the userId_filename was used before, delete the earlier file.
+            If the meetingId_filename was used before, delete the earlier file.
             ==============================================================
              */
-            List<UserFile> filesFound = getUserFileFacade().findByFilename(userId_filename);
+            List<MeetingFile> filesFound = getMeetingFileFacade().getMeetingFilesByFilename(meetingId_filename);
 
             /*
-            If the userId_filename already exists in the database, 
+            If the meetingId_filename already exists in the database, 
             the filesFound List will not be empty.
              */
             if (!filesFound.isEmpty()) {
 
                 // Remove the file with the same name from the database
-                getUserFileFacade().remove(filesFound.get(0));
+                getMeetingFileFacade().remove(filesFound.get(0));
             }
 
             //---------------------------------------------------------------
             //
-            // Create the new UserFile entity (row) in the CloudDriveDB
-            getUserFileFacade().create(newUserFile);
+            // Create the new MeetingFile entity (row) in the CloudDriveDB
+            System.out.println("creating meetingFile");
+            getMeetingFileFacade().create(newMeetingFile);
+            
 
             // This sets the necessary flag to ensure the messages are preserved.
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 
-            getUserFileController().refreshFileList();
+            getMeetingFileController().refreshFileList();
 
             resultMsg = new FacesMessage("File(s) Uploaded Successfully!");
             FacesContext.getCurrentInstance().addMessage(null, resultMsg);
 
-            // After successful upload, show the UserFiles.xhtml facelets page
-            FacesContext.getCurrentInstance().getExternalContext().redirect("UserFiles.xhtml");
+            // After successful upload, show the MeetingFiles.xhtml facelets page
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("MeetingFiles.xhtml");
 
         } catch (IOException e) {
             resultMsg = new FacesMessage("Something went wrong during file upload! See: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
+            
             FacesContext.getCurrentInstance().addMessage(null, resultMsg);
         }
 
@@ -191,12 +208,12 @@ public class FileUploadManager implements Serializable {
         return "UploadFile?faces-redirect=true";
     }
 
-    public void upload() throws IOException {
-
-        if (getUploadedFile().getSize() != 0) {
-            copyFile(getUploadedFile());
-        }
-    }
+//    public void upload() throws IOException {
+//
+//        if (getUploadedFile().getSize() != 0) {
+//            copyFile(getUploadedFile());
+//        }
+//    }
 
     /**
      * cancel an upload
@@ -215,45 +232,45 @@ public class FileUploadManager implements Serializable {
      * @return
      * @throws java.io.IOException
      */
-    public FacesMessage copyFile(UploadedFile file) throws IOException {
-        try {
-            String user_name = (String) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSessionMap().get("username");
-
-            User user = getUserFacade().findByUsername(user_name);
-
-            /*
-            To associate the file to the user, record "userId_filename" in the database.
-            Since each file has its own primary key (unique id), the user can upload
-            multiple files with the same name.
-             */
-            String userId_filename = user.getId() + "_" + file.getFileName();
-
-            /*
-            "The try-with-resources statement is a try statement that declares one or more resources. 
-            A resource is an object that must be closed after the program is finished with it. 
-            The try-with-resources statement ensures that each resource is closed at the end of the
-            statement." [Oracle] 
-             */
-            try (InputStream inputStream = file.getInputstream();) {
-
-                // The method inputStreamToFile is given below.
-                inputStreamToFile(inputStream, userId_filename);
-                inputStream.close();
-            }
-
-            resultMsg = new FacesMessage("");  // No need to show a result message
-
-        } catch (IOException e) {
-            resultMsg = new FacesMessage("Something went wrong during file copy! See:" + e.getMessage());
-        }
-
-        // This sets the necessary flag to ensure the messages are preserved.
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-
-        FacesContext.getCurrentInstance().addMessage(null, resultMsg);
-        return resultMsg;
-    }
+//    public FacesMessage copyFile(UploadedFile file) throws IOException {
+//        try {
+//            String meeting_name = (String) FacesContext.getCurrentInstance()
+//                    .getExternalContext().getSessionMap().get("meetingname");
+//
+//            Meeting meeting = getMeetingFacade().findByMeetingname(meeting_name);
+//
+//            /*
+//            To associate the file to the meeting, record "meetingId_filename" in the database.
+//            Since each file has its own primary key (unique id), the meeting can upload
+//            multiple files with the same name.
+//             */
+//            String meetingId_filename = meeting.getId() + "_" + file.getFileName();
+//
+//            /*
+//            "The try-with-resources statement is a try statement that declares one or more resources. 
+//            A resource is an object that must be closed after the program is finished with it. 
+//            The try-with-resources statement ensures that each resource is closed at the end of the
+//            statement." [Oracle] 
+//             */
+//            try (InputStream inputStream = file.getInputstream();) {
+//
+//                // The method inputStreamToFile is given below.
+//                inputStreamToFile(inputStream, meetingId_filename);
+//                inputStream.close();
+//            }
+//
+//            resultMsg = new FacesMessage("");  // No need to show a result message
+//
+//        } catch (IOException e) {
+//            resultMsg = new FacesMessage("Something went wrong during file copy! See:" + e.getMessage());
+//        }
+//
+//        // This sets the necessary flag to ensure the messages are preserved.
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+//
+//        FacesContext.getCurrentInstance().addMessage(null, resultMsg);
+//        return resultMsg;
+//    }
 
     private File inputStreamToFile(InputStream inputStream, String file_name)
             throws IOException {
@@ -278,7 +295,7 @@ public class FileUploadManager implements Serializable {
      *
      * @param data
      */
-    public void setFileLocation(UserFile data) {
+    public void setFileLocation(MeetingFile data) {
 
         String fileName = data.getFilename();
 

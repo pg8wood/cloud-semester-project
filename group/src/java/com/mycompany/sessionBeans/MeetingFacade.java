@@ -30,13 +30,11 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     }
 
     // Instance fields
-//    private HashMap<Date, List<String>> timesByDateMap;
     private List<Date> dateList;
 
     public MeetingFacade() {
         super(Meeting.class);
         dateList = new ArrayList();
-//        timesByDateMap = null;
     }
 
     // ----------------
