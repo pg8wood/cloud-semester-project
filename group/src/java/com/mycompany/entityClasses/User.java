@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,6 +56,9 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 
 public class User implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<MeetingUsers> meetingUsersCollection;
 
     @JoinTable(name = "Meeting_Users", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
@@ -409,6 +413,15 @@ public class User implements Serializable {
 
     public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
         this.meetingCollection1 = meetingCollection1;
+    }
+
+    @XmlTransient
+    public Collection<MeetingUsers> getMeetingUsersCollection() {
+        return meetingUsersCollection;
+    }
+
+    public void setMeetingUsersCollection(Collection<MeetingUsers> meetingUsersCollection) {
+        this.meetingUsersCollection = meetingUsersCollection;
     }
 
 }
