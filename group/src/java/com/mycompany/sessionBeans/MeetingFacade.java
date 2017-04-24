@@ -100,7 +100,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             // Skip time zone
             dateScan.next();
 
-            int year = dateScan.nextInt();
+            int year = dateScan.nextInt() - 1900;
 
             // Store the parsed Dates into the list
             Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
@@ -148,7 +148,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             // Skip time zone
             dateScan.next();
 
-            int year = dateScan.nextInt();
+            int year = dateScan.nextInt() - 1900;
 
             // Store the parsed Dates into the list
             Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);

@@ -13,8 +13,11 @@ import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.User;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -38,6 +41,9 @@ public class CalendarManager implements Serializable {
     private ScheduleModel lazyEventModel;
 
     private ScheduleEvent event = new DefaultScheduleEvent();
+
+    @EJB
+    private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
 
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
@@ -65,19 +71,23 @@ public class CalendarManager implements Serializable {
 
                 @Override
                 public void loadEvents(Date start, Date end) {
-                    addEvent(new DefaultScheduleEvent("Cloud Meeting", previousDay8Pm(), previousDay11Pm()));
-                    addEvent(new DefaultScheduleEvent("Mobile Dev Group Meeting", today1Pm(), today6Pm()));
-                    addEvent(new DefaultScheduleEvent("Cool Kids Club", nextDay9Am(), nextDay11Am()));
-                    //addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
 
                     if (user.getMeetingCollection().isEmpty()) {
                         System.out.print("no meetings");
                     } else {
-                        int i = 1;
+                        
                         for (Meeting m : user.getMeetingCollection()) {
                             System.out.print(m.getDescription());
-                            System.out.print("loop meetings " + i);
-                            i++;
+                            Meeting updatedM = meetingFacade.getMeetingById(m.getId());
+                            
+                            if (updatedM.getFinaltime() != null && updatedM.getFinaltime().length() > 0) {
+                                System.out.print("Final Start Time: " + updatedM.getFinaltime());
+                                ArrayList<Date> dateObj = meetingFacade.deserialize(updatedM.getFinaltime());
+                                System.out.print("AFter deserialized: " + dateObj.get(0).toString());
+                                Date endTime = addHour(dateObj.get(0));
+                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), dateObj.get(0), endTime));
+                                System.out.print("Shouldve Added");
+                            }
                         }
                     }
 
@@ -87,81 +97,18 @@ public class CalendarManager implements Serializable {
         return lazyEventModel;
     }
 
-    private Calendar today() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
 
-        return calendar;
-    }
-
-    private Date previousDay8Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 8);
-
-        return t.getTime();
-    }
-
-    private Date previousDay11Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 11);
-
-        return t.getTime();
-    }
-
-    private Date today1Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 1);
-
-        return t.getTime();
-    }
-
-    private Date theDayAfter3Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
-    }
-
-    private Date today6Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 6);
-
-        return t.getTime();
-    }
-
-    private Date nextDay9Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 9);
-
-        return t.getTime();
-    }
-
-    private Date nextDay11Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 11);
-
-        return t.getTime();
-    }
-
-    private Date fourDaysLater3pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
-        t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
+    private Date addHour(Date date) {
+        
+        Calendar cl = Calendar.getInstance(); 
+        cl.setTime(date);
+        cl.add(Calendar.HOUR, 1);
+        cl.add(Calendar.DAY_OF_WEEK, -1);
+        cl.add(Calendar.DATE, 1);
+        //cl.add(Calendar.YEAR, -1900);
+        System.out.print(cl.getTime().toString());
+        return cl.getTime();
+        
     }
 
     public ScheduleEvent getEvent() {
@@ -185,6 +132,10 @@ public class CalendarManager implements Serializable {
     public void onEventSelect(SelectEvent selectEvent) {
 
         event = (ScheduleEvent) selectEvent.getObject();
+
+    }
+    
+    public void onDateSelect(SelectEvent selectEvent) {
 
     }
 

@@ -307,35 +307,15 @@ public class MeetingController implements Serializable {
     }
 
     public void updateFinalTime(int id, String time) {
+        Meeting s = getMeetingFacade().getMeetingById(id);
+        setSelected(s);
+        System.out.print("This is selected: " + selected.toString());
+        selected.setFinaltime(time);
+        //getMeetingFacade().edit(selected);
+        update();
+        
         System.out.print("updating final time");
-        try {
-            // create a java mysql database connection
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost:3306/MeetingsDB?zeroDateTimeBehavior=convertToNull";
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                System.out.println("Where is your MySQL JDBC Driver?");
-                e.printStackTrace();
-                return;
-            }
-            Connection conn = DriverManager.getConnection(myUrl, "root", "CSD@mysql-1872");
-
-            // create the java mysql update preparedstatement
-            String query = "update Meeting set finaltime = ? where id = ?";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1, time);
-            preparedStmt.setInt(2, id);
-
-            // execute the java preparedstatement
-            preparedStmt.executeUpdate();
-
-            conn.close();
-            System.out.print("Done");
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+//      
     }
 
     /**

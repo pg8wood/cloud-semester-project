@@ -38,7 +38,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
                         <p:schedule value="#{calendarManager.getLazyEventModel(accountManager.selected)}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
 
-                            <p:ajax event="dateSelect" listener="#{calendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                            
                             <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
                         </p:schedule>
                     </h:panelGrid>

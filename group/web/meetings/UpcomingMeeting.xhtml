@@ -13,7 +13,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
     <f:metadata>
 
-        <f:viewAction action="#{meetingController.setSelected(upcomingMeeting)}" />
+        <f:viewAction action="#{meetingController.setSelected(upcomingMeeting)}"  />
+
     </f:metadata>
     <ui:composition>
         <!-- CSS for meetings -->
@@ -23,11 +24,12 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
 
 
+
         <div id="meetingTop#{upcomingMeeting.id}" class="meetingWrapper" align="center">
             <!-- Upcoming Meeting box -->
             <div style="text-align:center">
                 <h2>#{upcomingMeeting.topic}</h2>
-                <!--<h2>#{upcomingMeeting.isOwner(accountManager.selected.id).toString()}</h2>-->
+
             </div>
 
             <!--CHECK IF THE USER IS THE OWNER OF THE MEETING-->
@@ -45,57 +47,55 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             <p>Who's a flake #{meetingController.getNotResponded(upcomingMeeting).size()}</p>
             <p>Final Time #{upcomingMeeting.getFinaltime()}</p>-->
 
+            <p:panel id="horizontalScroll#{upcomingMeeting.id}" styleClass="horizontalScrollArea" header="Owner Actions" toggleable="true" collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
+                <h:form id="finalize">
+                    <p:outputLabel value="Finalize Meeting Time "/>
 
-            <h:form id="finalize">
-                <p:outputLabel value="Finalize Meeting Time "/>
-                
-                <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
-                    <p:ajax event="dateSelect" listener="#{meetingController.onDateSelect}"/>
+                    <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
+                        <p:ajax event="dateSelect" listener="#{meetingController.onDateSelect}"/>
 
-                </p:calendar>
-                <div align="center">
-                    <p:commandButton actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save"/>
-                    &nbsp;     
-                </div>
-            </h:form>
-
+                    </p:calendar>
+                    <div align="center">
+                        <p:commandButton actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save"/>
+                        &nbsp;     
+                    </div>
 
 
-            <p:panel class="dayPanel#{upcomingMeeting.id}" styleClass="noBorderPanel">
-
-                <p:scrollPanel id="horizontalScroll#{upcomingMeeting.id}" styleClass="horizontalScrollArea" mode="native">
                     <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
-                        <!-- Clicking this link updates the collapsed time panel and displays it -->
-                        <!--<p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, upcomingMeeting)}" oncomplete="PF('timePanel#{upcomingMeeting.id}').expand()" process="@all" ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}">-->
-                            <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
-                        <!--<f:ajax render="@all"/>-->
-                        <em>#{timeslot.getHours()}:#{timeslot.getMinutes()}</em>
-                        <time datetime="" class="icon">
+                        <div style="float: left;"></div>
+                        <p:panel class="dayPanel#{upcomingMeeting.id}" styleClass="noBorderPanel">
 
-                            <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
-                            <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
-                            <span>#{timeslot.getDate()}</span>
+                            <em>#{timeslot.getHours()}:#{timeslot.getMinutes()}</em>
+                            <time datetime="" class="icon">
 
-                        </time>
-                        <p>Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}</p>
+                                <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
+                                <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
+                                <span>#{timeslot.getDate()}</span>
+
+                            </time>
+                            <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
+                        </p:panel>
 
                     </p:repeat>
-                </p:scrollPanel>
+
+
+
+                </h:form>
+                <hr />
             </p:panel>
 
+            <p:panelGrid columns="3" styleClass="transparentBackground" style="background-color:#a4acba;" layout="grid">
 
-            <p>
+                <a href="#location#{upcomingMeeting.id}" style="font-weight:bolder">
+                    #{upcomingMeeting.address1} 
+                    <br />
+                    #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a>
+                <h:outputText value="#{upcomingMeeting.description}" style="font-weight:bolder"/>
+                <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
 
-                <span style="float:right; text-decoration:none;">
-                    <a href="#location#{upcomingMeeting.id}">#{upcomingMeeting.address1} 
-                        <br />
-                        #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a></span>
-            </p>            
-            <p text-align="left">
-                #{upcomingMeeting.description}
-            </p>
 
-            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+            </p:panelGrid>
+
 
             <br /><br />
 
@@ -179,8 +179,9 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 </script>
                 <!-- End Google Maps panel -->
 
-                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
-
+                <div align="right">
+                    <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
+                </div>
             </p:panel>
         </div> <!-- #meetingWrapper -->
 
