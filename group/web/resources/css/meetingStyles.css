@@ -261,8 +261,12 @@ div.item {
 
 /* End styles for modal dialog */
 
+/* Prevent captions from overflowing their parent containers */
 .caption {
     display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* Override file upload styles */
@@ -277,12 +281,6 @@ div.item {
     border-right: 5px dashed #4f4f4f;
     border-top: none;
 }
-
-/*.styledFileUpload {
-     border: 5px dashed #4f4f4f;
-}*/
-
-
 
 /* User profile photos for participants */
 .profilePhoto {
@@ -300,8 +298,3 @@ div.item {
     height: 400px;
     background-color: grey;
 }
-
-
-
-
-

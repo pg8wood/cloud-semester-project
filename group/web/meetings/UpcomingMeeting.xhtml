@@ -79,10 +79,10 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <!-- Attachments portion -->
                 <div style="text-align:center">
                     <h2>Attachments</h2>
-                    
-                    <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}_2" styleClass="horizontalScrollArea" mode="native">
-                        <p:repeat value="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting).size()}" var="attachment" varStatus="status">  
-                            <h:form id="fileForm#{attachment.id}" >
+                    <h:form enctype="multipart/form-data">
+                        <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}_2" styleClass="horizontalScrollArea" mode="native">
+                            <p:repeat value="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting).size()}" var="attachment" varStatus="status">  
+                                <!--<h:form id="fileForm#{attachment.id}" >-->
                                 <p:commandLink action="#{meetingFileController.setSelected(attachment)}" ajax="true" oncomplete="PF('fileDlg#{attachment.id}').show()"  >
                                     <!--<f:ajax  />--> 
                                     <div class="uploadedFile item" >
@@ -108,29 +108,54 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                             <source src="#{meetingFileController.getFileRelativePath(meetingFileController.selected)}" type="video/#{meetingFileController.extensionOfSelectedFileInLower()}" />
                                         </video>
                                     </p:outputPanel>
+
+                                    <!-- Panel shown when an unrecognized file type is uploaded -->
+                                    <p:outputPanel rendered="#{meetingFileController.isOtherFileType()}">
+                                        <p>This file is not viewable on Meeting Scheduler. Would you like to download it?</p>
+
+                                        <!-- DOWNLOAD FILE button -->
+                                        <p:commandButton value="Download File" ajax="false" 
+                                                         icon="ui-icon-arrowthick-1-s" 
+                                                         styleClass="commandButton" >
+
+                                            <p:fileDownload value="#{fileDownloadManager.file}" />
+                                        </p:commandButton>
+                                        &nbsp;&nbsp;
+                                        <!-- CANCEL button -->
+                                        <p:commandButton value="Cancel" icon="ui-icon-cancel" onclick="PF('fileDlg#{attachment.id}').hide()" styleClass="commandButton"/>
+
+                                    </p:outputPanel>
+
+                                    <!-- CLOSE button shown only when CANCEL button is not shown -->
+                                    <div align="center">
+                                        <p:commandButton value="Close" icon="ui-icon-close" onclick="PF('fileDlg#{attachment.id}').hide()" styleClass="commandButton" rendered="#{!meetingFileController.isOtherFileType()}"/>
+                                    </div>
+
                                 </p:dialog> 
-                            </h:form>
-                        </p:repeat>
-                    </p:scrollPanel>
+                                <!--</h:form>-->
+                            </p:repeat>
+                        </p:scrollPanel>
 
-                    <!-- File upload section -->
-                    
-                    <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
-                                     ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
+                        <!-- File upload section -->
 
-                    <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
-                        <div align="center">
-                            <h:form enctype="multipart/form-data">
+                        <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
+                                         ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
+
+                        <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
+                            <div align="center">
+                                <!--                            <h:form enctype="multipart/form-data">-->
                                 <p:fileUpload  fileUploadListener="#{fileUploadManager.handleFileUpload}" multiple="true" 
                                                mode="advanced" sizeLimit="10000000" fileLimit="5"
-                                               dragDropSupport="true" styleClass="styledFileUpload"/>   
-                            </h:form>
-                        </div>
-                    </p:panel>
+                                               dragDropSupport="true" styleClass="styledFileUpload" update="@form"/>   
+                                <!--</h:form>-->
+                            </div>
+                        </p:panel>
+                    </h:form>
                 </div>
 
+
                 <hr/>
-                
+
                 <!-- Location portion -->
                 <div style="text-align:center">
                     <h2 id="location#{upcomingMeeting.id}">Location</h2>
