@@ -53,19 +53,18 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                     <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
                         <p:ajax event="dateSelect" listener="#{meetingController.onDateSelect}"/>
-
                     </p:calendar>
+
                     <div align="center">
                         <p:commandButton actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save"/>
                         &nbsp;     
                     </div>
 
-
-                    <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
+<!--                    <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
                         <div style="float: left;"></div>
                         <p:panel class="dayPanel#{upcomingMeeting.id}" styleClass="noBorderPanel">
 
-                            <em>#{timeslot.getHours()}:#{timeslot.getMinutes()}</em>
+                            <h:outputText value="#{timeslot.getHours()}:#{timeslot.getMinutes()}" style="font-weight:bolder"/>
                             <time datetime="" class="icon">
 
                                 <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
@@ -73,12 +72,41 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                 <span>#{timeslot.getDate()}</span>
 
                             </time>
-                            <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
+                            &nbsp;
+                            <div>
+                                <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
+                            </div>
                         </p:panel>
 
-                    </p:repeat>
+                    </p:repeat>-->
+                    <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
 
+                        <!-- Get list of times for the selected meetingInvitation -->
+                        <ui:param name="times" value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" />
 
+                        <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
+                            <!-- Clicking this link updates the collapsed time panel and displays it -->
+                            <p:commandLink class="calendarLink">
+                                <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
+                                <!--<f:ajax render="@all"/>-->
+                                <time datetime="" class="icon">
+                                    <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
+                                    <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
+                                    <span>#{timeslot.getDate()}</span>
+
+                                </time>
+                                <br></br>
+                                <div>
+                                    
+                                    <h:outputText value="#{timeslot.getHours()}:#{timeslot.getMinutes()}" style="font-weight:bolder"/>
+                                    <h:outputText rendered="#{timeslot.getMinutes() == 0}" value="0" style="font-weight:bolder"/>
+                                    <br></br>
+                                    <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
+                                </div>
+                            </p:commandLink>
+                            
+                        </p:repeat>
+                    </p:scrollPanel>
 
                 </h:form>
                 <hr />
