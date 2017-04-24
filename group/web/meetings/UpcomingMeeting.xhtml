@@ -70,9 +70,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <h:form enctype="multipart/form-data">
                         <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}_2" styleClass="horizontalScrollArea" mode="native">
                             <p:repeat value="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting).size()}" var="attachment" varStatus="status">  
-                                <!--<h:form id="fileForm#{attachment.id}" >-->
                                 <p:commandLink action="#{meetingFileController.setSelected(attachment)}" ajax="true" oncomplete="PF('fileDlg#{attachment.id}').show()"  >
-                                    <!--<f:ajax  />--> 
                                     <div class="uploadedFile item" >
                                         <i class="#{meetingFileController.getFaIconClass(attachment)} profilePhoto" /> 
                                         <h:outputText class="caption" value="#{attachment.filename}" />
@@ -130,11 +128,9 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                         <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
                             <div align="center">
-                                <!--                            <h:form enctype="multipart/form-data">-->
                                 <p:fileUpload  fileUploadListener="#{fileUploadManager.handleFileUpload}" multiple="true" 
                                                mode="advanced" sizeLimit="10000000" fileLimit="5"
                                                dragDropSupport="true" styleClass="styledFileUpload" update="@form"/>   
-                                <!--</h:form>-->
                             </div>
                         </p:panel>
                     </h:form>

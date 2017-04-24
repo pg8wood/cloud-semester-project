@@ -20,13 +20,14 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
-            <h:form id="test#{meetingInvitation.id}" >
+            <!--<h:form id="test#{meetingInvitation.id}" >-->
             <div id="meetingWrapper#{meetingInvitation.id}" class="meetingWrapper" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
                 <p style="text-align: center">#{meetingInvitation.description}</p>
                 <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" styleClass="commandButton"/>
 
+                 <h:form enctype="multipart/form-data">
                 <!-- Response section: user indicates their availability date-wise -->
                 <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                     <hr />
@@ -44,48 +45,32 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <!-- TODO make one button and get suggested dates from Meeting object.
                     Also give user a hint that this area is scrollable.-->
                     <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
-<!--                         Link to be rendered if the user shows a new date 
-                        <p:panel id="newDatePanel#{meetingInvitation.id}" toggleable="true" closable="true" collapsed="true">
-                            <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()" >
-                                <time datetime="2014-01-01" class="icon">
-                                    <em>TEST</em>
-                                    <strong>TEST</strong>
-                                    <span>TEST</span>
-                                </time>
-                            </p:commandLink>
-                        </p:panel>-->
+                        <!--                         Link to be rendered if the user shows a new date 
+                                                <p:panel id="newDatePanel#{meetingInvitation.id}" toggleable="true" closable="true" collapsed="true">
+                                                    <p:commandLink id="newDateCalendarLink#{meetingInvitation.id}" class="calendarLink" onclick="PF('timePanel#{meetingInvitation.id}').show()" >
+                                                        <time datetime="2014-01-01" class="icon">
+                                                            <em>TEST</em>
+                                                            <strong>TEST</strong>
+                                                            <span>TEST</span>
+                                                        </time>
+                                                    </p:commandLink>
+                                                </p:panel>-->
 
                         <!-- Get list of times for the selected meetingInvitation -->
                         <ui:param name="times" value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
 
-                        <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
-                            <!-- Clicking this link updates the collapsed time panel and displays it -->
-                            <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" oncomplete="PF('timePanel#{meetingInvitation.id}').expand()" process="@all" ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}">
-                                <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
-                                <!--<f:ajax render="@all"/>-->
-                                <time datetime="" class="icon">
-                                    <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
-                                    <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
-                                    <span>#{timeslot.getDate()}</span>
-                                </time>
-                            </p:commandLink>
-                        </p:repeat>
+                       
+                            <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
+                                <!-- Clicking this link updates the collapsed time panel and displays it -->
+                                <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" onclick="PF('timePanel#{meetingInvitation.id}').expand()" ajax="true" update="@form" >
+                                    <time datetime="" class="icon">
+                                        <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
+                                        <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
+                                        <span>#{timeslot.getDate()}</span>
+                                    </time>
+                                </p:commandLink>
+                            </p:repeat>
                     </p:scrollPanel>
-
-<!--                     Create new date 
-                    <br />
-                    <p:outputLabel for="event" value="New date: " />
-                    &nbsp;&nbsp;
-                    <p:calendar id="event#{meetingInvitation.id}" value="#{myMeetingsController.newDate}">
-                        <p:ajax event="dateSelect" listener="#{myMeetingsController.onDateSelect}" async="true" oncomplete="showNewDate()" update="newDatePanel" />
-                    </p:calendar>-->
-
-                    <!-- Function to show the newly-added date -->
-<!--                    <script type="text/javascript">
-                        function showNewDate() {
-                            $('#newDatePanel#{meetingInvitation.id}').addClass('newDatePanel');
-                        }
-                    </script>-->
                 </p:panel>  <!-- .dayPanel -->
 
                 <!-- Available time options shown after the user selects a date --> 
@@ -95,8 +80,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                     <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
                         <!--<h:form id="test#{meetingInvitation.id}">-->
-                            <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
-                             <!-- On/Off switch --> 
+                        <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
+                            <!-- On/Off switch --> 
                             <div style="height: 3em;">
                                 <label class="switch">
                                     <input type="checkbox" />
@@ -111,17 +96,18 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                     <br />  
 
-<!--                    <p:outputLabel value="Enter new time" for="newTime" />
-                    &nbsp;
-                    <p:inputText id="newTime#{meetingInvitation.id}" value=""
-                                 required="false" styleClass="" label="New Time">
-                    </p:inputText>-->
+                    <!--                    <p:outputLabel value="Enter new time" for="newTime" />
+                                        &nbsp;
+                                        <p:inputText id="newTime#{meetingInvitation.id}" value=""
+                                                     required="false" styleClass="" label="New Time">
+                                        </p:inputText>-->
 
                     <br/>
                     <p:commandButton value="Submit all selected times" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')" styleClass="commandButton"></p:commandButton>
                     &nbsp;&nbsp;
                     <p:commandButton value="I can't make it" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')" styleClass="commandButton"></p:commandButton>
 
+                   
 
                     <!-- Hide the invitation after the user has submitted -->
                     <script type="text/javascript">
@@ -131,9 +117,9 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         }
                     </script>
                 </p:panel> <!-- .timePanel -->
-            <!--</h:form>-->
+                </h:form>
             </div> <!-- #meetingWrapper -->
-            </h:form>
+            <!--</h:form>-->
 
         </ui:composition>
     </html>

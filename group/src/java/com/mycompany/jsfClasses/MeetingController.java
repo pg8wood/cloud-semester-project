@@ -175,7 +175,7 @@ public class MeetingController implements Serializable {
         return meeting.equals(this.selected);
     }
 
-    public String setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
+    public void setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
         this.selectedDate = selectedDate;
         this.isResponding = true;
         this.selected = selected;
@@ -189,7 +189,7 @@ public class MeetingController implements Serializable {
             System.out.println("Date set to NULL!!!");
         }
         
-        return "MyMeetings.xhtml?faces-redirect=true";
+        //return "MyMeetings.xhtml?faces-redirect=true";
        
     }
 
