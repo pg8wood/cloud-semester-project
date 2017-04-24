@@ -6,6 +6,7 @@ import com.mycompany.entityClasses.User;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
 import com.mycompany.sessionBeans.MeetingFacade;
+import com.mycompany.sessionBeans.MeetingFileFacade;
 import com.mycompany.sessionBeans.MeetingUsersFacade;
 
 import java.io.Serializable;
@@ -40,6 +41,9 @@ public class MeetingController implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
+    
+    @EJB
+    private com.mycompany.sessionBeans.MeetingFileFacade meetingFileFacade;
 
     private List<Meeting> items;
     private ArrayList<Date> timesForDay;
@@ -94,6 +98,10 @@ public class MeetingController implements Serializable {
 
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
+    }
+    
+    public MeetingFileFacade getMeetingFileFacade() {
+        return meetingFileFacade;
     }
 
     public Meeting prepareCreate() {
@@ -192,7 +200,7 @@ public class MeetingController implements Serializable {
         return meeting.equals(this.selected);
     }
 
-    public String setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
+    public void setSelectedDate(Date selectedDate, String toUpdate, Meeting selected) {
         this.selectedDate = selectedDate;
         this.isResponding = true;
         this.selected = selected;
@@ -206,7 +214,9 @@ public class MeetingController implements Serializable {
             System.out.println("Date set to NULL!!!");
         }
 
+
         return "MyMeetings.xhtml?faces-redirect=true";
+
 
     }
 

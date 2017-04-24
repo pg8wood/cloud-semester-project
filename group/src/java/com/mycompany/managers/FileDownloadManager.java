@@ -4,11 +4,11 @@
  */
 package com.mycompany.managers;
 
-// UserFile class's instance methods are accessed
-import com.mycompany.entityClasses.UserFile;
+// MeetingFile class's instance methods are accessed
+import com.mycompany.entityClasses.MeetingFile;
 
 // These two are needed for CDI @Inject injection
-import com.mycompany.jsfClasses.UserFileController;
+import com.mycompany.jsfClasses.MeetingFileController;
 import javax.inject.Inject;
 
 import java.io.FileInputStream;
@@ -41,15 +41,15 @@ public class FileDownloadManager implements Serializable {
 
     /*
     Using the @Inject annotation, the compiler is directed to store the object reference of the
-    UserFileController CDI-named bean into the instance variable userFileController at runtime.
-    With this injection, the instance variables and instance methods of the UserFileController
+    MeetingFileController CDI-named bean into the instance variable userFileController at runtime.
+    With this injection, the instance variables and instance methods of the MeetingFileController
     class can be accessed in this CDI-named bean. The following imports are required for the injection:
     
-        import com.mycompany.jsfclasses.UserFileController;
+        import com.mycompany.jsfclasses.MeetingFileController;
         import javax.inject.Inject;
      */
     @Inject
-    private UserFileController userFileController;
+    private MeetingFileController userFileController;
 
     /*
     StreamedContent and DefaultStreamedContent classes are imported from
@@ -72,7 +72,7 @@ public class FileDownloadManager implements Serializable {
      */
     public StreamedContent getFile() throws FileNotFoundException {
 
-        UserFile fileToDownload = userFileController.getSelected();
+        MeetingFile fileToDownload = userFileController.getSelected();
 
         String nameOfFileToDownload = fileToDownload.getFilename();
         String absolutePathOfFileToDownload = fileToDownload.getFilePath();
