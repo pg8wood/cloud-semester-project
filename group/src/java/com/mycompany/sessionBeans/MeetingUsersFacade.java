@@ -5,6 +5,7 @@
  */
 package com.mycompany.sessionBeans;
 
+import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.util.List;
@@ -49,6 +50,16 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      */
     public List<MeetingUsers> getUpcomingMeetings(User user) {
         return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse").setParameter("userId", user.getId()).setParameter("response", true).getResultList();
+    }
+    
+    public List<MeetingUsers> getNotResponded(Meeting meeting){
+        return getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meeting.getId()).setParameter("response", false).getResultList();
+    
+    }
+    
+    public List<MeetingUsers> getResponded(Meeting meeting){
+        return getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meeting.getId()).setParameter("response", true).getResultList();
+    
     }
     
 }

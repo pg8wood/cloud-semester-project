@@ -29,7 +29,9 @@ Copyright © 2017 Erin Kocis All rights reserved.
     -->
 
     <!-- Windows OS Users should use the following -->
-    <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />
+    <!--<property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />-->
+    
+    <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/jeffrey/" />
     
 
 </glassfish-web-app>
