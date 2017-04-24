@@ -32,11 +32,11 @@ public final class Constants {
     /*
     URL to the sign in page
      */
-    public static final String SIGNIN_URL = "http://localhost:8080/group/SignIn.xhtml";
+    public static final String MYMEETINGS_URL = "http://localhost:8080/group/MyMeetings.xhtml";
     /*
     URL to the image in the email
      */
-    public static final String EMAIL_IMAGE = "<img src=\"https://drive.google.com/a/vt.edu/file/d/0B97pytL_OloUOU1Pb3Z5VnJDS28/view?usp=sharing\" style=\"width:200px;height:200px;\">";
+    public static final String EMAIL_IMAGE = "<img src=\"https://lh5.googleusercontent.com/mDjLolBdAY0ZZSLWxPZuYR2q65NjLdwWJT5SfAce8Qle7gkfowY4LjTYwXRCc56QFl0PJk6gfa0tPbI=w1600-h677\" style=\"width:230px;height:64px;\">";
 
     /*
     In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the

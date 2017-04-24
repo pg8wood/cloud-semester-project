@@ -458,27 +458,27 @@ public class User implements Serializable {
             case 0:
                 // To enter a double quote " in a string literal, use the backslash \ escape character as \"
                 emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>You Have Been Invited To A Meeting!</b><br /><br />"
-                        + "<a href=" + Constants.SIGNIN_URL + ">Click here</a> to sign in to view your current meeting invitations!</div>";
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view your current meeting invitations!</div>";
                 break;
             //email owner when participants respond
             case 1:
                 emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>Participants Have Responded To Your Meeting!</b><br /><br />"
-                        + "Click here to sign in to view the status of your current meetings!</div>";
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your current meetings!</div>";
                 break;
             //email participants if owner updates meeting
             case 2:
                 emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>One of Your Upcoming Meetings Has Been Updated!</b><br /><br />"
-                        + "Click here to sign in to view the status of your upcoming meetings!</div>";
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your upcoming meetings!</div>";
                 break;
             //email participants when owner selects final meeting time
             case 3:
                 emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>A Meeting Has Been Officially Scheduled!</b><br /><br />"
-                        + "Click here to sign in to view your upcoming meetings!</div>";
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view your upcoming meetings!</div>";
                 break;
             //email participants when owner selects final meeting time
             case 4:
                 emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>One of Your Upcoming Has Been Cancelled!</b><br /><br />"
-                        + "Click here to sign in to view the status of your upcoming meetings!</div>";
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your upcoming meetings!</div>";
                 break;
             default:
                 break;
