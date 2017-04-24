@@ -117,8 +117,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                         <p:commandButton value="Close" icon="ui-icon-close" onclick="PF('fileDlg#{attachment.id}').hide()" styleClass="commandButton" rendered="#{!meetingFileController.isOtherFileType()}"/>
                                     </div>
 
-                                </p:dialog> 
-                                <!--</h:form>-->
+                                </p:dialog>
                             </p:repeat>
                         </p:scrollPanel>
 
@@ -135,8 +134,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:panel>
                     </h:form>
                 </div>
-
-
+                
                 <hr/>
 
                 <!-- Location portion -->
@@ -212,7 +210,6 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <!-- End Google Maps panel -->
 
                 <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
-
 
             </p:panel>
         </div> <!-- #meetingWrapper -->
