@@ -61,7 +61,7 @@ CREATE TABLE MeetingFile
 (
        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
        filename VARCHAR (256) NOT NULL,
-       meeting_id INT UNSIGNED,
+       meeting_id INT UNSIGNED NOT NULL,
        FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
 );
 

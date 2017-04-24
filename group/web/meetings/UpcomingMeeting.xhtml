@@ -8,7 +8,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition>
         <!-- CSS for meetings -->
@@ -78,10 +79,58 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <!-- Attachments portion -->
                 <div style="text-align:center">
                     <h2>Attachments</h2>
-                    Any files uploaded to the meeting will be displayed here.
+                    
+                    <p:scrollPanel id="horizontalScrollArea#{upcomingMeeting.id}_2" styleClass="horizontalScrollArea" mode="native">
+                        <p:repeat value="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.meetingFileFacade.getMeetingFilesByMeeting(upcomingMeeting).size()}" var="attachment" varStatus="status">  
+                            <h:form id="fileForm#{attachment.id}" >
+                                <p:commandLink action="#{meetingFileController.setSelected(attachment)}" ajax="true" oncomplete="PF('fileDlg#{attachment.id}').show()"  >
+                                    <!--<f:ajax  />--> 
+                                    <div class="uploadedFile item" >
+                                        <i class="#{meetingFileController.getFaIconClass(attachment)} profilePhoto" /> 
+                                        <h:outputText class="caption" value="#{attachment.filename}" />
+                                    </div>
+                                </p:commandLink>
+
+                                <!-- Dialog shown when user opens a file -->
+                                <p:dialog id="fileDlg#{attachment.id}" header="" styleClass="fileDlg" widgetVar="fileDlg#{attachment.id}" modal="true">
+
+                                    <!-- GraphicImage only shown if the file is an image file -->
+                                    <h:graphicImage class="displayImage" value="#{meetingFileController.getFileRelativePath(meetingFileController.selected)}" rendered="#{meetingFileController.isImage()}" />
+
+                                    <!-- iframe shown if the content can be viewed -->
+                                    <p:outputPanel rendered="#{meetingFileController.isViewable()}">
+                                        <iframe src="#{meetingFileController.getFileRelativePath(attachment)}" width="600" height="400" scrolling="yes"></iframe>
+                                    </p:outputPanel>
+
+                                    <!-- Video panel shown if the file is a video -->
+                                    <p:outputPanel rendered="#{meetingFileController.isVideo()}">
+                                        <video width="512" height="288" preload="auto" controls="controls">
+                                            <source src="#{meetingFileController.getFileRelativePath(meetingFileController.selected)}" type="video/#{meetingFileController.extensionOfSelectedFileInLower()}" />
+                                        </video>
+                                    </p:outputPanel>
+                                </p:dialog> 
+                            </h:form>
+                        </p:repeat>
+                    </p:scrollPanel>
+
+                    <!-- File upload section -->
+                    
+                    <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
+                                     ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
+
+                    <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
+                        <div align="center">
+                            <h:form enctype="multipart/form-data">
+                                <p:fileUpload  fileUploadListener="#{fileUploadManager.handleFileUpload}" multiple="true" 
+                                               mode="advanced" sizeLimit="10000000" fileLimit="5"
+                                               dragDropSupport="true" styleClass="styledFileUpload"/>   
+                            </h:form>
+                        </div>
+                    </p:panel>
                 </div>
 
                 <hr/>
+                
                 <!-- Location portion -->
                 <div style="text-align:center">
                     <h2 id="location#{upcomingMeeting.id}">Location</h2>
@@ -114,21 +163,10 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         });
                     }
                 </script>
-<<<<<<< Updated upstream
                 <!-- End Google Maps panel -->
 
                 <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
-=======
 
-<!--                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>-->
-
-                <!-- End Google Maps panel -->
-
-                <p:commandButton value="Render map" onclick="initMap()" />
-                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel').close()" oncomplete="PF('seeMoreButton').enable()" styleClass="commandButton"/>
-
-
->>>>>>> Stashed changes
 
             </p:panel>
         </div> <!-- #meetingWrapper -->

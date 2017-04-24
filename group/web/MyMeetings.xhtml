@@ -22,6 +22,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
         <!-- Create the content for this page below -->
         <ui:define name="editableContent">
             <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
+            
+            <!--<p:growl id="messages" />-->
 
             <div class="sidebarLeft">
                 <div class="sidebarContent">
@@ -46,34 +48,11 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <ui:include src="meetings/UpcomingMeeting.xhtml"/>
                     <br />
                 </p:repeat>
-<<<<<<< Updated upstream
                 
                 <!-- Script for Google Maps -->
                 <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-
-=======
->>>>>>> Stashed changes
+                
             </div>
-
-             <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-                <script>
-                    function initMap() {
-                        var uluru = {lat: -25.363, lng: 131.044};
-                        var map = new google.maps.Map(document.getElementById('map'), {
-                            zoom: 4,
-                            center: uluru
-                        });
-                        var marker = new google.maps.Marker({
-                            position: uluru,
-                            map: map
-                        });
-
-                        var marker = new google.maps.Marker({
-                            position: uluru,
-                            map: map
-                        });
-                    }
-                </script>
         </ui:define>
     </ui:composition>
 </html>
