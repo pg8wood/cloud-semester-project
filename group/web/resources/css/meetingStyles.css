@@ -293,8 +293,25 @@ div.item {
     background-size: cover;
 }
 
+/* Google Map and map overlay styles */
+.mapOverlay {
+   background:transparent; 
+   position:relative; 
+   width:100%;
+   height:400px; /* your iframe height */
+   top:400px;  /* your iframe height */
+   margin-top:-400px;  /* your iframe height */
+   z-index: 10;
+}
+
+.noPointerEvents {
+    pointer-events: none;
+}
+
 .map {
     width: 100%;
     height: 400px;
     background-color: grey;
 }
+
+/* End Google Map and map overlay styles */
