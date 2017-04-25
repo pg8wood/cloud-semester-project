@@ -4,19 +4,19 @@ Composed by Patrick Gatewood on April 8, 2017.
 *********************************************/
 
 /* Style for the meeting card */
-.meetingWrapper {
-    background-color: #a4acba;
+/*.meetingWrapper {
+    background-color: #c8e6c9;
     border-radius: 20px;
     overflow: hidden;
     padding: 10px;
-}
+}*/
 
 /* Horizontally-scrollable area */
 div .horizontalScrollArea {
     border: none;
     height: auto;
     white-space: nowrap;
-    background-color: #a4acba;
+    background-color: #c8e6c9;
 }
 
 
@@ -105,18 +105,18 @@ https://www.w3schools.com/howto/howto_css_switch.asp
 */
 
 /* The switch - the box around the slider */
-.switch {
+/*.switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-}
+}*/
 
 /* Hide default HTML checkbox */
-.switch input {display:none;}
+/*.switch input {display:none;}*/
 
 /* The slider */
-.slider {
+/*.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -154,14 +154,14 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* Rounded sliders */
+ Rounded sliders 
 .slider.round {
     border-radius: 34px;
 }
 
 .slider.round:before {
     border-radius: 50%;
-}
+}*/
 
 /*
 ----------------------------
@@ -198,12 +198,12 @@ End styles for On/Off switch
 
 .meetingWrapper .noBorderPanel {
     border-style: hidden !important;
-    background-color: #a4acba;
+    background-color: #c8e6c9;
 }
 
 /* Match table style with parent style */
 .noBorderPanel .availableTimesTable .ui-panelgrid-cell {
-    background-color: #a4acba;   
+    background-color: #c8e6c9;   
     /*width: 100%;*/
 }
 
@@ -213,7 +213,7 @@ End styles for On/Off switch
 
 .ui-panel .newDatePanel {
     display: inline-block;
-    background-color: #a4acba; 
+    background-color: #c8e6c9; 
 
     /* Match panel margins with .calendarLink margins */
     margin-left: -17px;
@@ -222,7 +222,7 @@ End styles for On/Off switch
 
 /* Override ugly default PrimeFaces panel header color */
 div .ui-panel {
-    background-color: #a4acba;
+    background-color: #c8e6c9;
 }
 
 /* Hide disabled buttons */
@@ -317,6 +317,10 @@ div.item {
     width: 100%;
     height: 400px;
     background-color: grey;
+}
+
+tbody {
+    background-color: #c8e6c9;
 }
 
 /* End Google Map and map overlay styles */

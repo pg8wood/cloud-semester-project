@@ -21,13 +21,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
             <!--<h:form id="test#{meetingInvitation.id}" >-->
-            <div id="meetingWrapper#{meetingInvitation.id}" class="meetingWrapper" align="center">
+            <div id="meetingWrapper#{meetingInvitation.id}" class="green lighten-4" style="border-radius: 20px; padding: 10px;" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
                 <p style="text-align: center">#{meetingInvitation.description}</p>
-                <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" styleClass="commandButton"/>
+                <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" class="btn-large blue darken-2"/>
 
-                <h:form enctype="multipart/form-data">
+                <h:form enctype="multipart/form-data" class="green lighten-4">
                     <!-- Response section: user indicates their availability date-wise -->
                     <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                         <hr />
@@ -65,18 +65,17 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <br />
                         <hr />
 
-                        <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
+                        <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" >
                             <!--<h:form id="test#{meetingInvitation.id}">-->
                             <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
                                 <!-- On/Off switch --> 
-                                <div style="height: 3em;">
-                                    <label class="switch">
-                                        <input type="checkbox" />
-                                        <div class="slider round"></div>
-                                    </label>
-                                    &nbsp;
-                                    <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
-                                </div>
+                                    <div class="switch green lighten-4">
+                                        <label>
+                                          <input type="checkbox" />
+                                          <span class="lever"></span>
+                                          <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
+                                        </label>
+                                  </div>
                             </p:repeat>
                             <!--</h:form>-->
                         </p:panelGrid>
