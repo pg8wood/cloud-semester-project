@@ -23,16 +23,17 @@ public final class Constants {
         for the storage and retrieval of user's files.
     
      */
+
     public static final String FILES_ABSOLUTE_PATH = "/Users/alexmartin/MeetingsStorage/";  
     public static final String PHOTOS_ABSOLUTE_PATH = "/Users/alexmartin/MeetingsStorage/PhotoStorage/";
 
-/*
+    /*
 Windows OS Users should use the following: 
     public static final String FILES_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\FileStorage\\";  
     public static final String PHOTOS_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\PhotoStorage\\";
-*/
+     */
 
-    /*
+ /*
     In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
     Alternate Document Root directory with the following statement:
         
@@ -44,17 +45,28 @@ Windows OS Users should use the following:
     public static final String PHOTOS_RELATIVE_PATH = "CloudStorage/PhotoStorage/";
     public static final String DEFAULT_PHOTO_RELATIVE_PATH = "CloudStorage/PhotoStorage/defaultUserPhoto.png";
      */
+<<<<<<< HEAD
     public static final String FILES_RELATIVE_PATH = "MeetingsStorage/FileStorage/";
     public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
     public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/alexmartin/MeetingsStorage/PhotoStorage/defaultUserPhoto.png";
+=======
+//    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
+//    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
+//    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
+    public static final String FILES_RELATIVE_PATH = "CloudStorage\\FileStorage\\";
+    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
+    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
+    //public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
+    //public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
+    //public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/defaultUserPhoto.png";
+>>>>>>> master
 
-    
-/*
+    /*
 Windows OS Users should use the following: 
 The same as above. The relative paths are specified in the same way.
-*/
+     */
 
-    /* Temporary filename */
+ /* Temporary filename */
     public static final String TEMP_FILE = "tmp_file";
 
     /* =========== Our Design Decision ===========
