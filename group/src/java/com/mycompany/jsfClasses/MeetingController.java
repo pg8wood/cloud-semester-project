@@ -144,7 +144,9 @@ public class MeetingController implements Serializable {
             User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    selected.setTimeslots(makeTimeslotsString());
+                    if (tsArray != null) {
+                        selected.setTimeslots(makeTimeslotsString());
+                    }
                     getMeetingFacade().edit(selected);
                     int id = getMeetingFacade().getMeetingMaxId();
                     List<Integer> invitees = getInviteesId();
