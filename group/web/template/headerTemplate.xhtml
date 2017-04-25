@@ -22,83 +22,58 @@ Copyright © 2017 Osman Balci. All rights reserved.
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
     <ui:composition>
         <h:form>
-
-            <table border="0" cellspacing="0" cellpadding="10" width="100%">
-                <tr>
-                    <td align="left" valign="middle">
-
-                        <!-- Use absolute path for the image file since it will be accessed from all pages -->
-                        <h:link outcome="index"><img src="resources/images/schedule_logo.jpg"
-                                                     style="width:100%; height:100%; max-height:64px; max-width:230px; border: none"
-                                                     alt="Company Logo" />
-                        </h:link>
-
-                    </td>
-                    <td align="center" valign="middle">
-
-                        <!-- Welcome the user if signed in -->
+            <nav class="green lighten-1">
+                <div class="nav-wrapper">
+                    <h:link outcome="index">
+                        <img src="resources/images/schedule_logo.jpg"
+                                style="width:100%; height:100%; max-height:64px; max-width:230px; border: none"
+                                alt="Company Logo" />
+                    </h:link>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li>
+                            <h:link outcome="index" class="indigo-text text-darken-4">
+                                <i class="fa fa-home">&nbsp;</i>Home
+                            </h:link>
+                        </li>
                         <c:if test="#{accountManager.isLoggedIn() == true}">
-                            <p>Hello, #{accountManager.selected.firstName}</p>
+                            <li>
+                                <h:commandLink action="#{accountManager.logout()}" class="indigo-text text-darken-4" >
+                                    <i class="fa fa-sign-out">&nbsp;</i>Sign Out
+                                </h:commandLink>
+                            </li>
+                            <li>
+                                <h:link outcome="MyMeetings" class="indigo-text text-darken-4">
+                                    <i class="fa fa-calendar">&nbsp;</i>My Meetings
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="/MeetingList" class="indigo-text text-darken-4">
+                                    <i class="fa fa-user">&nbsp;</i>My Meetings
+                                </h:link>
+                            </li> 
+                            <li>
+                                <h:link outcome="/Profile" class="indigo-text text-darken-4">
+                                    <i class="fa fa-user">&nbsp;</i>My Account
+                                </h:link>
+                            </li>      
                         </c:if>
                         <c:if test="#{accountManager.isLoggedIn() == false}">
-                            <p>Hello, Guest</p>
+                            <li>
+                                <h:link outcome="/SignIn" class="indigo-text text-darken-4">
+                                    <i class="fa fa-sign-in">&nbsp;</i>Sign In
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="/CreateAccount" class="indigo-text text-darken-4">
+                                    <i class="fa fa-user-plus">&nbsp;</i>Create an Account
+                                </h:link>
+                            </li>
                         </c:if>
-
-                    </td>
-                    <td align="right" valign="middle">
-
-                        <!-- 
-                        With the i tag, you can access an icon given at http://fontawesome.io/icons/ by using
-                        its class name. For this to work, the following must be specified in the siteTemplate file:
-                        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
-                        -->
-
-                        <!-- Clicking "Home" displays the index.xhtml file -->
-                        <h:link outcome="index" styleClass="arialTen">
-                            <i class="fa fa-home">&nbsp;</i>Home
-                        </h:link>&nbsp;&nbsp;
-
-                        <!-- "Sign Out" and "My Account" if a user is signed in -->
-                        <c:if test="#{accountManager.isLoggedIn() == true}">
-                            <!-- Clicking "Sign Out" invokes accountManager's logout() method -->
-                            <h:commandLink action="#{accountManager.logout()}" styleClass="arialTen" >
-                                <i class="fa fa-sign-out">&nbsp;</i>Sign Out
-                            </h:commandLink>&nbsp;&nbsp;
-                            
-                            <!-- Clicking "My Meetings" displays the Profile.xhtml file -->
-                            <h:link outcome="MyMeetings" styleClass="arialTen">
-                                <i class="fa fa-calendar">&nbsp;</i>My Meetings
-                            </h:link>&nbsp;&nbsp;
-
-                            <!-- Clicking "My Meetings" displays the MyMeetings.xhtml file -->
-                            <h:link outcome="/MeetingList" styleClass="arialTen">
-                                <i class="fa fa-user">&nbsp;</i>My Meetings
-                            </h:link>&nbsp;&nbsp;
-                            
-                            <!-- Clicking "My Account" displays the MyMeetings.xhtml file -->
-                            <h:link outcome="/Profile" styleClass="arialTen">
-                                <i class="fa fa-user">&nbsp;</i>My Account
-                            </h:link>&nbsp;&nbsp;
-                        </c:if>
-
-                        <!-- "Sign In" and "Create an Account" if no user is signed in -->
-                        <c:if test="#{accountManager.isLoggedIn() == false}">
-                            <!-- Clicking "Sign In" displays the SignIn.xhtml file -->
-                            <h:link outcome="/SignIn" styleClass="arialTen">
-                                <i class="fa fa-sign-in">&nbsp;</i>Sign In
-                            </h:link>&nbsp;&nbsp;
-
-                            <!-- Clicking "My Account" displays the Profile.xhtml file -->
-                            <h:link outcome="/CreateAccount" styleClass="arialTen">
-                                <i class="fa fa-user-plus">&nbsp;</i>Create an Account
-                            </h:link>&nbsp;&nbsp;
-                        </c:if>
-
-                    </td>
-                </tr>
-            </table>
-
+                    </ul>
+                </div>
+            </nav>
         </h:form>
+        
 
     </ui:composition>
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
