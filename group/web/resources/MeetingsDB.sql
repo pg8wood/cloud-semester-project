@@ -54,7 +54,7 @@ CREATE TABLE Meeting_Users
         meeting_id INT UNSIGNED NOT NULL,
         PRIMARY KEY (user_id, meeting_id),
         response BOOLEAN,
-        available_times VARCHAR (256),
+        available_times VARCHAR (4000),
         FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
         FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE,
         UNIQUE(user_id, meeting_id)

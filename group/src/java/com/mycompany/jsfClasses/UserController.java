@@ -6,6 +6,7 @@ import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
 import com.mycompany.sessionBeans.UserFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,8 +28,11 @@ public class UserController implements Serializable {
     private com.mycompany.sessionBeans.UserFacade ejbFacade;
     private List<User> items = null;
     private User selected;
+    
+    private ArrayList<String> potentialTimes;
 
     public UserController() {
+        potentialTimes = new ArrayList<>();
     }
 
     public User getSelected() {
@@ -121,11 +125,34 @@ public class UserController implements Serializable {
         return getFacade().findAll();
     }
     
+    
     public void updatePotentialAvailability(String timeslot){
-        System.out.println("/n/n TIMESLOT: " + timeslot + "/n/n");
+        if(potentialTimes != null){
+            if(potentialTimes.contains(timeslot)){
+                potentialTimes.remove(timeslot);
+            } else {
+                potentialTimes.add(timeslot);
+            }
+            System.out.println("TIMES AVAILABLE: " + potentialTimes);
+        }
+    }
+
+    public ArrayList<String> getPotentialTimes() {
+        return potentialTimes;
+    }
+
+    public void setPotentialTimes(ArrayList<String> potentialTimes) {
+        this.potentialTimes = potentialTimes;
     }
     
-
+    public boolean determineAvailabilityPotentialAtTime(String timeslot){
+        if(potentialTimes != null){
+            boolean timeSelected = potentialTimes.contains(timeslot);
+            return timeSelected;
+        }
+        return false;
+    }
+    
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {
 
