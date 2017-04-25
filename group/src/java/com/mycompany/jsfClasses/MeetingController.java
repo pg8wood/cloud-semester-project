@@ -34,23 +34,30 @@ public class MeetingController implements Serializable {
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
 
     @EJB
+    private com.mycompany.sessionBeans.UserFacade userFacade;
+
+    @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
-    
+
     @EJB
     private com.mycompany.sessionBeans.MeetingFileFacade meetingFileFacade;
 
     private List<Meeting> items;
+    private List<Meeting> userSpecificItems;
     private ArrayList<Date> timesForDay;
     private Meeting selected;
     private Date selectedDate;
+    private MeetingUsers mu;
     private boolean isResponding;
 
     public MeetingController() {
         items = null;
+        userSpecificItems = null;
         timesForDay = null;
         selected = null;
         selectedDate = null;
         isResponding = false;
+        mu = null;
     }
 
     public Meeting getSelected() {
@@ -74,7 +81,7 @@ public class MeetingController implements Serializable {
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
     }
-    
+
     public MeetingFileFacade getMeetingFileFacade() {
         return meetingFileFacade;
     }
@@ -82,6 +89,8 @@ public class MeetingController implements Serializable {
     public Meeting prepareCreate() {
         selected = new Meeting();
         initializeEmbeddableKey();
+        User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
+        selected.setOwnerId(user);
         return selected;
     }
 
@@ -89,6 +98,7 @@ public class MeetingController implements Serializable {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            userSpecificItems = null;
         }
     }
 
@@ -101,7 +111,17 @@ public class MeetingController implements Serializable {
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
+            userSpecificItems = null;
+            mu = null;
         }
+    }
+
+    public List<Meeting> getUserSpecificItems() {
+        if (userSpecificItems == null) {
+            //userSpecificItems = getMeetingFacade().findUserSpecificMeetings(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
+            userSpecificItems = getMeetingFacade().getMeetingMyOwnerId(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
+        }
+        return userSpecificItems;
     }
 
     public List<Meeting> getItems() {
@@ -114,9 +134,18 @@ public class MeetingController implements Serializable {
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
+            User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
             try {
                 if (persistAction != PersistAction.DELETE) {
                     getMeetingFacade().edit(selected);
+                    int id = getMeetingFacade().getMeetingMaxId();
+                    List<Integer> invitees = getInviteesId();
+                    for (int i : invitees) {
+                        mu = new MeetingUsers(i, id);
+                        getMeetingUsersFacade().edit(mu);
+                    }
+                    mu = new MeetingUsers(user.getId(), id);
+                    getMeetingUsersFacade().edit(mu);
                 } else {
                     getMeetingFacade().remove(selected);
                 }
@@ -137,6 +166,22 @@ public class MeetingController implements Serializable {
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
+    }
+
+    public List<Integer> getInviteesId() {
+        String invitees = selected.getInvitees();
+        invitees = invitees.replace(" ", "");
+        String[] inviteeArray = invitees.split(",");
+
+        int userId;
+        List<Integer> userIds = new ArrayList<Integer>();
+        for (String i : inviteeArray) {
+            if (userFacade.findByUsername(i) != null) {
+                userId = userFacade.findByUsername(i).getId();
+                userIds.add(userId);
+            }
+        }
+        return userIds;
     }
 
     public Meeting getMeeting(java.lang.Integer id) {
@@ -170,7 +215,7 @@ public class MeetingController implements Serializable {
     public void setIsResponding(boolean isResponding) {
         this.isResponding = isResponding;
     }
-    
+
     public boolean shouldHideTimeForMeeting(Meeting meeting) {
         return meeting.equals(this.selected);
     }
@@ -188,9 +233,8 @@ public class MeetingController implements Serializable {
         } else {
             System.out.println("Date set to NULL!!!");
         }
-        
+
         //return "MyMeetings.xhtml?faces-redirect=true";
-       
     }
 
     public boolean shouldRenderRepeat() {
@@ -262,9 +306,9 @@ public class MeetingController implements Serializable {
 
             if (newTimesForDay.size() > 0) {
                 timesForDay = newTimesForDay;
-                        
+
             }
-   
+
             System.out.printf("\n\nNumber of times for day %s in list: %d", day.toString(), timesForDay.size());
             System.out.println(times.toString());
         }

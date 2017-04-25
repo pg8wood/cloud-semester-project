@@ -25,8 +25,8 @@ public final class Constants {
      */
     //public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage/";
     //public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/PhotoStorage/";
-    public static final String FILES_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\FileStorage\\";
-    public static final String PHOTOS_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\PhotoStorage\\";
+    public static final String FILES_ABSOLUTE_PATH = "C:\\Users\\Jason\\MeetingStorage\\FileStorage\\";
+    public static final String PHOTOS_ABSOLUTE_PATH = "C:\\Users\\Jason\\MeetingStorage\\PhotoStorage\\";
 
     /*
 Windows OS Users should use the following: 

@@ -10,7 +10,6 @@ import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.Stateless;
@@ -45,7 +44,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      */
     public void deserializeTimeslots(Meeting meeting) {
         dateList = new ArrayList();
-        
+
         Scanner serializedStringScan = new Scanner(meeting.getTimeslots());
         serializedStringScan.useDelimiter(",");
 
@@ -125,55 +124,53 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
                 return 0;
         }
     }
-    
+
     /**
-     * Gets a String representation of the meeting's time 
-     * 
+     * Gets a String representation of the meeting's time
+     *
      * @param meetingDate the date of the meeting to examine
      * @return String the meeting's time in String format
      */
     public String getMeetingString(Date meetingDate) {
         StringBuilder sb = new StringBuilder();
-        
-       if (meetingDate.getHours() > 12) {
-           sb.append(Integer.toString(meetingDate.getHours()))
-                   .append(":")
-                   .append(String.format("%02d", meetingDate.getMinutes()))
-                   .append(" AM");
-       }
-       else {
-           sb.append(Integer.toString(meetingDate.getHours() % 12))
-                   .append(":")
-                   .append(String.format("%02d", meetingDate.getMinutes()))
-                   .append(" PM");
-       }
-       
-       return sb.toString();
+
+        if (meetingDate.getHours() > 12) {
+            sb.append(Integer.toString(meetingDate.getHours()))
+                    .append(":")
+                    .append(String.format("%02d", meetingDate.getMinutes()))
+                    .append(" AM");
+        } else {
+            sb.append(Integer.toString(meetingDate.getHours() % 12))
+                    .append(":")
+                    .append(String.format("%02d", meetingDate.getMinutes()))
+                    .append(" PM");
+        }
+
+        return sb.toString();
     }
-    
+
     /**
      * Gets all the available timeslots for a given meeting.
-     * 
+     *
      * @param meeting The meeting to examine
      * @return ArrayList<Date> the list of available timeslots
      */
     public ArrayList<Date> getTimeslotsForMeeting(Meeting meeting) {
         deserializeTimeslots(meeting);
-        return (ArrayList<Date>)dateList;
+        return (ArrayList<Date>) dateList;
     }
-    
+
     /**
      * Gets all the participants for a given meeting.
-     * 
+     *
      * @param meeting The meeting to examine
      * @return ArrayList<User> the list of users participating
      */
-    public ArrayList<User> getParticipantList(Meeting meeting){
+    public ArrayList<User> getParticipantList(Meeting meeting) {
         int meetingId = meeting.getId();
-        List<MeetingUsers> meetingUsers = (List<MeetingUsers>)getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
+        List<MeetingUsers> meetingUsers = (List<MeetingUsers>) getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
         ArrayList<User> participantList = new ArrayList<User>();
-        for (MeetingUsers x : meetingUsers)
-        {
+        for (MeetingUsers x : meetingUsers) {
             participantList.add(x.getUser());
         }
         return participantList;
@@ -194,16 +191,58 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     public void setSelectedDate(Date selectedDate) {
         this.selectedDate = selectedDate;
     }
-    
-    
 
     /**
      * Gets a specified meeting that a user is a part of
+     *
      * @param id the meeting's id
      * @return Meeting the meeting
      */
     public Meeting getMeetingById(int id) {
         return ((Meeting) getEntityManager().createNamedQuery("Meeting.findById").setParameter("id", id).getSingleResult());
+    }
+
+    /**
+     * Gets a meeting with maximum id
+     *
+     * @return Meeting the meeting
+     */
+    public int getMeetingMaxId() {
+        try {
+            getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult();
+        } catch (Exception ex) {
+            return -1;
+        }
+        return ((Long) getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult()).intValue();
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return List of Meetings that belongs to the user
+     */
+    public List<Meeting> getMeetingMyOwnerId(User user) {
+        return ((List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList());
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return max id of meeting that user owns
+     */
+    public int getMaxIdOfOwner(User user) {
+        List<Meeting> list = (List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList();
+
+        int max = -1;
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getId() > max) {
+                max = list.get(i).getId();
+            }
+        }
+
+        return max;
     }
 
 }
