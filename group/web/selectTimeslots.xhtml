@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Created by Osman Balci on 2016.05.30 
+Copyright © 2016 Osman Balci. All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <!--
+        ********************************************
+        Dialog pop-up window to CREATE a new company
+        ********************************************
+        -->
+        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" modal="true" resizable="false" 
+                  appendTo="@(body)" header="Add Timeslots">
+
+            <h:form id="TimeslotSelectForm" styleClass="ui-datatable-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
+                        <p:outputLabel for="datetime" value="Datetime:" />
+                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        <h:outputText value="Add Timeslot" />
+                    </p:panelGrid>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <p:spacer height="10"/>
+                    <div align="center">
+                        <!-- SAVE button -->
+                        <p:commandButton value="updateTime" actionListener="#{meetingController.updateTime}" icon="ui-icon-check" />
+                        &nbsp;
+                        <!-- CANCEL button -->
+                        <p:commandButton value="#{bundle.Cancel}" onclick="PF('TimeslotSelectDlg').hide()"    
+                                         styleClass="commandButton" icon="ui-icon-cancel" />
+                    </div>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+    </ui:composition>
+</html>

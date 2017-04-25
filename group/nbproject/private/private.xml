@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jason/Documents/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/managers/Constants.java</file>
+            <file>file:/C:/Users/Jason/Documents/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingFacade.java</file>
             <file>file:/C:/Users/Jason/Documents/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingController.java</file>
+            <file>file:/C:/Users/Jason/Documents/NetBeansProjects/cloud-semester-project/group/web/Create.xhtml</file>
+            <file>file:/C:/Users/Jason/Documents/NetBeansProjects/cloud-semester-project/group/web/MeetingList.xhtml</file>
         </group>
     </open-files>
 </project-private>

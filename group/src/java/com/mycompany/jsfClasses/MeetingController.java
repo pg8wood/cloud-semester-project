@@ -49,6 +49,9 @@ public class MeetingController implements Serializable {
     private Date selectedDate;
     private MeetingUsers mu;
     private boolean isResponding;
+    private Date startTime;
+    private Date endTime;
+    private List<String> tsArray;
 
     public MeetingController() {
         items = null;
@@ -91,6 +94,7 @@ public class MeetingController implements Serializable {
         initializeEmbeddableKey();
         User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
         selected.setOwnerId(user);
+        tsArray = new ArrayList<String>();
         return selected;
     }
 
@@ -99,6 +103,8 @@ public class MeetingController implements Serializable {
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
             userSpecificItems = null;
+            mu = null;
+            tsArray = new ArrayList<String>();
         }
     }
 
@@ -113,6 +119,7 @@ public class MeetingController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
             userSpecificItems = null;
             mu = null;
+            tsArray = new ArrayList<String>();
         }
     }
 
@@ -137,6 +144,7 @@ public class MeetingController implements Serializable {
             User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
             try {
                 if (persistAction != PersistAction.DELETE) {
+                    selected.setTimeslots(makeTimeslotsString());
                     getMeetingFacade().edit(selected);
                     int id = getMeetingFacade().getMeetingMaxId();
                     List<Integer> invitees = getInviteesId();
@@ -182,6 +190,37 @@ public class MeetingController implements Serializable {
             }
         }
         return userIds;
+    }
+
+    public String makeTimeslotsString() {
+        String timeslot = "";
+        for (int i = 0; i < tsArray.size() - 1; i++) {
+            timeslot += tsArray.get(i) + ", ";
+        }
+        if (tsArray.size() > 0) {
+            timeslot += tsArray.get(tsArray.size() - 1);
+        }
+        return timeslot;
+    }
+
+    public void updateTime() {
+        tsArray.add(startTime.toString());
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Meeting getMeeting(java.lang.Integer id) {
