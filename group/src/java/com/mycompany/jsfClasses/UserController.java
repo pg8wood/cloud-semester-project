@@ -120,6 +120,11 @@ public class UserController implements Serializable {
     public List<User> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+    public void updatePotentialAvailability(String timeslot){
+        System.out.println("/n/n TIMESLOT: " + timeslot + "/n/n");
+    }
+    
 
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {

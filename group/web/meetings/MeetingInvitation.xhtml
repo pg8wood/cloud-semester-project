@@ -100,7 +100,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             <div style="height: 3em;">
                                 <label class="switch">
                                     <input type="checkbox" />
-                                    <div class="slider round"></div>
+                                    <div class="slider round" onclick="#{userController.updatePotentialAvailability(timeslot)}"></div>
                                 </label>
                                 &nbsp;
                                 <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
