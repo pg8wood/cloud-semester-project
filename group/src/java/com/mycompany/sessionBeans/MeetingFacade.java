@@ -10,7 +10,6 @@ import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.Stateless;
@@ -74,6 +73,12 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
     public ArrayList<Date> deserializeResponseTimes(String times) {
         ArrayList<Date> dList = new ArrayList();
 
@@ -81,9 +86,15 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         serializedStringScan.useDelimiter(",");
 
         while (serializedStringScan.hasNext()) {
-            Scanner dateScan = new Scanner(serializedStringScan.next());
+            String nextTime = serializedStringScan.next();
+            
+            if (nextTime.equals("")) {
+                return dList;
+            } 
+            
+            Scanner dateScan = new Scanner(nextTime);
             /* Serialized dates are stored in the database in the form: 
-           java.util.Date.toString(),java.util.date.toString,... */
+           java.util.Date.toString(),java.util.date.toString,... */            
             String dayOfWeek = dateScan.next();
             String monthName = dateScan.next();
             int dayNumber = dateScan.nextInt();
@@ -117,11 +128,16 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
                 }
             }
-            //dList.add(new Date(year, getMonthInt(monthName), dayNumber, hour, minute));
-        }
+       }
         return dList;
     }
 
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
     public ArrayList<Date> deserialize(String times) {
         ArrayList<Date> dList = new ArrayList();
 
@@ -153,11 +169,15 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
             dList.add(newDate);
 
-            //dList.add(new Date(year, getMonthInt(monthName), dayNumber, hour, minute));
         }
         return dList;
     }
 
+    /** 
+     * Converts a String day name to its corresponding day number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getDayOfWeekInt(String dayName) {
         switch (dayName) {
             case "Sun":
@@ -179,6 +199,11 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+     /** 
+     * Converts a String month name to its corresponding month number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getMonthInt(String monthName) {
         switch (monthName) {
             case "Jan":

@@ -213,11 +213,6 @@ public class MeetingController implements Serializable {
         } else {
             System.out.println("Date set to NULL!!!");
         }
-
-
-        return "MyMeetings.xhtml?faces-redirect=true";
-
-
     }
 
     public boolean shouldRenderRepeat() {
