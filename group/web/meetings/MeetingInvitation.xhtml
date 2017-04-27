@@ -91,6 +91,10 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                        class="declineLink">
                             <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true"></i>
                             <div class="declineText">Can't go</div>
+
+                            <p:confirm header="Confirmation" 
+                                       message="#{meetingController.getConfirmationMessage(userController.potentialTimes, 'Decline')}" 
+                                       icon="ui-icon-alert" />
                         </p:commandLink>
 
                         <!-- Div that floats left in order to force #horizontalScrollArea
@@ -149,19 +153,17 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <br /><br/>
 
                         <p:commandButton action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes)}"
+                                         ajax='true'
                                          value="Submit all selected times" 
                                          oncomplete="collapseOtherInvitations('-1')"
                                          update="upcomingMeetings, meetingInvitations"
-                                         styleClass="commandButton" />
+                                         styleClass="commandButton" >
+
+                            <p:confirm header="Confirmation" 
+                                       message="#{meetingController.getConfirmationMessage(userController.potentialTimes, 'Accept')}" 
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
                         &nbsp;&nbsp;
-                        <!--                        
-                                                 Hide the invitation after the user has submitted 
-                                                <script type="text/javascript">
-                                                    function hideInvitation(id) {
-                                                        var e = document.getElementById(id);
-                                                        e.innerHTML = '<p>You have submitted your response for this invitation.</p>';
-                                                    }
-                                                </script>-->
                     </p:panel> <!-- .timePanel -->
                 </h:form>
 

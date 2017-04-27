@@ -35,10 +35,11 @@ public class MeetingController implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
-    
+
     @EJB
     private com.mycompany.sessionBeans.MeetingFileFacade meetingFileFacade;
 
+    // Instance fields
     private List<Meeting> items;
     private ArrayList<Date> timesForDay;
     private Meeting selected;
@@ -74,7 +75,7 @@ public class MeetingController implements Serializable {
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
     }
-    
+
     public MeetingFileFacade getMeetingFileFacade() {
         return meetingFileFacade;
     }
@@ -170,7 +171,7 @@ public class MeetingController implements Serializable {
     public void setIsResponding(boolean isResponding) {
         this.isResponding = isResponding;
     }
-    
+
     public boolean shouldHideTimeForMeeting(Meeting meeting) {
         return meeting.equals(this.selected);
     }
@@ -179,7 +180,7 @@ public class MeetingController implements Serializable {
         this.selectedDate = selectedDate;
         this.isResponding = true;
         this.selected = selected;
-        
+
         System.out.println("Selected date set to: " + selectedDate.toString());
 
 //        System.out.println("updating: " + toUpdate);
@@ -190,9 +191,8 @@ public class MeetingController implements Serializable {
         } else {
             System.out.println("Date set to NULL!!!");
         }
-        
+
         //return "MyMeetings.xhtml?faces-redirect=true";
-       
     }
 
     public boolean shouldRenderRepeat() {
@@ -264,9 +264,9 @@ public class MeetingController implements Serializable {
 
             if (newTimesForDay.size() > 0) {
                 timesForDay = newTimesForDay;
-                        
+
             }
-   
+
             System.out.printf("\n\nNumber of times for day %s in list: %d", day.toString(), timesForDay.size());
             System.out.println(times.toString());
         }
@@ -344,6 +344,30 @@ public class MeetingController implements Serializable {
                 return "December";
             default:
                 return "";
+        }
+    }
+
+    /**
+     * Gets the appropriate String for the ConfirmDialog based on how the user
+     * has responded to an invitation.
+     *
+     * @param availableTimes the list of times the user has indicated that they
+     * are available
+     * @param responseType the type of response the user is submitting, either
+     * "Decline" or "Accept"
+     *
+     * @return String the message to show the user
+     */
+    public String getConfirmationMessage(ArrayList<String> availableTimes, String responseType) {
+        if (availableTimes.isEmpty()) {
+            if (responseType.equals("Accept")) {
+                return "You haven't selected any times. If you continue, you are declining this invitation. Are you sure you would like to continue?";
+            }
+            else {
+                return "Are you sure you would like to decline this meeting invitation?";
+            }
+        } else {
+            return "Are you sure you would like to submit all times and days selected?";
         }
     }
 

@@ -126,14 +126,17 @@ public class UserController implements Serializable {
     }
 
     public void updatePotentialAvailability(String timeslot) {
-        if (potentialTimes != null) {
-            if (potentialTimes.contains(timeslot)) {
-                potentialTimes.remove(timeslot);
-            } else {
-                potentialTimes.add(timeslot);
-            }
-            System.out.println("TIMES AVAILABLE: " + potentialTimes);
+        if (potentialTimes == null) {
+            potentialTimes = new ArrayList();
         }
+
+        if (potentialTimes.contains(timeslot)) {
+            potentialTimes.remove(timeslot);
+        } else {
+            potentialTimes.add(timeslot);
+        }
+        System.out.println("TIMES AVAILABLE: " + potentialTimes);
+
     }
 
     public ArrayList<String> getPotentialTimes() {
