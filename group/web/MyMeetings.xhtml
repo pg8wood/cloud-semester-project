@@ -22,8 +22,6 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
         <!-- Create the content for this page below -->
         <ui:define name="editableContent">
             <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
-            
-            <!--<p:growl id="messages" />-->
 
             <div class="sidebarLeft">
                 <div class="sidebarContent">
@@ -35,20 +33,24 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
             <div class="main" align="center">
                 <h1>Invitations</h1>
-                <p:repeat value="#{meetingController.getMeetingInvitations(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getMeetingInvitations(accountManager.selected).size()}" var="meetingInvitation" varStatus="status"> 
-                    <ui:include src="meetings/MeetingInvitation.xhtml"/>
-                    <br />
-                </p:repeat>
+                <h:panelGroup id="meetingInvitations" >
+                    <p:repeat value="#{meetingController.getMeetingInvitations(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getMeetingInvitations(accountManager.selected).size()}" var="meetingInvitation" varStatus="status"> 
+                        <ui:include src="meetings/MeetingInvitation.xhtml"/>
+                        <br />
+                    </p:repeat>
+                </h:panelGroup>
                 <br />
                 <h1>Upcoming Meetings</h1>
-                <p:repeat value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getUpcomingMeetings(accountManager.selected).size()}" var="upcomingMeeting" varStatus="status"> 
-                    <ui:include src="meetings/UpcomingMeeting.xhtml"/>
-                    <br />
-                </p:repeat>
-                
+                <h:panelGroup id="upcomingMeetings">
+                    <p:repeat value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getUpcomingMeetings(accountManager.selected).size()}" var="upcomingMeeting" varStatus="status"> 
+                        <ui:include src="meetings/UpcomingMeeting.xhtml"/>
+                        <br />
+                    </p:repeat>
+                </h:panelGroup>
+
                 <!-- Script for Google Maps -->
                 <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-                
+
             </div>
         </ui:define>
     </ui:composition>

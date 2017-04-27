@@ -1,6 +1,8 @@
 package com.mycompany.jsfClasses;
 
+import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.MeetingUsers;
+import com.mycompany.entityClasses.User;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.PaginationHelper;
 import com.mycompany.sessionBeans.MeetingUsersFacade;
@@ -40,6 +42,10 @@ public class MeetingUsersController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+
+    public void setSelected(User user, Meeting meeting) {
+        current = ejbFacade.getMeetingUser(user, meeting);
     }
 
     private MeetingUsersFacade getFacade() {
@@ -105,6 +111,8 @@ public class MeetingUsersController implements Serializable {
         try {
             current.getMeetingUsersPK().setMeetingId(current.getMeeting().getId());
             current.getMeetingUsersPK().setUserId(current.getUser().getId());
+//            current.getMeetingUsersPK().setAvailableTimes(current.getAvailableTimes());
+            
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersUpdated"));
             return "View";
@@ -198,11 +206,12 @@ public class MeetingUsersController implements Serializable {
     public MeetingUsers getMeetingUsers(com.mycompany.entityClasses.MeetingUsersPK id) {
         return ejbFacade.find(id);
     }
-    
-    
-    public void finalizeMeetingAvailability(ArrayList<String> availability){
+
+    public void finalizeMeetingAvailability(ArrayList<String> availability) {
         String finalTime = String.join(", ", availability);
         current.setAvailableTimes(finalTime);
+        current.setResponse(true);
+        update();
     }
 
     @FacesConverter(forClass = MeetingUsers.class)

@@ -179,6 +179,8 @@ public class MeetingController implements Serializable {
         this.selectedDate = selectedDate;
         this.isResponding = true;
         this.selected = selected;
+        
+        System.out.println("Selected date set to: " + selectedDate.toString());
 
 //        System.out.println("updating: " + toUpdate);
 //        RequestContext context = RequestContext.getCurrentInstance();

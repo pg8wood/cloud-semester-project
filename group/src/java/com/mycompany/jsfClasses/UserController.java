@@ -28,7 +28,7 @@ public class UserController implements Serializable {
     private com.mycompany.sessionBeans.UserFacade ejbFacade;
     private List<User> items = null;
     private User selected;
-    
+
     private ArrayList<String> potentialTimes;
 
     public UserController() {
@@ -124,11 +124,10 @@ public class UserController implements Serializable {
     public List<User> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-    
-    
-    public void updatePotentialAvailability(String timeslot){
-        if(potentialTimes != null){
-            if(potentialTimes.contains(timeslot)){
+
+    public void updatePotentialAvailability(String timeslot) {
+        if (potentialTimes != null) {
+            if (potentialTimes.contains(timeslot)) {
                 potentialTimes.remove(timeslot);
             } else {
                 potentialTimes.add(timeslot);
@@ -144,15 +143,19 @@ public class UserController implements Serializable {
     public void setPotentialTimes(ArrayList<String> potentialTimes) {
         this.potentialTimes = potentialTimes;
     }
-    
-    public boolean determineAvailabilityPotentialAtTime(String timeslot){
-        if(potentialTimes != null){
+
+    public void clearPotentialTimes() {
+        this.potentialTimes = new ArrayList();
+    }
+
+    public boolean determineAvailabilityPotentialAtTime(String timeslot) {
+        if (potentialTimes != null) {
             boolean timeSelected = potentialTimes.contains(timeslot);
             return timeSelected;
         }
         return false;
     }
-    
+
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {
 
