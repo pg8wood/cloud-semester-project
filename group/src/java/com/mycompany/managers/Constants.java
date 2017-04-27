@@ -43,6 +43,7 @@ public final class Constants {
     public static final String FILES_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\FileStorage\\";
     public static final String PHOTOS_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\UserPhotoStorage\\";
 
+
     public static final String FILES_RELATIVE_PATH = "MeetingsStorage/FileStorage/";
     public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
     
@@ -69,10 +70,7 @@ Windows OS Users should use the following:
 //    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
 //    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
 //    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
-   
-    //public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
-    //public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
-    //public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/defaultUserPhoto.png";
+
 
     /*
 Windows OS Users should use the following: 
