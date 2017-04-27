@@ -1,11 +1,10 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Erin Kocis on 2017.04.24  * 
+ * Copyright © 2017 Erin Kocis. All rights reserved. * 
  */
 package com.mycompany.managers;
 
 import com.mycompany.entityClasses.User;
-import com.mycompany.entityClasses.UserPhoto;
 import com.mycompany.sessionBeans.UserFacade;
 import com.mycompany.sessionBeans.UserPhotoFacade;
 import java.awt.image.BufferedImage;
@@ -17,7 +16,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.enterprise.context.SessionScoped;
@@ -31,7 +29,7 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 /**
  *
- * @author Balci
+ * @author Erin
  */
 public class PhotoFileManager implements Serializable {
 
@@ -115,7 +113,7 @@ public class PhotoFileManager implements Serializable {
     Handle User Photo Upload
     ========================
      */
-    public String upload() {
+    public String upload(User user) {
 
         // Check if a file is selected
         if (file.getSize() == 0) {
@@ -169,7 +167,7 @@ public class PhotoFileManager implements Serializable {
             return "";
         }
 
-        storePhotoFile(file);
+        storePhotoFile(file, user);
         message = "";
 
         // Redirect to show the Profile page
@@ -193,7 +191,7 @@ public class PhotoFileManager implements Serializable {
     
     Store the uploaded photo file and its thumbnail version and create a database record 
      */
-    public FacesMessage storePhotoFile(UploadedFile file) {
+    public FacesMessage storePhotoFile(UploadedFile file, User user) {
         try {
             // This sets the necessary flag to ensure the messages are preserved.
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -214,48 +212,47 @@ public class PhotoFileManager implements Serializable {
             inputStream.close();
 
             // Obtain the username of the logged-in user
-            String user_name = (String) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSessionMap().get("username");
-
+            //String user_name = (String) FacesContext.getCurrentInstance()
+            //      .getExternalContext().getSessionMap().get("username");
             // Obtain the object reference of the logged-in User object
-            User user = getUserFacade().findByUsername(user_name);
-
+            //User user = getUserFacade().findByUsername(user_name);
+            //getUserFacade().edit(user);
             // Obtain the uploaded file's MIME file type
             String mimeFileType = file.getContentType();
 
             // If it is an image file, obtain its file extension; otherwise, set png as the file extension anyway.
             String fileExtension = mimeFileType.startsWith("image/") ? mimeFileType.subSequence(6, mimeFileType.length()).toString() : "png";
 
+            //sets the file extension for the photo
+            user.setUserPhoto(fileExtension);
+            getUserFacade().edit(user);
             /*
             Obtain the list of Photo objects that belong to the User whose
             database primary key is user.getId()
              */
-            List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(user.getId());
-
-            if (!photoList.isEmpty()) {
-                // Remove the photo from the database
-                getUserPhotoFacade().remove(photoList.get(0));
-            }
-
+            //List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(user.getId());
+            //if (!photoList.isEmpty()) {
+            // Remove the photo from the database
+            //   getUserPhotoFacade().remove(photoList.get(0));
+            //}
             // Construct a new Photo object with file extension and user's object reference
-            UserPhoto newPhoto = new UserPhoto(fileExtension, user);
-
+            //UserPhoto newPhoto = new UserPhoto(fileExtension, user);
             // Create a record for the new Photo object in the database
-            getUserPhotoFacade().create(newPhoto);
-
+            //getUserPhotoFacade().create(newPhoto);
             // Obtain the object reference of the first Photo object of the
             // user whose primary key is user.getId()
-            UserPhoto photo = getUserPhotoFacade().findPhotosByUserID(user.getId()).get(0);
+            //UserPhoto photo = getUserPhotoFacade().findPhotosByUserID(user.getId()).get(0);
 
             // Reconvert the uploaded file into an input stream of bytes.
             inputStream = file.getInputstream();
 
             // Write the uploaded file's input stream of bytes under the photo object's
             // filename using the inputStreamToFile method given below
-            File uploadedFile = inputStreamToFile(inputStream, photo.getPhotoFilename());
+            //File uploadedFile = inputStreamToFile(inputStream, photo.getPhotoFilename());
+            File uploadedFile = inputStreamToFile(inputStream, user.getUserPhoto());
 
             // Create and save the thumbnail version of the uploaded file
-            saveThumbnail(uploadedFile, photo);
+            saveThumbnail(uploadedFile, user);
 
             // Compose the result message
             resultMsg = new FacesMessage("User's photo file is successfully uploaded!");
@@ -280,7 +277,8 @@ public class PhotoFileManager implements Serializable {
     =====================================================
      */
     /**
-     * @param inputStream of bytes to be written into file with name targetFilename
+     * @param inputStream of bytes to be written into file with name
+     * targetFilename
      * @param targetFilename
      * @return the created file targetFile
      * @throws IOException
@@ -339,7 +337,7 @@ public class PhotoFileManager implements Serializable {
     is created in this method by using the Scalr.resize method provided in the
     imgscalr (Java Image Scaling Library) imported as imgscalr-lib-4.2.jar
      */
-    private void saveThumbnail(File inputFile, UserPhoto inputPhoto) {
+    private void saveThumbnail(File inputFile, User user) {
 
         // This sets the necessary flag to ensure the messages are preserved.
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -364,10 +362,10 @@ public class PhotoFileManager implements Serializable {
             BufferedImage thumbnailPhoto = Scalr.resize(uploadedPhoto, Constants.THUMBNAIL_SIZE);
 
             // Create the thumbnail photo file in CloudStorage/PhotoStorage
-            File thumbnailPhotoFile = new File(Constants.PHOTOS_ABSOLUTE_PATH, inputPhoto.getThumbnailFileName());
+            File thumbnailPhotoFile = new File(Constants.PHOTOS_ABSOLUTE_PATH, user.getThumbnailFileName());
 
             // Write the thumbnailPhoto into thumbnailPhotoFile with the file extension
-            ImageIO.write(thumbnailPhoto, inputPhoto.getExtension(), thumbnailPhotoFile);
+            ImageIO.write(thumbnailPhoto, user.getExtension(), thumbnailPhotoFile);
 
         } catch (IOException e) {
             resultMsg = new FacesMessage("Something went wrong while saving the thumbnail file! See: " + e.getMessage());
@@ -390,38 +388,34 @@ public class PhotoFileManager implements Serializable {
         User signedInUser = getUserFacade().findByUsername(usernameOfSignedInUser);
 
         // Obtain the id (primary key in the database) of the signedInUser object
-        Integer userId = signedInUser.getId();
+        //Integer userId = signedInUser.getId();
 
         /*
         Obtain the list of Photo file objects that belong to the signed-in user whose
         database primary key is userId. The list will contain only one photo or nothing.
          */
-        List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(userId);
+        //List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(userId);
+        //if (!photoList.isEmpty()) {
+        // Obtain the object reference of the first Photo object in the list
+        //UserPhoto photo = photoList.get(0);
+        try {
+            // Delete the photo file from CloudStorage/PhotoStorage
+            Files.deleteIfExists(Paths.get(signedInUser.getPhotoFilePath()));
 
-        if (!photoList.isEmpty()) {
+            // Delete the thumbnail file from CloudStorage/PhotoStorage
+            Files.deleteIfExists(Paths.get(signedInUser.getAbsoluteThumbnailFilePath()));
 
-            // Obtain the object reference of the first Photo object in the list
-            UserPhoto photo = photoList.get(0);
+            // Delete the temporary file from CloudStorage/PhotoStorage
+            Files.deleteIfExists(Paths.get(signedInUser.getTemporaryFilePath()));
 
-            try {
-                // Delete the photo file from CloudStorage/PhotoStorage
-                Files.deleteIfExists(Paths.get(photo.getPhotoFilePath()));
+            // Delete the photo file record from the CloudDriveDB database
+            //getUserPhotoFacade().remove(photo);
+            // UserPhotoFacade inherits the remove() method from AbstractFacade
+        } catch (IOException e) {
+            resultMsg = new FacesMessage("Something went wrong while deleting the photo file! See: " + e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, resultMsg);
 
-                // Delete the thumbnail file from CloudStorage/PhotoStorage
-                Files.deleteIfExists(Paths.get(photo.getThumbnailFilePath()));
-
-                // Delete the temporary file from CloudStorage/PhotoStorage
-                Files.deleteIfExists(Paths.get(photo.getTemporaryFilePath()));
-
-                // Delete the photo file record from the CloudDriveDB database
-                getUserPhotoFacade().remove(photo);
-                // UserPhotoFacade inherits the remove() method from AbstractFacade
-
-            } catch (IOException e) {
-                resultMsg = new FacesMessage("Something went wrong while deleting the photo file! See: " + e.getMessage());
-                FacesContext.getCurrentInstance().addMessage(null, resultMsg);
-            }
         }
-
+        signedInUser.setDefaultUserPhoto();
     }
 }
