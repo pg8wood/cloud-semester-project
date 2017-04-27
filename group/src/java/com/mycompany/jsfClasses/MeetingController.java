@@ -10,6 +10,10 @@ import com.mycompany.sessionBeans.MeetingFileFacade;
 import com.mycompany.sessionBeans.MeetingUsersFacade;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,11 +24,13 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @Named("meetingController")
 @SessionScoped
@@ -44,6 +50,25 @@ public class MeetingController implements Serializable {
     private Meeting selected;
     private Date selectedDate;
     private boolean isResponding;
+    private Date finalDateSelect;
+
+    public Date getFinalDateSelect() {
+        return finalDateSelect;
+    }
+
+    public void setFinalDateSelect(Date finalDateSelect) {
+        this.finalDateSelect = finalDateSelect;
+    }
+
+    public void onDateSelect(SelectEvent event) {
+        setFinalDateSelect((Date) event.getObject());
+        System.out.print("date selected");
+        System.out.print(event.getObject().toString());
+        System.out.print(finalDateSelect.toString());
+        //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+        
+    }
 
     public MeetingController() {
         items = null;
@@ -170,7 +195,7 @@ public class MeetingController implements Serializable {
     public void setIsResponding(boolean isResponding) {
         this.isResponding = isResponding;
     }
-    
+
     public boolean shouldHideTimeForMeeting(Meeting meeting) {
         return meeting.equals(this.selected);
     }
@@ -188,9 +213,6 @@ public class MeetingController implements Serializable {
         } else {
             System.out.println("Date set to NULL!!!");
         }
-        
-        //return "MyMeetings.xhtml?faces-redirect=true";
-       
     }
 
     public boolean shouldRenderRepeat() {
@@ -211,6 +233,7 @@ public class MeetingController implements Serializable {
         for (MeetingUsers invitation : meetingUsers) {
             meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
         }
+        //System.out.print("Invites: " + meetingInvitations.size());
 
         return meetingInvitations;
     }
@@ -230,7 +253,74 @@ public class MeetingController implements Serializable {
             meetingInvitations.add(getMeetingFacade().getMeetingById(invitation.getMeetingUsersPK().getMeetingId()));
         }
 
+        System.out.print(meetingInvitations.size());
         return meetingInvitations;
+    }
+
+    public List<MeetingUsers> getNotResponded(Meeting m) {
+        return getMeetingUsersFacade().getNotResponded(m);
+    }
+
+    /*
+    For the selected meeting m, return all the times people responded they could attend
+     */
+    public ArrayList<Date> getAllAvailableTimes(Meeting m) {
+        List<MeetingUsers> users = getMeetingUsersFacade().getResponded(m);
+        String out = "";
+
+        for (MeetingUsers u : users) {
+            //out += "User id: " + u.getUser().getUsername() + "  Times: " + u.getAvailableTimes() + "   ";
+            out += u.getAvailableTimes() + ",";
+        }
+
+        String in = out.substring(0, out.length() - 1);
+        System.out.print("FIND ME -------------------------------------------");
+        System.out.print(in);
+
+        String mmm = "";
+        ArrayList<Date> d = getMeetingFacade().deserializeResponseTimes(in);
+
+        return d;
+//        for(Date t: d){
+//            System.out.print("Indiv DATE: ");
+//             System.out.print(t.toString());
+//            mmm += t.toString();
+//        }
+//        
+//        //return out.substring(0,out.length()-1);
+//        return mmm;
+    }
+
+    public int findNumYes(Date date, Meeting m) {
+        int yes = 0;
+        List<MeetingUsers> users = getMeetingUsersFacade().getResponded(m);
+
+        String input = "";
+        for (MeetingUsers u : users) {
+            input += u.getAvailableTimes() + ",";
+        }
+
+        input = input.substring(0, input.length() - 1);
+        ArrayList<Date> d = getMeetingFacade().deserialize(input);
+
+        for (Date toCheck : d) {
+            if (toCheck.equals(date)) {
+                yes++;
+            }
+        }
+        return yes;
+    }
+
+    public void updateFinalTime(int id, String time) {
+        Meeting s = getMeetingFacade().getMeetingById(id);
+        setSelected(s);
+        System.out.print("This is selected: " + selected.toString());
+        selected.setFinaltime(time);
+        //getMeetingFacade().edit(selected);
+        update();
+        
+        System.out.print("updating final time");
+//      
     }
 
     /**
@@ -262,9 +352,9 @@ public class MeetingController implements Serializable {
 
             if (newTimesForDay.size() > 0) {
                 timesForDay = newTimesForDay;
-                        
+
             }
-   
+
             System.out.printf("\n\nNumber of times for day %s in list: %d", day.toString(), timesForDay.size());
             System.out.println(times.toString());
         }
