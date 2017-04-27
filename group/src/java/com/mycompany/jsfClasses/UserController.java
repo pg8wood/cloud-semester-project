@@ -7,6 +7,7 @@ import com.mycompany.sessionBeans.UserFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -158,6 +159,18 @@ public class UserController implements Serializable {
         }
         return false;
     }
+    
+    /**
+     * Re
+     * @param d
+     * @return 
+     */
+    public boolean checkboxShouldBeChecked(Date d) {
+//        System.out.println("potential times: " + potentialTimes);
+//        System.out.println("checking for: " + d.toString());
+        return potentialTimes.contains(d.toString());
+    }
+    
 
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {

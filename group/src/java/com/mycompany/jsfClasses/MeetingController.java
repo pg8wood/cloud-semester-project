@@ -195,6 +195,26 @@ public class MeetingController implements Serializable {
         //return "MyMeetings.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Get the selected date as a readable String
+     * 
+     * @return String the date as a string
+     */
+    public String getSelectedDateAsString() {
+        if (selectedDate == null) {
+            return "";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(getDayOfWeek(selectedDate.getDay()))
+                .append(", ")
+                .append(getMonthName(selectedDate.getMonth()))
+                .append(" ")
+                .append(selectedDate.getDate());
+
+        return sb.toString();
+    }
+
     public boolean shouldRenderRepeat() {
         return selectedDate != null;
     }
@@ -353,19 +373,11 @@ public class MeetingController implements Serializable {
      *
      * @param availableTimes the list of times the user has indicated that they
      * are available
-     * @param responseType the type of response the user is submitting, either
-     * "Decline" or "Accept"
-     *
      * @return String the message to show the user
      */
-    public String getConfirmationMessage(ArrayList<String> availableTimes, String responseType) {
+    public String getConfirmationMessage(ArrayList<String> availableTimes) {
         if (availableTimes.isEmpty()) {
-            if (responseType.equals("Accept")) {
-                return "You haven't selected any times. If you continue, you are declining this invitation. Are you sure you would like to continue?";
-            }
-            else {
-                return "Are you sure you would like to decline this meeting invitation?";
-            }
+            return "You haven't selected any times. If you continue, you are declining this invitation. Are you sure you would like to continue?";
         } else {
             return "Are you sure you would like to submit all times and days selected?";
         }

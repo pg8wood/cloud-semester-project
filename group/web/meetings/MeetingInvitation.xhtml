@@ -10,7 +10,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
           xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
           xmlns:h="http://xmlns.jcp.org/jsf/html"
           xmlns:f="http://xmlns.jcp.org/jsf/core"
-          xmlns:p="http://primefaces.org/ui">
+          xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
         <ui:composition>
             <!-- CSS for meetings -->
@@ -93,7 +94,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             <div class="declineText">Can't go</div>
 
                             <p:confirm header="Confirmation" 
-                                       message="#{meetingController.getConfirmationMessage(userController.potentialTimes, 'Decline')}" 
+                                       message="Are you sure you would like to decline this meeting invitation?" 
                                        icon="ui-icon-alert" />
                         </p:commandLink>
 
@@ -107,7 +108,10 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                             <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
                                 <!-- Clicking this link updates the collapsed time panel and displays it -->
-                                <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" onclick="PF('timePanel#{meetingInvitation.id}').expand()" ajax="true" update="@form" >
+                                <p:commandLink class="calendarLink" 
+                                               action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" 
+                                               onclick="PF('timePanel#{meetingInvitation.id}').expand()" 
+                                               ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}" >
                                     <time datetime="" class="icon">
                                         <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
                                         <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
@@ -122,45 +126,52 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                         <br />
                         <hr />
+                     
+                        <p style="text-align: center;">Times for <b>#{meetingController.getSelectedDateAsString()}</b></p>
+                        <p style="text-align: center;">Double click to select a time.</p>
+                       
 
                         <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
-                            <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
+                            <h:panelGroup id="timeGroup#{meetingInvitation.id}" >
+                                <ui:param name="timesForDay" value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" />
+                                <p:repeat value="#{timesForDay}" offset="0" step="1" size="#{timesForDay.size()}" var="timeslot" varStatus="status"> 
 
-                                <!--                            
-                            TODO:
-                                In order to link this to the front end, we need to call
-                            userController.updatePotentialAvailability(timeslot) on the press of a checkbox
-                            and then when we finalize, we call meetinguserscontroller.finalizeMeetingAvailability
-                            and pass it userController.getPotentialTimes().
-                            
-                                -->
+                                    <!-- On/Off switch --> 
+                                    <p:commandLink id="switch#{meetingInvitation.id}"
+                                                   action="#{userController.updatePotentialAvailability(timeslot)}"
+                                                   ajax="true"
+                                                   update="@form" >
+                                        <div style="height: 3em;">
+                                            <label class="switch">
+                                                <ui:fragment rendered="#{userController.checkboxShouldBeChecked(timeslot)}">
+                                                    <input type="checkbox" checked="true"/>
+                                                </ui:fragment>
 
-                                <!-- On/Off switch --> 
-                                <p:commandLink action="#{userController.updatePotentialAvailability(timeslot)}" >
-                                    <div style="height: 3em;">
-                                        <label class="switch">
-                                            <input type="checkbox" />
-                                            <div class="slider round"></div>
-                                        </label>
-                                        &nbsp;
-                                        <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
-                                    </div>
-                                </p:commandLink>
-
-                            </p:repeat>
+                                                <ui:fragment rendered="#{!userController.checkboxShouldBeChecked(timeslot)}">
+                                                    <input type="checkbox"/>
+                                                </ui:fragment>
+                                                <div class="slider round"></div>
+                                            </label>
+                                            &nbsp;
+                                            <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}" />
+                                        </div>
+                                    </p:commandLink>
+                                </p:repeat>
+                            </h:panelGroup>
                         </p:panelGrid>
 
                         <br /><br/>
 
+                        <!-- Submit button -->
                         <p:commandButton action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes)}"
                                          ajax='true'
                                          value="Submit all selected times" 
                                          oncomplete="collapseOtherInvitations('-1')"
-                                         update="upcomingMeetings, meetingInvitations"
+                                         update="upcomingMeetings, meetingInvitations, @form"
                                          styleClass="commandButton" >
 
                             <p:confirm header="Confirmation" 
-                                       message="#{meetingController.getConfirmationMessage(userController.potentialTimes, 'Accept')}" 
+                                       message="Are you sure you would like to submit all selected dates and times?" 
                                        icon="ui-icon-alert" />
                         </p:commandButton>
                         &nbsp;&nbsp;
@@ -168,7 +179,6 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 </h:form>
 
             </div> <!-- #meetingWrapper -->
-
 
         </ui:composition>
     </html>
