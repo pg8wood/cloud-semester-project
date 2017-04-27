@@ -111,8 +111,6 @@ public class MeetingUsersController implements Serializable {
         try {
             current.getMeetingUsersPK().setMeetingId(current.getMeeting().getId());
             current.getMeetingUsersPK().setUserId(current.getUser().getId());
-//            current.getMeetingUsersPK().setAvailableTimes(current.getAvailableTimes());
-            
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersUpdated"));
             return "View";
@@ -208,7 +206,13 @@ public class MeetingUsersController implements Serializable {
     }
 
     public void finalizeMeetingAvailability(ArrayList<String> availability) {
-        String finalTime = String.join(", ", availability);
+        String finalTime;
+        if (availability.isEmpty()) {
+            finalTime = "";
+        } else {
+            finalTime = String.join(", ", availability);
+        }
+        
         current.setAvailableTimes(finalTime);
         current.setResponse(true);
         update();

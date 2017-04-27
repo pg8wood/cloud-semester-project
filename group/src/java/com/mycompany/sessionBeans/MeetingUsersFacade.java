@@ -40,7 +40,10 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      * @return List the list of meetings
      */
     public List<MeetingUsers> getMeetingInvitations(User user) {
-        return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse").setParameter("userId", user.getId()).setParameter("response", false).getResultList();
+        return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse")
+                .setParameter("userId", user.getId())
+                .setParameter("response", false)
+                .getResultList();
     }
 
     /**
@@ -50,7 +53,12 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      * @return List the list of meetings
      */
     public List<MeetingUsers> getUpcomingMeetings(User user) {
-        return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse").setParameter("userId", user.getId()).setParameter("response", true).getResultList();
+//        return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse").setParameter("userId", user.getId()).setParameter("response", true).getResultList();
+        return getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response AND m.availableTimes != :emptyString")
+                .setParameter("userId", user.getId())
+                .setParameter("response", true)
+                .setParameter("emptyString", "")
+                .getResultList();
     }
 
     /**
@@ -61,7 +69,10 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      * @return
      */
     public MeetingUsers getMeetingUser(User user, Meeting meeting) {
-        return (MeetingUsers) (getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :user AND m.meetingUsersPK.meetingId  = :meeting").setParameter("user", user.getId()).setParameter("meeting", meeting.getId()).getSingleResult());
+        return (MeetingUsers) (getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :user AND m.meetingUsersPK.meetingId  = :meeting")
+                .setParameter("user", user.getId())
+                .setParameter("meeting", meeting.getId())
+                .getSingleResult());
     }
 
 }
