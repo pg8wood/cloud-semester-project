@@ -73,6 +73,111 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
+    public ArrayList<Date> deserializeResponseTimes(String times) {
+        ArrayList<Date> dList = new ArrayList();
+
+        Scanner serializedStringScan = new Scanner(times);
+        serializedStringScan.useDelimiter(",");
+
+        while (serializedStringScan.hasNext()) {
+            String nextTime = serializedStringScan.next();
+            
+            if (nextTime.equals("")) {
+                return dList;
+            } 
+            
+            Scanner dateScan = new Scanner(nextTime);
+            /* Serialized dates are stored in the database in the form: 
+           java.util.Date.toString(),java.util.date.toString,... */            
+            String dayOfWeek = dateScan.next();
+            String monthName = dateScan.next();
+            int dayNumber = dateScan.nextInt();
+
+            // Time is stored in the form HH:MM:SS
+            Scanner timeScan = new Scanner(dateScan.next());
+            timeScan.useDelimiter(":");
+            int hour = timeScan.nextInt();
+            int minute = timeScan.nextInt();
+            // No need to store seconds
+
+            // Skip time zone
+            dateScan.next();
+
+            int year = dateScan.nextInt() - 1900;
+
+            // Store the parsed Dates into the list
+            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+            if (dList.isEmpty()) {
+                dList.add(newDate);
+            } else {
+                for (int i = 0; i < dList.size(); i++) {
+
+                    if (dList.get(i).equals(newDate)) {
+                        break;
+                    } else {
+                        if (i == dList.size() - 1) {
+                            dList.add(newDate);
+                        }
+                    }
+
+                }
+            }
+       }
+        return dList;
+    }
+
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
+    public ArrayList<Date> deserialize(String times) {
+        ArrayList<Date> dList = new ArrayList();
+
+        Scanner serializedStringScan = new Scanner(times);
+        serializedStringScan.useDelimiter(",");
+
+        while (serializedStringScan.hasNext()) {
+            Scanner dateScan = new Scanner(serializedStringScan.next());
+            /* Serialized dates are stored in the database in the form: 
+           java.util.Date.toString(),java.util.date.toString,... */
+            String dayOfWeek = dateScan.next();
+            String monthName = dateScan.next();
+            int dayNumber = dateScan.nextInt();
+
+            // Time is stored in the form HH:MM:SS
+            Scanner timeScan = new Scanner(dateScan.next());
+            timeScan.useDelimiter(":");
+            int hour = timeScan.nextInt();
+            int minute = timeScan.nextInt();
+            // No need to store seconds
+
+            // Skip time zone
+            dateScan.next();
+
+            int year = dateScan.nextInt() - 1900;
+
+            // Store the parsed Dates into the list
+            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+
+            dList.add(newDate);
+
+        }
+        return dList;
+    }
+
+    /** 
+     * Converts a String day name to its corresponding day number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getDayOfWeekInt(String dayName) {
         switch (dayName) {
             case "Sun":
@@ -94,6 +199,11 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+     /** 
+     * Converts a String month name to its corresponding month number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getMonthInt(String monthName) {
         switch (monthName) {
             case "Jan":
