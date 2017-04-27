@@ -47,6 +47,11 @@ Sidebar styles
     margin: 20px;
 }
 
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+    background: #a4acba !important;
+}
+
 /* fixed sidebar applied dynamtically with JS */ 
 .fixed {  position: fixed; top: 0; }
 

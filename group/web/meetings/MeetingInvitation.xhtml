@@ -67,6 +67,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                         <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" >
                             <!--<h:form id="test#{meetingInvitation.id}">-->
+
                             <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
                                 <!-- On/Off switch --> 
                                     <div class="switch green lighten-4">

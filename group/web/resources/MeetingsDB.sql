@@ -42,7 +42,8 @@ CREATE TABLE Meeting
         FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
         topic VARCHAR(64),
         description VARCHAR(256),
-        timeslots VARCHAR (256)
+        timeslots VARCHAR (256),
+        finaltime VARCHAR (256)
 );
 
 CREATE TABLE Meeting_Users
@@ -71,17 +72,19 @@ INSERT INTO User (username, password, first_name, middle_name, last_name, addres
 ('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'Gandalf.jpg'),
 ('p', 'p', 'Patrick', 'Eugene', 'Gatewood', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'penguin.png');
 
-INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots) VALUES
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992,Sat Jan 12 02:45:00 EET 1992,Sat Jan 12 05:00:00 EET 1992'),
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
-('900 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meeting!', '5: This is a meeting to test functionality', 'Fri Jan 10 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992');
+
+INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots, finaltime) VALUES
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', 'Sat Jan 12 02:00:00 EET 1992'),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992' ,''),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992' ,''),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992' ,''),
+('900 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meeting!', '5: This is a meeting to test functionality', 'Fri Jan 10 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992' ,'');
+
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUES 
-('1', '1', TRUE, ''),
+('1', '1', TRUE, 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992'),
 ('2', '1', FALSE, ''),
-('3', '1', TRUE, ''),
+('3', '1', TRUE, 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
 ('3', '2', TRUE, ''),
 ('3', '3', FALSE, ''),
 ('3', '4', FALSE, ''),
