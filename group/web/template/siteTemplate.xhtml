@@ -75,12 +75,13 @@ Copyright © 2017 Osman Balci. All rights reserved.
         -->
         <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon" />
         
-        <!--Import Google Icon Font-->
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" />
 
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        
+        
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
@@ -93,12 +94,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
     
-        <script>
-            $(document).ready(function(){
-                $('.parallax').parallax();
-                $('select').material_select();
-            });
-        </script>
+        
         <div id="page" class="grey lighten-3">  
             <!-- 
             The Site Template page layout design consists of three components:
@@ -113,11 +109,25 @@ Copyright © 2017 Osman Balci. All rights reserved.
             Changes made in the header component will show up automatically with all pages created 
             based on this siteTemplate for the entire site, achieving great maintainability.
             -->
+            
             <div id="header" class="green lighten-1">
                 <ui:insert name="header" >
                     <ui:include src="headerTemplate.xhtml" />
                 </ui:insert>
             </div>
+            
+            <script>
+                $(document).ready(function(){
+                    $('.parallax').parallax();
+                    $('select').material_select();
+                    // Initialize collapse button
+                    $('.button-collapse').sideNav({
+                        menuWidth: 300, // Default is 300
+                        edge: 'right', // Choose the horizontal origin
+                      }
+                    );
+                });
+            </script>
 
             <!--
             The ui:insert tag is a templating tag that declares a named content element
@@ -138,15 +148,16 @@ Copyright © 2017 Osman Balci. All rights reserved.
             -->
             
             
-            <div class="parallax-container" style="height: 250px;">
+<!--            <div class="parallax-container" style="height: 250px;">
                 <div class="parallax" style="z-index: 0;">
                     <img src="https://i.groupme.com/1191x670.jpeg.612bc0b921154c15bbccec953bc4d2a3.large"
                          style="display: block; transform: translate3d(-50%, 383px, 0px)" />
                 </div>
-            </div>
+            </div>-->
             <div class="section white">
                 <div id="editableContent">
                     <ui:insert name="editableContent" >
+                        
                         <ui:include src="contentTemplate.xhtml" />
                     </ui:insert>
                 </div>

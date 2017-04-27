@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +54,32 @@ public class MeetingController implements Serializable {
     private boolean isResponding;
     private Date finalDateSelect;
 
+    public List<Meeting> getUpcomingMeetingsAfterToday(User user) throws ParseException{
+        if(user != null){
+            List<MeetingUsers> meetingusers = getMeetingUsersFacade().getUpcomingMeetings(user);
+            List<Meeting> response = new ArrayList<>();
+            Date today = new Date();
+            for(MeetingUsers mu : meetingusers){
+                Meeting m = mu.getMeeting();
+                if(m.isFinalized()){
+                    DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    try{
+                        
+                        Date meetingDate = formatter.parse(m.getFinaltime());
+                        if(meetingDate.after(today)){
+                            response.add(m);
+                        }
+                    } catch (ParseException e){
+                        System.out.println("ERROR PARSING DATE");
+                    }
+
+                }
+            }
+            return response;
+        }
+        return null;
+    }
+    
     public Date getFinalDateSelect() {
         return finalDateSelect;
     }
