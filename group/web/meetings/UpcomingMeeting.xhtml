@@ -23,8 +23,6 @@ Copyright © 2017 Erin Kocis. All rights reserved.
         </h:head>
 
 
-
-
         <div id="meetingTop#{upcomingMeeting.id}" class="meetingWrapper" align="center">
             <!-- Upcoming Meeting box -->
             <div style="text-align:center">
@@ -33,15 +31,13 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             </div>
 
 
-
-
 <!--            <p>Total invited #{upcomingMeeting.getUserCollection().size()}</p>
             <p>When people can:   #{meetingController.getAllAvailableTimes(upcomingMeeting)}</p>
             <p>Who's a flake #{meetingController.getNotResponded(upcomingMeeting).size()}</p>
             <p>Final Time #{upcomingMeeting.getFinaltime()}</p>-->
 
             <p:panel id="horizontalScroll#{upcomingMeeting.id}" styleClass="horizontalScrollArea" header="Owner Actions" toggleable="true" collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
-                <h:form id="finalize">
+                <h:form id="finalize" rendered="#{!upcomingMeeting.isFinalized()}">
                     <p:outputLabel value="Finalize Meeting Time "/>
 
                     <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
@@ -53,25 +49,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         &nbsp;     
                     </div>
 
-<!--                    <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
-                        <div style="float: left;"></div>
-                        <p:panel class="dayPanel#{upcomingMeeting.id}" styleClass="noBorderPanel">
 
-                            <h:outputText value="#{timeslot.getHours()}:#{timeslot.getMinutes()}" style="font-weight:bolder"/>
-                            <time datetime="" class="icon">
-
-                                <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
-                                <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
-                                <span>#{timeslot.getDate()}</span>
-
-                            </time>
-                            &nbsp;
-                            <div>
-                                <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
-                            </div>
-                        </p:panel>
-
-                    </p:repeat>-->
                     <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
 
                         <!-- Get list of times for the selected meetingInvitation -->
@@ -100,7 +78,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                         </p:repeat>
                         <div>
-
+                            <br></br>
                             <h:outputText value="Total Number Invited: #{upcomingMeeting.getUserCollection().size()}" style="font-weight:bolder"/>
                             <br></br>
                             <h:outputText value="Yet To Respond: #{meetingController.getNotResponded(upcomingMeeting).size()}" style="font-weight:bolder"/>
@@ -110,8 +88,15 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     </p:scrollPanel>
 
                 </h:form>
+                <h:form id="ownFinal" rendered="#{upcomingMeeting.isFinalized()}">
+                    <h:outputText value="You set the final meeting time for:"/>
+                    <br></br>
+                    <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder"/>
+                </h:form>
                 <hr />
+
             </p:panel>
+
 
             <p:panelGrid columns="3" styleClass="transparentBackground" style="background-color:#a4acba;" layout="grid">
 
@@ -120,10 +105,13 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <br />
                     #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a>
                 <h:outputText value="#{upcomingMeeting.description}" style="font-weight:bolder"/>
-                <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+
+                <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder" rendered="#{upcomingMeeting.isFinalized()}"/>
+                <h:outputText value="Final Time Not Yet Set" style="font-weight: bolder" rendered="#{!upcomingMeeting.isFinalized()}"/>
 
 
             </p:panelGrid>
+            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
 
 
 
@@ -228,7 +216,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:panel>
                     </h:form>
                 </div>
-                
+
                 <hr/>
 
                 <!-- Location portion -->
@@ -303,9 +291,9 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 </script>
                 <!-- End Google Maps panel -->
 
-                <div align="right">
-                    <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
-                </div>
+
+                <p:commandButton widgetVar="collapseButton" value="See Less" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').close()" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').enable()" styleClass="commandButton"/>
+
             </p:panel>
         </div> <!-- #meetingWrapper -->
 

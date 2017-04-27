@@ -226,6 +226,10 @@ public class Meeting implements Serializable {
     public void setFinaltime(String finaltime) {
         this.finaltime = finaltime;
     }
+    
+    public boolean isFinalized(){
+        return finaltime != null && finaltime.length() > 20;
+    }
 
     @Override
     public int hashCode() {
