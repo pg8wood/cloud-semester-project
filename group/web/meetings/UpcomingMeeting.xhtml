@@ -45,7 +45,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     </p:calendar>
 
                     <div align="center">
-                        <p:commandButton actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save"/>
+                        <p:commandButton actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save" ajax="false"/>
                         &nbsp;     
                     </div>
 
