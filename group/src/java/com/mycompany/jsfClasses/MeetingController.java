@@ -43,10 +43,11 @@ public class MeetingController implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
-    
+
     @EJB
     private com.mycompany.sessionBeans.MeetingFileFacade meetingFileFacade;
 
+    // Instance fields
     private List<Meeting> items;
     private ArrayList<Date> timesForDay;
     private Meeting selected;
@@ -95,7 +96,6 @@ public class MeetingController implements Serializable {
         System.out.print(finalDateSelect.toString());
         //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
-        
     }
 
     public MeetingController() {
@@ -127,7 +127,7 @@ public class MeetingController implements Serializable {
     private MeetingUsersFacade getMeetingUsersFacade() {
         return meetingUsersFacade;
     }
-    
+
     public MeetingFileFacade getMeetingFileFacade() {
         return meetingFileFacade;
     }
@@ -232,15 +232,26 @@ public class MeetingController implements Serializable {
         this.selectedDate = selectedDate;
         this.isResponding = true;
         this.selected = selected;
+    }
 
-//        System.out.println("updating: " + toUpdate);
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        context.update(toUpdate + ":timePanel");
-        if (selectedDate != null) {
-            System.out.printf("Date set to %s", selectedDate.toString());
-        } else {
-            System.out.println("Date set to NULL!!!");
+    /**
+     * Get the selected date as a readable String
+     *
+     * @return String the date as a string
+     */
+    public String getSelectedDateAsString() {
+        if (selectedDate == null) {
+            return "";
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(getDayOfWeek(selectedDate.getDay()))
+                .append(", ")
+                .append(getMonthName(selectedDate.getMonth()))
+                .append(" ")
+                .append(selectedDate.getDate());
+
+        return sb.toString();
     }
 
     public boolean shouldRenderRepeat() {
@@ -309,14 +320,6 @@ public class MeetingController implements Serializable {
         ArrayList<Date> d = getMeetingFacade().deserializeResponseTimes(in);
 
         return d;
-//        for(Date t: d){
-//            System.out.print("Indiv DATE: ");
-//             System.out.print(t.toString());
-//            mmm += t.toString();
-//        }
-//        
-//        //return out.substring(0,out.length()-1);
-//        return mmm;
     }
 
     public int findNumYes(Date date, Meeting m) {
@@ -344,11 +347,9 @@ public class MeetingController implements Serializable {
         setSelected(s);
         System.out.print("This is selected: " + selected.toString());
         selected.setFinaltime(time);
-        //getMeetingFacade().edit(selected);
         update();
-        
+
         System.out.print("updating final time");
-//      
     }
 
     /**
@@ -382,9 +383,6 @@ public class MeetingController implements Serializable {
                 timesForDay = newTimesForDay;
 
             }
-
-            System.out.printf("\n\nNumber of times for day %s in list: %d", day.toString(), timesForDay.size());
-            System.out.println(times.toString());
         }
 
         return timesForDay;
@@ -460,6 +458,22 @@ public class MeetingController implements Serializable {
                 return "December";
             default:
                 return "";
+        }
+    }
+
+    /**
+     * Gets the appropriate String for the ConfirmDialog based on how the user
+     * has responded to an invitation.
+     *
+     * @param availableTimes the list of times the user has indicated that they
+     * are available
+     * @return String the message to show the user
+     */
+    public String getConfirmationMessage(ArrayList<String> availableTimes) {
+        if (availableTimes.isEmpty()) {
+            return "You haven't selected any times. If you continue, you are declining this invitation. Are you sure you would like to continue?";
+        } else {
+            return "Are you sure you would like to submit all times and days selected?";
         }
     }
 
