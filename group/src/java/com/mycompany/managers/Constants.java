@@ -1,12 +1,12 @@
 /*
- * Created by Erin Kocis on 2017.04.24  * 
- * Copyright © 2017 Erin Kocis. All rights reserved. * 
+ * Created by Osman Balci on 2017.01.28  * 
+ * Copyright © 2017 Osman Balci. All rights reserved. * 
  */
 package com.mycompany.managers;
 
 /**
  *
- * @author Erin
+ * @author Balci
  */
 public final class Constants {
 
@@ -23,31 +23,9 @@ public final class Constants {
         for the storage and retrieval of user's files.
     
      */
-    
-    //for server deployment
-    //public static final String FILES_ABSOLUTE_PATH = "/home/cloudsd/Kocis/CloudStorage/FileStorage/";
-    //public static final String PHOTOS_ABSOLUTE_PATH = "/home/cloudsd/Kocis/CloudStorage/PhotoStorage/";
-    
-    /*
-    In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
-    Alternate Document Root directory with the following statement:
-        
-        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
-    
-    Relative path is defined with respect to the Alternate Document Root starting with 'CloudStorage'.
-     */
-
-    
-    //public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage/";
-    //public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/PhotoStorage/";
-    public static final String FILES_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\FileStorage\\";
-    public static final String PHOTOS_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\UserPhotoStorage\\";
-
-    public static final String FILES_RELATIVE_PATH = "MeetingsStorage/FileStorage/";
-    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
-    
-    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "UserPhotoStorage\\defaultUserPhoto.png";
-    public static final String DEFAULT_PHOTO_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\UserPhotoStorage\\defaultUserPhoto.png";
+    public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage/";
+    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/PhotoStorage/";
+  
     /*
 Windows OS Users should use the following: 
     public static final String FILES_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\FileStorage\\";  
@@ -69,7 +47,9 @@ Windows OS Users should use the following:
 //    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
 //    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
 //    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
-
+    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
+    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
+    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/defaultUserPhoto.png";
 
     /*
 Windows OS Users should use the following: 
