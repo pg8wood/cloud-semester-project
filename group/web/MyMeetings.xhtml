@@ -22,32 +22,27 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
         <!-- Create the content for this page below -->
         <ui:define name="editableContent">
-            <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
-<<<<<<< HEAD
-            
-            
-                        <!--<p:growl id="messages" />-->
-=======
+            <script>
+                $(document).ready(function(){
+                    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+                    $('.modal').modal();
+                    $('.collapsible').collapsible();
+                });
+            </script>
+            <!--<h:outputStylesheet library="css" name="myMeetingsStyles.css" />-->
+
 
             <h:form id="growlForm">
                 <!-- Growl that shows messages to the user -->
                 <p:growl id="growl" life="5000" /> 
             </h:form>
->>>>>>> master
-
-<!--            
-            OLD SIDEBAR
-            <div class="sidebarLeft amber darken-2">
-                <div class="sidebarContent">
-                    <br />
-                    <a href="Calendar.xhtml">My Calendar</a>
-                </div>
-            </div>
-            <script src="resources/js/navbarScroller.js"></script>
-
--->
+            
+            
 
             <div class="main" align="center">
+                
+                
+                
                 <h1>Invitations</h1>
                 <h:panelGroup id="meetingInvitations" >
                     <ui:param name="meetingInvitations" value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />

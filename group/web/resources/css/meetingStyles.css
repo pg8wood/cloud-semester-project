@@ -4,12 +4,12 @@ Composed by Patrick Gatewood on April 8, 2017.
 *********************************************/
 
 /* Style for the meeting card */
-/*.meetingWrapper {
+.meetingWrapper {
     background-color: #c8e6c9;
     border-radius: 20px;
     overflow: hidden;
     padding: 10px;
-}*/
+}
 
 /* Horizontally-scrollable area */
 div .horizontalScrollArea {
@@ -110,18 +110,18 @@ https://www.w3schools.com/howto/howto_css_switch.asp
 }
 
 /* The switch - the box around the slider */
-/*.switch {
+.switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-}*/
+}
 
 /* Hide default HTML checkbox */
-/*.switch input {display:none;}*/
+.switch input {display:none;}
 
 /* The slider */
-/*.slider {
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -166,7 +166,7 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
-}*/
+}
 
 /*
 ----------------------------

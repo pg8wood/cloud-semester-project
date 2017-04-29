@@ -14,6 +14,42 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
           xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
         <ui:composition>
+            
+            <!--WIREFRAME-->
+            <div id="invitationWireFrame">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel green lighten-1">
+                                <h2 class="center indigo-text text-darken-4">Meeting Topic</h2>
+                                <p class="indigo-text text-darken-4 center">
+                                    Meeting Description is here.
+                                </p>
+                                
+                                <a class="btn indigo darken-4 respond-button">Respond</a>
+                                <!--Replace Respond button With This-->
+                                <div class="card-panel green lighten-2">
+                                    <h3 class="indigo-text text-darken-4">When can you attend?</h3>
+                                    <p class="center indigo-text text-darken-4">List Of Calendars are here</p>
+                                    <div class="card-panel green lighten-3">
+                                        <form class="center">
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" id="test5" />
+                                                    <label for="test5" class="indigo-text text-darken-4">2:00</label>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="test6" />
+                                                    <label for="test6" class="indigo-text text-darken-4">3:00</label>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--END WIREFRAME-->
             <!-- CSS for meetings -->
             <h:head>
                 <h:outputStylesheet library="css" name="meetingStyles.css" />
