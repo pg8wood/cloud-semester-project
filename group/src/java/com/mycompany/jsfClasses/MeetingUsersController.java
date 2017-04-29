@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -212,6 +213,9 @@ public class MeetingUsersController implements Serializable {
         } else {
             finalTime = String.join(", ", availability);
         }
+        
+        // Update the growl message
+        FacesContext context = FacesContext.getCurrentInstance();
         
         current.setAvailableTimes(finalTime);
         current.setResponse(true);

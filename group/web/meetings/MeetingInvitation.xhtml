@@ -88,14 +88,14 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <p:commandLink actionListener="#{userController.clearPotentialTimes()}"
                                        action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes)}"
                                        oncomplete="collapseOtherInvitations('-1')"
-                                       update="meetingInvitations"
+                                       update="meetingInvitations :growlForm:growl"
                                        class="declineLink">
                             <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true"></i>
                             <div class="declineText">Can't go</div>
 
                             <p:confirm header="Confirmation" 
                                        message="Are you sure you would like to decline this meeting invitation?" 
-                                       icon="ui-icon-alert" />
+                                       icon="ui-icon-alert"/>
                         </p:commandLink>
 
                         <!-- Div that floats left in order to force #horizontalScrollArea
@@ -167,7 +167,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                          ajax='true'
                                          value="Submit all selected times" 
                                          oncomplete="collapseOtherInvitations('-1')"
-                                         update="upcomingMeetings, meetingInvitations, @form"
+                                         update="upcomingMeetings, meetingInvitations, @form, :growlForm:growl"
                                          styleClass="commandButton" >
 
                             <p:confirm header="Confirmation" 

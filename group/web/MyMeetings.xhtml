@@ -24,6 +24,11 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
         <ui:define name="editableContent">
             <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
 
+            <h:form id="growlForm">
+                <!-- Growl that shows messages to the user -->
+                <p:growl id="growl" life="5000" /> 
+            </h:form>
+
             <div class="sidebarLeft">
                 <div class="sidebarContent">
                     <br />
@@ -40,7 +45,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <c:if test="#{meetingInvitations.size() == 0}" >
                         You have no new meeting invitations. 
                     </c:if>
-                    
+
                     <c:if test="#{meetingInvitations.size() != 0}" >
                         <p:repeat value="#{meetingInvitations}" offset="0" step="1" size="#{meetingInvitations.size()}" var="meetingInvitation" varStatus="status"> 
                             <ui:include src="meetings/MeetingInvitation.xhtml"/>
@@ -66,18 +71,18 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         </p:repeat>
                     </c:if>
                 </h:panelGroup>
-                
+
                 <p:confirmDialog id="confirmDialogBox" global="true" showEffect="fade" hideEffect="fade">
-                                    <div align="center">
-                                        <!-- The value of the first button listed below will be shown as 
-                                        highlighted (default action) when displayed -->
-                                        <p:commandButton value="No" type="button" 
-                                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                        &nbsp;
-                                        <p:commandButton value="Yes" type="button" 
-                                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                    </div>
-                                </p:confirmDialog>
+                    <div align="center">
+                        <!-- The value of the first button listed below will be shown as 
+                        highlighted (default action) when displayed -->
+                        <p:commandButton value="No" type="button" 
+                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        &nbsp;
+                        <p:commandButton value="Yes" type="button" 
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </div>
+                </p:confirmDialog>
 
                 <!-- Script for Google Maps -->
                 <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
