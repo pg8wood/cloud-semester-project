@@ -18,7 +18,7 @@
     -->
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
   
     <!-- This enables you to insert comments within a panel grid -->
@@ -49,11 +49,20 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     
-    
+    <!-- File upload -->
     <context-param>
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>auto</param-value>
     </context-param>
+    
+    <filter>
+        <filter-name>Login Filter</filter-name>
+        <filter-class>com.mycompany.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Login Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
   
     <!-- The session-timeout element defines the time in minutes after which the user's
     session expires. If session-timeout is set to 0 or less, the user's session never expires.

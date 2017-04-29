@@ -44,13 +44,23 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
     , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
+    
 
 })
 public class Meeting implements Serializable {
 
+    @OneToMany(mappedBy = "meetingId")
+    private Collection<MeetingFile> meetingFileCollection;
+
     @Size(max = 256)
     @Column(name = "timeslots")
     private String timeslots;
+    
+    @Size(max = 256)
+    @Column(name = "finaltime")
+    private String finaltime;
+
+    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
     private List<MeetingUsers> meetingUsersList;
@@ -78,7 +88,7 @@ public class Meeting implements Serializable {
     @NotNull
     @Size(min = 1, max = 2)
     @Column(name = "state")
-    private String state; 
+    private String state;
     @Basic(optional = false)
     @NotNull
     @Column(name = "zipcode")
@@ -97,7 +107,6 @@ public class Meeting implements Serializable {
 
 //    // Instance fields
 //    private HashMap<Calendar, List<String>> timesByDateMap;
-
     public Meeting() {
 //        timesByDateMap = new HashMap<>();
     }
@@ -118,57 +127,6 @@ public class Meeting implements Serializable {
     // ----------------
     // Instance methods 
     // ----------------
-    
-    /**
-     * Gets the meeting's timeslots and de-serializes them
-     */
-//    public void deserializeTimeslots() {
-//        timesByDateMap = new HashMap<>();
-//        Scanner dateScanner = new Scanner(getTimeslots());
-//        dateScanner.useDelimiter(";");
-//
-//        // Iterate over timeslot String getting dates
-//        while (dateScanner.hasNext()) {
-//            List<String> timesList = new ArrayList();
-//            Scanner timeScanner = new Scanner(dateScanner.next());
-//            timeScanner.useDelimiter(",");
-//
-//            // Create a Calendar object to serve as the HashMap Key
-//            String dateString = timeScanner.next();
-//            Scanner dateScan = new Scanner(dateString);
-//            dateScan.useDelimiter("-");
-//            Calendar calendarDate = Calendar.getInstance();
-//            
-//            // dateString format is YYYY-MM-DD
-//            calendarDate.set(dateScan.nextInt(), dateScan.nextInt(), dateScan.nextInt());
-//            
-//            // Store the times
-//            while (timeScanner.hasNext()) {
-//                timesList.add(timeScanner.next());
-//            }
-//
-//            // Map the calendarDate to the list of times
-//            timesByDateMap.put(calendarDate, timesList);
-//        }
-//    }
-    
-//    /**
-//     * Gets a Calendar object's string representation in the format YYYY-MM-DD
-//     * 
-//     * @param calendarDate the Calendar object to interpret
-//     * @return String the string representation of the Calendar object
-//     */
-//    public String getCalendarString(Calendar calendarDate) {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(Integer.toString(calendarDate.YEAR));
-//        sb.append("-");
-//        sb.append(Integer.toString(calendarDate.MONTH));
-//        sb.append("-");
-//        sb.append(Integer.toString(calendarDate.DAY_OF_MONTH));
-//        
-//        return sb.toString();
-//    }
-
     // -------------------
     // Setters and getters
     // -------------------
@@ -252,18 +210,26 @@ public class Meeting implements Serializable {
     public void setOwnerId(User ownerId) {
         this.ownerId = ownerId;
     }
+    
+    public int getRealOwnerId(){
+        return ownerId.getId();
+    }
+    
+    public boolean isOwner(int id){
+        return ownerId.getId() == id;
+    }
+    
+    public String getFinaltime() {
+        return finaltime;
+    }
 
-//    public HashMap<Calendar, List<String>> getTimesByDateMap() {
-//        if (timesByDateMap == null) {
-//            deserializeTimeslots();
-//        }
-//        
-//        return timesByDateMap;
-//    }
-//
-//    public void setTimesByDateMap(HashMap<Calendar, List<String>> timesByDateMap) {
-//        this.timesByDateMap = timesByDateMap;
-//    }
+    public void setFinaltime(String finaltime) {
+        this.finaltime = finaltime;
+    }
+    
+    public boolean isFinalized(){
+        return finaltime != null && finaltime.length() > 20;
+    }
 
     @Override
     public int hashCode() {
@@ -305,6 +271,38 @@ public class Meeting implements Serializable {
 
     public void setTimeslots(String timeslots) {
         this.timeslots = timeslots;
+    }
+
+    @XmlTransient
+    public Collection<MeetingFile> getMeetingFileCollection() {
+        return meetingFileCollection;
+    }
+
+    public void setMeetingFileCollection(Collection<MeetingFile> meetingFileCollection) {
+        this.meetingFileCollection = meetingFileCollection;
+    }
+
+    /**
+     * Gets the meeting's whole address
+     * 
+     * @return String the meeting's whole address in the format
+     * 123 Drillfield Drive Blacksburg, VA
+     */
+    public String getFullAddress() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(address1).append(" ");
+        
+        // Address line 2 is not required, so it may be null
+        if (address2 != null) {
+            sb.append(address2).append(" ");
+        }
+
+        sb.append(city)
+                .append(", ")
+                .append(state);
+
+        return sb.toString();
     }
 
 }

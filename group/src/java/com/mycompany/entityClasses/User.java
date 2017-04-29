@@ -13,6 +13,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.mail.MessagingException;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,6 +58,9 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 
 public class User implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<MeetingUsers> meetingUsersCollection;
 
     @JoinTable(name = "Meeting_Users", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
@@ -315,17 +319,81 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getUserPhoto() {
-        return userPhoto;
+    
+    public void setUserPhoto(String extension) {
+        this.userPhoto = getId() + "." + extension;
     }
 
+    public void setDefaultUserPhoto() {
+        this.userPhoto = "defaultUserPhoto.png";
+    }
+
+    public String getExtension() {
+        String ext = this.userPhoto;
+        ext = ext.substring(getId().toString().length() + 1);
+        return ext;
+    }
+
+    /*
+    User's photo image file is named as "userId.fileExtension", e.g., 5.jpg for user with id 5.
+    Since the user can have only one photo, this makes sense.
+     */
+    public String getUserPhoto() {        
+        return this.userPhoto;
+    }
+
+    /*
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
     }
+<<<<<<< HEAD
 
     public String getUserPhotoFilePath() {
         return Constants.PHOTOS_RELATIVE_PATH + this.userPhoto;
+=======
+     */
+    public String getUserPhotoFilePath() {
+        return Constants.PHOTOS_RELATIVE_PATH + getUserPhoto();
+    }
+
+    /*
+    public void setThumbnailFileName(String thumbnailFileName) {
+        this.thumbnailFileName = thumbnailFileName;
+    }
+     */
+
+ /*
+    The thumbnail photo image size is set to 200x200px in Constants.java as follows:
+    public static final Integer THUMBNAIL_SIZE = 200;
+    
+    If the user uploads a large photo file, we will scale it down to THUMBNAIL_SIZE
+    and use it so that the size is reasonable for performance reasons.
+    
+    The photo image scaling is properly done by using the imgscalr-lib-4.2.jar file.
+    
+    The thumbnail file is named as "userId_thumbnail.fileExtension", 
+    e.g., 5_thumbnail.jpg for user with id 5.
+     */
+    public String getThumbnailFileName() {
+        //getExtension()
+        return "thumbnail_" + this.userPhoto;
+    }
+
+    public String getRelativeThumbnailFilePath() {
+        return Constants.PHOTOS_RELATIVE_PATH + getThumbnailFileName();
+    }
+
+    public String getPhotoFilePath() {
+        //getPhotoFilename
+        return Constants.PHOTOS_ABSOLUTE_PATH + getUserPhoto();
+    }
+
+    public String getAbsoluteThumbnailFilePath() {
+        return Constants.PHOTOS_ABSOLUTE_PATH + getThumbnailFileName();
+    }
+
+    public String getTemporaryFilePath() {
+        return Constants.PHOTOS_ABSOLUTE_PATH + "tmp_file";
     }
 
     // The @XmlTransient annotation is used to resolve potential name collisions
@@ -384,6 +452,13 @@ public class User implements Serializable {
         return true;
     }
 
+    public boolean equalID(User u){
+        System.out.print("checking");
+        if(id == u.id){
+            System.out.print("true");
+        }
+        return (id == u.id);
+    }
     /**
      * @return the String representation of a User id
      */
@@ -507,6 +582,15 @@ public class User implements Serializable {
 
     public void setMeetingCollection1(Collection<Meeting> meetingCollection1) {
         this.meetingCollection1 = meetingCollection1;
+    }
+
+    @XmlTransient
+    public Collection<MeetingUsers> getMeetingUsersCollection() {
+        return meetingUsersCollection;
+    }
+
+    public void setMeetingUsersCollection(Collection<MeetingUsers> meetingUsersCollection) {
+        this.meetingUsersCollection = meetingUsersCollection;
     }
 
 }
