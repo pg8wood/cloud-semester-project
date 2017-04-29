@@ -4,10 +4,10 @@
  */
 
 SET FOREIGN_KEY_CHECKS=0; 
-DROP TABLE User; 
-DROP TABLE Meeting; 
-DROP TABLE Meeting_Users;
-DROP TABLE MeetingFile;
+DROP TABLE IF EXISTS User; 
+DROP TABLE IF EXISTS Meeting; 
+DROP TABLE IF EXISTS Meeting_Users;
+DROP TABLE IF EXISTS MeetingFile;
 SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE User
@@ -43,7 +43,7 @@ CREATE TABLE Meeting
         topic VARCHAR(64),
         description VARCHAR(256),
         timeslots VARCHAR (256),
-        invitees VARCHAR (256)
+        invitees VARCHAR (256),
         finaltime VARCHAR (256)
 );
 
