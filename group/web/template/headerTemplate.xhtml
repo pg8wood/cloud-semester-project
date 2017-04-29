@@ -51,11 +51,6 @@ Copyright © 2017 Osman Balci. All rights reserved.
                                 </h:link>
                             </li>
                             <li>
-                                <h:link outcome="/MeetingList" class="indigo-text text-darken-4">
-                                    <i class="fa fa-user">&nbsp;</i>My Meetings
-                                </h:link>
-                            </li> 
-                            <li>
                                 <h:link outcome="/Profile" class="indigo-text text-darken-4">
                                     <i class="fa fa-user">&nbsp;</i>My Account
                                 </h:link>
@@ -91,6 +86,13 @@ Copyright © 2017 Osman Balci. All rights reserved.
                         </div>
                     </li>
                 </div>
+                <li>
+                    <a class="btn indigo darken-4">Create Meeting</a>
+                </li>
+                <li>
+                    <h:link outcome="/MeetingList" class="btn indigo darken-4">Meetings I Own
+                    </h:link> 
+                </li>
                 <p class='indigo-text text-darken-4 center'><b>Upcoming Meetings</b></p>
                     
                     <c:forEach items="#{meetingController.getUpcomingMeetingsAfterToday(accountManager.selected)}" var='meeting'>
@@ -100,10 +102,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
                             </div>
                         </li>
                         <li>
-                            <a class="subheader center">#{meeting.topic}</a>  
-                        </li>
-                        <li>
-                            <p class='center indigo-text text-darken-4'>#{meeting.finaltime}</p>
+                            <a class="btn indigo darken-4 center">#{meeting.topic}</a>  
                         </li>
                     </c:forEach>
             </c:if>
