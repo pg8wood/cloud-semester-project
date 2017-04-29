@@ -7,7 +7,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -22,8 +23,11 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
         <!-- Create the content for this page below -->
         <ui:define name="editableContent">
             <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
-            
-            <!--<p:growl id="messages" />-->
+
+            <h:form id="growlForm">
+                <!-- Growl that shows messages to the user -->
+                <p:growl id="growl" life="5000" /> 
+            </h:form>
 
             <div class="sidebarLeft">
                 <div class="sidebarContent">
@@ -35,20 +39,53 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
             <div class="main" align="center">
                 <h1>Invitations</h1>
-                <p:repeat value="#{meetingController.getMeetingInvitations(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getMeetingInvitations(accountManager.selected).size()}" var="meetingInvitation" varStatus="status"> 
-                    <ui:include src="meetings/MeetingInvitation.xhtml"/>
-                    <br />
-                </p:repeat>
+                <h:panelGroup id="meetingInvitations" >
+                    <ui:param name="meetingInvitations" value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />
+
+                    <c:if test="#{meetingInvitations.size() == 0}" >
+                        You have no new meeting invitations. 
+                    </c:if>
+
+                    <c:if test="#{meetingInvitations.size() != 0}" >
+                        <p:repeat value="#{meetingInvitations}" offset="0" step="1" size="#{meetingInvitations.size()}" var="meetingInvitation" varStatus="status"> 
+                            <ui:include src="meetings/MeetingInvitation.xhtml"/>
+                            <br />
+                        </p:repeat>
+                    </c:if>
+                </h:panelGroup>
                 <br />
                 <h1>Upcoming Meetings</h1>
-                <p:repeat value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" offset="0" step="1" size="#{meetingController.getUpcomingMeetings(accountManager.selected).size()}" var="upcomingMeeting" varStatus="status"> 
-                    <ui:include src="meetings/UpcomingMeeting.xhtml"/>
-                    <br />
-                </p:repeat>
-                
+                <h:panelGroup id="upcomingMeetings">
+                    <ui:param name="upcomingMeetings" value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" />
+
+                    <!-- User has no upcoming meetings -->
+                    <c:if test="#{upcomingMeetings.size() == 0}" >
+                        Woo-hoo! You have no upcoming meetings.
+                    </c:if>
+
+                    <!-- Display the user's upcoming meetings, if they exist -->
+                    <c:if test="#{upcomingMeetings.size() != 0}" >
+                        <p:repeat value="#{upcomingMeetings}" offset="0" step="1" size="#{upcomingMeetings.size()}" var="upcomingMeeting" varStatus="status"> 
+                            <ui:include src="meetings/UpcomingMeeting.xhtml"/>
+                            <br />
+                        </p:repeat>
+                    </c:if>
+                </h:panelGroup>
+
+                <p:confirmDialog id="confirmDialogBox" global="true" showEffect="fade" hideEffect="fade">
+                    <div align="center">
+                        <!-- The value of the first button listed below will be shown as 
+                        highlighted (default action) when displayed -->
+                        <p:commandButton value="No" type="button" 
+                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        &nbsp;
+                        <p:commandButton value="Yes" type="button" 
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </div>
+                </p:confirmDialog>
+
                 <!-- Script for Google Maps -->
                 <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-                
             </div>
         </ui:define>
     </ui:composition>
