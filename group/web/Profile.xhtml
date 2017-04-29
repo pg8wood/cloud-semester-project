@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Created by Osman Balci on 2017.01.28
-Copyright © 2017 Osman Balci. All rights reserved.
+Created by Erin Kocis on 2017.04.25
+Copyright © 2017 Erin Kocis. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -57,6 +57,13 @@ Copyright © 2017 Osman Balci. All rights reserved.
                                     <!-- EDIT PROFILE -->
                                     <h:link outcome="EditAccount">
                                         <i class="fa fa-pencil-square-o">&nbsp;</i>Edit Profile
+                                    </h:link>
+                                </li>
+                                
+                                <li class="verticalMenuItem"> 
+                                    <!-- CHANGE PHOTO -->
+                                    <h:link outcome="ChangePhoto">
+                                        <i class="fa fa-file-image-o">&nbsp;</i>Change Photo
                                     </h:link>
                                 </li>
 
@@ -121,6 +128,8 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
                             <h2> #{accountManager.selected.firstName} #{accountManager.selected.lastName}'s Account Profile </h2>
 
+                            <!-- USER'S PROFILE PHOTO -->
+                            <h:graphicImage class="profilePhoto" value="#{accountManager.selected.getRelativeThumbnailFilePath()}" />
                             <br />
                             <br />
                             <p:panelGrid columns="2" columnClasses="profileColumn1, profileColumn2" >

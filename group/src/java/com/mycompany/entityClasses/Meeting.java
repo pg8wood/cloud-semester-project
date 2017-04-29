@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
     , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
+    
 
 })
 public class Meeting implements Serializable {
@@ -54,6 +55,12 @@ public class Meeting implements Serializable {
     @Size(max = 256)
     @Column(name = "timeslots")
     private String timeslots;
+    
+    @Size(max = 256)
+    @Column(name = "finaltime")
+    private String finaltime;
+
+    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
     private List<MeetingUsers> meetingUsersList;
@@ -202,6 +209,26 @@ public class Meeting implements Serializable {
 
     public void setOwnerId(User ownerId) {
         this.ownerId = ownerId;
+    }
+    
+    public int getRealOwnerId(){
+        return ownerId.getId();
+    }
+    
+    public boolean isOwner(int id){
+        return ownerId.getId() == id;
+    }
+    
+    public String getFinaltime() {
+        return finaltime;
+    }
+
+    public void setFinaltime(String finaltime) {
+        this.finaltime = finaltime;
+    }
+    
+    public boolean isFinalized(){
+        return finaltime != null && finaltime.length() > 20;
     }
 
     @Override

@@ -53,7 +53,6 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      * @return List the list of meetings
      */
     public List<MeetingUsers> getUpcomingMeetings(User user) {
-//        return getEntityManager().createNamedQuery("MeetingUsers.findByUserIdAndResponse").setParameter("userId", user.getId()).setParameter("response", true).getResultList();
         return getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response AND m.availableTimes != :emptyString")
                 .setParameter("userId", user.getId())
                 .setParameter("response", true)
@@ -73,6 +72,16 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
                 .setParameter("user", user.getId())
                 .setParameter("meeting", meeting.getId())
                 .getSingleResult());
+    }
+
+    public List<MeetingUsers> getNotResponded(Meeting meeting) {
+        return getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meeting.getId()).setParameter("response", false).getResultList();
+
+    }
+
+    public List<MeetingUsers> getResponded(Meeting meeting) {
+        return getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meeting.getId()).setParameter("response", true).getResultList();
+
     }
 
 }
