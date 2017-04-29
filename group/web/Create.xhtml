@@ -68,11 +68,6 @@ Copyright ⓒ 2016 Osman Balci. All rights reserved.
                                      title="Description" required="true" 
                                      requiredMessage="Description field is required!"/>
 
-                        <p:outputLabel for="datetime" value="Datetime:" />
-                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm:ss" stepMinute="30"/>
-                        <h:outputText value="Add Timeslot" />
-                        <p:commandButton value="updateTime" action="#{meetingController.updateTime}" icon="ui-icon-check" />
-
                     </p:panelGrid>
                 </h:panelGroup>
 
@@ -80,10 +75,9 @@ Copyright ⓒ 2016 Osman Balci. All rights reserved.
                     <p:spacer height="10"/>
                     <div align="center">
                         <!-- SAVE button -->
-                        <p:commandButton actionListener="#{meetingController.create}" value="#{bundle.Save}" 
-                                         styleClass="commandButton" icon="ui-icon-disk" ajax="false"
-                                         update="display,:MeetingListForm:datalist,:growl" 
-                                         oncomplete="handleSubmit(args,'MeetingCreateDialog');"/>
+                        <p:commandButton id="selectTimeslot"   icon="ui-icon-search" value="Select Timeslot" 
+                                         styleClass="commandButton" update=":TimeslotSelectForm" 
+                                         oncomplete="PF('TimeslotSelectDialog').show()"/>
                         &nbsp;
                         <!-- CANCEL button -->
                         <p:commandButton value="#{bundle.Cancel}" onclick="PF('MeetingCreateDialog').hide()"    
