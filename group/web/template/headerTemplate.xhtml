@@ -22,6 +22,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
     <ui:composition>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
         <h:form>
             <nav class="green lighten-1" role="navigation">
                 <div class="nav-wrapper">
@@ -54,7 +55,12 @@ Copyright © 2017 Osman Balci. All rights reserved.
                                 <h:link outcome="/Profile" class="indigo-text text-darken-4">
                                     <i class="fa fa-user">&nbsp;</i>My Account
                                 </h:link>
-                            </li>      
+                            </li>
+                            <li>
+                                <h:link outcome="/Calendar" class="indigo-text text-darken-4">
+                                    <i class="fa fa-calendar">&nbsp;</i>Calendar
+                                </h:link>
+                            </li>
                         </c:if>
                         <c:if test="#{accountManager.isLoggedIn() == false}">
                             <li>
@@ -107,6 +113,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
                     </c:forEach>
             </c:if>
       </ul>
+    
     </ui:composition>
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 

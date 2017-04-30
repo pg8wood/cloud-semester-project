@@ -7,7 +7,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -125,10 +126,32 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                         <!-- The second <td> contains the USER PROFILE DATA -->
                         <td align="center" valign="top">
+                            
+                            <div class="col s12 m8 offset-m2 l6 offset-l3">
+                                <div class="card-panel grey lighten-5 z-depth-1">
+                                    <div class="row valign-wrapper">
+                                        <div class="col s2">
+                                            <img src="#{accountManager.selected.getRelativeThumbnailFilePath()}" alt="" class="circle responsive-img" /> <!-- notice the "circle" class -->
+                                        </div>
+                                        <div class="col s10">
+                                            <h2 class="indigo-text text-darken-4">#{accountManager.selected.firstName} #{accountManager.selected.lastName}</h2>
+                                            <c:if test="#{accountManager.selected.address2 == null}">
+                                                <p class="indigo-text text-darken-4">Location: #{accountManager.selected.address1} #{accountManager.selected.city}, #{accountManager.selected.state} #{accountManager.selected.zipcode}</p>
+                                            </c:if>
+                                            <c:if test="#{accountManager.selected.address2 != null}">
+                                                <p class="indigo-text text-darken-4">Location: #{accountManager.selected.address1}, #{accountManager.selected.address2}, #{accountManager.selected.city}, #{accountManager.selected.state} #{accountManager.selected.zipcode}</p>
+                                            </c:if>
+                                            <p class="indigo-text text-darken-4">Email: #{accountManager.selected.email}</p>
+                                            <p class="indigo-text text-darken-4">Username: #{accountManager.selected.username}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
 
-                            <h2> #{accountManager.selected.firstName} #{accountManager.selected.lastName}'s Account Profile </h2>
+<!--                            <h2> #{accountManager.selected.firstName} #{accountManager.selected.lastName}'s Account Profile </h2>
 
-                            <!-- USER'S PROFILE PHOTO -->
+                             USER'S PROFILE PHOTO 
                             <h:graphicImage class="profilePhoto" value="#{accountManager.selected.getRelativeThumbnailFilePath()}" />
                             <br />
                             <br />
@@ -164,7 +187,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                 <h:outputText value="#{bundle.ViewUserLabel_username}"/>
                                 <h:outputText value="#{accountManager.selected.username}" />
 
-                            </p:panelGrid>
+                            </p:panelGrid>-->
 
                         </td>
                     </tr>

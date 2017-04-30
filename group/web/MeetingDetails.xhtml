@@ -8,19 +8,35 @@
 
     <ui:composition>
 
-        <p:dialog id="MeetingDetailsDlg" widgetVar="MeetingDetailsDialog" modal="true" resizable="false" appendTo="@(body)" header="Meeting">
+        <p:dialog id="MeetingDetailsDlg" widgetVar="MeetingDetailsDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="Meeting Details" class="grey lighten-3">
             <h:form id="MeetingDetailsForm">
-                <h:panelGrid id="eventDetails" columns="2">
-                <h:outputLabel for="title" value="Title:" />
-                <h:outputText id="title" value="#{calendarManager.event.title}" style="color: black"/>
-
-                <h:outputLabel for="from" value="From:" />
-                <h:outputText id="from" value="#{calendarManager.event.startDate}" style="color: black"/>
-
-                <h:outputLabel for="to" value="To:" />
-                <h:outputText id="to" value="#{calendarManager.event.endDate}" style="color: black"/>
-
-            </h:panelGrid>
+                <div class="row">
+                    <div class="col s2">
+                        <p class="indigo-text text-darken-4">Title: </p>
+                    </div>
+                    <div class="col s9">
+                        <p class="indigo-text text-darken-4">#{calendarManager.event.title}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s2">
+                        <p class="indigo-text text-darken-4">Start: </p>
+                    </div>
+                    <div class="col s10">
+                        <p class="indigo-text text-darken-4">#{calendarManager.event.startDate}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s2">
+                        <p class="indigo-text text-darken-4">End: </p>
+                    </div>
+                    <div class="col s10">
+                        <p class="indigo-text text-darken-4">#{calendarManager.event.endDate}</p>
+                    </div>
+                </div>
+                
             </h:form>
         </p:dialog>
         
