@@ -10,11 +10,13 @@ package com.mycompany.managers;
  * @author Jeff
  */
 import com.mycompany.entityClasses.Meeting;
+import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
@@ -45,19 +47,16 @@ public class CalendarManager implements Serializable {
     @EJB
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
 
-    public Date getRandomDate(Date base) {
-        Calendar date = Calendar.getInstance();
-        date.setTime(base);
-        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
+    private Collection<Meeting> meetingsList;
+    
+    private Meeting selectedMeeting = new Meeting();
 
-        return date.getTime();
+    public Meeting getSelectedMeeting() {
+        return selectedMeeting;
     }
 
-    public Date getInitialDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), Calendar.FEBRUARY, calendar.get(Calendar.DATE), 0, 0, 0);
-
-        return calendar.getTime();
+    public void setSelectedMeeting(Meeting selectedMeeting) {
+        this.selectedMeeting = selectedMeeting;
     }
 
     public ScheduleModel getEventModel() {
@@ -75,8 +74,8 @@ public class CalendarManager implements Serializable {
                     if (user.getMeetingCollection().isEmpty()) {
                         System.out.print("no meetings");
                     } else {
-                        
-                        for (Meeting m : user.getMeetingCollection()) {
+                        meetingsList = user.getMeetingCollection();
+                        for (Meeting m : meetingsList) {
                             System.out.print(m.getDescription());
                             Meeting updatedM = meetingFacade.getMeetingById(m.getId());
                             
@@ -132,9 +131,32 @@ public class CalendarManager implements Serializable {
     public void onEventSelect(SelectEvent selectEvent) {
 
         event = (ScheduleEvent) selectEvent.getObject();
-
+        
+        for(Meeting m: meetingsList){
+            if(event.getTitle().equals(m.getTopic())){
+                selectedMeeting = m;
+                break;
+            }
+        }
+       
     }
     
+    public String getSelectedParticipants(){
+        String out = "";
+        
+        Collection<MeetingUsers> participants = selectedMeeting.getMeetingUsersList();
+        if(participants == null || participants.size() < 1){
+            return out;
+        }
+        for(MeetingUsers u: participants){
+            out += u.getUser().getFirstName() + " " + u.getUser().getLastName() + ", ";
+            
+        }
+        
+        return out.substring(1,out.length());
+    }
+    
+   
     public void onDateSelect(SelectEvent selectEvent) {
 
     }
