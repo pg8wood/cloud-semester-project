@@ -53,6 +53,7 @@ public class MeetingController implements Serializable {
     private List<Meeting> userSpecificItems;
     private ArrayList<Date> timesForDay;
     private Meeting selected;
+    private Meeting lastMeetingCreated;
     private Date selectedDate;
     private MeetingUsers mu;
     private boolean isResponding;
@@ -83,6 +84,7 @@ public class MeetingController implements Serializable {
         userSpecificItems = null;
         timesForDay = null;
         selected = null;
+        lastMeetingCreated = null;
         selectedDate = null;
         isResponding = false;
         mu = null;
@@ -124,6 +126,7 @@ public class MeetingController implements Serializable {
     }
 
     public void create() {
+        lastMeetingCreated = selected;
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -146,6 +149,16 @@ public class MeetingController implements Serializable {
             mu = null;
             tsArray = new ArrayList<String>();
         }
+    }
+    
+    /**
+     * Destroys the most recently-created meeting. 
+     */
+    public void destroyLast() {
+        System.out.println("destroying last");
+        selected = getMeetingFacade().getMeetingById(getMeetingFacade().getMeetingMaxId());
+        System.out.println(selected.toString());
+        destroy();
     }
 
     public List<Meeting> getUserSpecificItems() {
@@ -242,17 +255,22 @@ public class MeetingController implements Serializable {
         if (startTime == null) {
             resultMessage = new FacesMessage("Please select a time first!");
             resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-        }
-        else if (!tsArray.contains(startTime.toString())) {
+        } else if (!tsArray.contains(startTime.toString())) {
             tsArray.add(startTime.toString());
-             resultMessage = new FacesMessage("Added new time.");
-        }
-        else {
+            resultMessage = new FacesMessage("Added new time.");
+        } else {
             resultMessage = new FacesMessage("You have already added this time!");
             resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
         }
 
         FacesContext.getCurrentInstance().addMessage(null, resultMessage);
+    }
+    
+    /**
+     * Removes all selected times
+     */
+    public void clearTimes() {
+        tsArray = new ArrayList<>();
     }
 
     public Date getStartTime() {
@@ -320,7 +338,14 @@ public class MeetingController implements Serializable {
     public void setTsArray(List<String> tsArray) {
         this.tsArray = tsArray;
     }
-    
+
+    public Meeting getLastMeetingCreated() {
+        return lastMeetingCreated;
+    }
+
+    public void setLastMeetingCreated(Meeting lastMeetingCreated) {
+        this.lastMeetingCreated = lastMeetingCreated;
+    }
     
 
     /**
