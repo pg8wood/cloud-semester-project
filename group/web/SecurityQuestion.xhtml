@@ -30,27 +30,34 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
                 <h:form>
                     <h2>Please Answer Your Security Question</h2>
-                    
-                    <fieldset>
-                        <div style="margin-bottom:20px">
-                            <h:outputLabel for="question" value="#{passwordResetManager.getSecurityQuestion()}" />
-                        </div>
-                        
-                        <div style="margin-bottom:10px">
-                            <p:inputText id="answer" value="#{passwordResetManager.answer}" required="true"
+                    <div class="row">
+                        <div class="input-field">
+                            <h:outputLabel for="question" 
+                                           value="#{passwordResetManager.getSecurityQuestion()}" />
+                            <p:inputText id="answer" 
+                                         value="#{passwordResetManager.answer}" 
+                                         required="true"
                                          requiredMessage="Please enter your answer!" 
                                          styleClass="securityAnswerTextField" />
                         </div>
-                        
+                    </div>
+                    <div class="row">
                         <br/>
-                        <p:commandButton id="submit" value="Submit" update="msgs" icon="ui-icon-extlink"
+                        <p:commandButton id="submit" 
+                                         value="Submit" 
+                                         update="msgs" 
                                          action="#{passwordResetManager.securityAnswerSubmit()}" 
-                                         styleClass="commandButton" />
+                                         style="background: none;" 
+                                         class="btn indigo darken-4" />
                         &nbsp;
-                        <p:button outcome="index" value="Cancel" icon="ui-icon-cancel" styleClass="commandButton" />
-                    </fieldset>
+                        <p:button outcome="index" value="Cancel" 
+                                  style="background: none;" 
+                                  class="btn indigo darken-4" />
                     
-                    <br/>                
+                    
+                        <br/> 
+                    </div>
+                                       
                 </h:form>
             </div>
         </ui:define>
