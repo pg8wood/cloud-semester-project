@@ -332,7 +332,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      * @param user the User
      * @return List of Meetings that belongs to the user
      */
-    public List<Meeting> getMeetingMyOwnerId(User user) {
+    public List<Meeting> getMeetingsByOwnerId(User user) {
         return ((List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList());
     }
 

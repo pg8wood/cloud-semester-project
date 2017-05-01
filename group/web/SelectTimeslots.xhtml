@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-Created by Osman Balci on 2016.05.30 
-Copyright © 2016 Osman Balci. All rights reserved.
+Created by Jason on 2016.05.30 
+Copyright © 2016 Jason All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -27,7 +27,10 @@ Copyright © 2016 Osman Balci. All rights reserved.
                         <p:outputLabel for="datetime" value="Datetime:" />
                         <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm:ss" />
                         <h:outputText value="Add Timeslot" />
-                        <p:commandButton value="updateTime" actionListener="#{meetingController.updateTime}" icon="ui-icon-check" />
+                        <p:commandButton value="updateTime" 
+                                         actionListener="#{meetingController.updateTime}" 
+                                         icon="ui-icon-check" 
+                                         update="display, :growl"/>
                     </p:panelGrid>
                 </h:panelGroup>
 

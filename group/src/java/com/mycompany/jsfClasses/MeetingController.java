@@ -151,7 +151,7 @@ public class MeetingController implements Serializable {
     public List<Meeting> getUserSpecificItems() {
         if (userSpecificItems == null) {
             //userSpecificItems = getMeetingFacade().findUserSpecificMeetings(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
-            userSpecificItems = getMeetingFacade().getMeetingMyOwnerId(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
+            userSpecificItems = getMeetingFacade().getMeetingsByOwnerId(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
         }
         return userSpecificItems;
     }
@@ -234,8 +234,20 @@ public class MeetingController implements Serializable {
         return timeslot;
     }
 
+    /**
+     * Adds a new time to the meeting's list of potential times
+     */
     public void updateTime() {
-        tsArray.add(startTime.toString());
+        FacesMessage resultMessage;
+        if (!tsArray.contains(startTime.toString())) {
+            tsArray.add(startTime.toString());
+             resultMessage = new FacesMessage("Added new time");
+        }
+        else {
+            resultMessage = new FacesMessage("You have already added this time");
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, resultMessage);
     }
 
     public Date getStartTime() {
