@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Created by Jason on 2016.05.30 
+Copyright © 2016 Jason All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <!--
+        ********************************************
+        Dialog pop-up window to CREATE a new company
+        ********************************************
+        -->
+
+        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" modal="true" resizable="false" 
+                  appendTo="@(body)" header="Add Timeslots" closable="false">
+            <h:form id="TimeslotSelectForm" styleClass="ui-datatable-data">
+                <h:panelGroup id="display">
+                    <div align="center">    
+                        <h:outputText value="Choose time:" />
+                        &nbsp;&nbsp;
+                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm" showOn="button" stepMinute="15" />
+                        <br />
+                        &nbsp;&nbsp;
+                        <p:commandButton value="Add Selected Time" 
+                                         actionListener="#{meetingController.updateTime}" 
+                                         icon="ui-icon-check" 
+                                         ajax='true'
+                                         update="display, :growl, TimeslotSelectForm"
+                                         styleClass='commandButton'/>
+                        <br /><br />
+
+                        <!-- Display the times as they're added -->
+                        <p:dataTable id="currentTimeslots" value="#{meetingController.tsArray}" 
+                                     rendered="#{meetingController.tsArray.size() > 0}" 
+                                     var="timeslot" editable="true" editMode="row"
+                                     style="width: 250px;">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Current Timeslots" styleClass="facetHeader" />
+                                </f:facet>
+                                <div align="center">
+                                    <h:outputText value="#{timeslot}" />
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <p:spacer height="10"/>
+                    <div align="center">
+                        <!-- SAVE button -->
+                        <p:commandButton  actionListener="#{meetingController.create}"
+                                          value="#{bundle.Save}" 
+                                          styleClass="commandButton" icon="ui-icon-disk" ajax="false"
+                                          update="display,:MeetingListForm:datalist,:growl" 
+                                          oncomplete="PF('MeetingCreateDialog').hide();"/>
+
+                        &nbsp;
+                        <!-- CANCEL button -->
+                        <p:commandButton action="#{meetingController.clearTimes()}"
+                                         value="#{bundle.Cancel}" 
+                                         update="display,:MeetingListForm:datalist,:growl" 
+                                         oncomplete="PF('TimeslotSelectDialog').hide()"    
+                                         styleClass="commandButton" icon="ui-icon-cancel" />
+                    </div>
+                </h:panelGroup>
+
+
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

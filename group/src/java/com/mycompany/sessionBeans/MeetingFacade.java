@@ -312,4 +312,47 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         return ((Meeting) getEntityManager().createNamedQuery("Meeting.findById").setParameter("id", id).getSingleResult());
     }
 
+    /**
+     * Gets a meeting with maximum id
+     *
+     * @return Meeting the meeting
+     */
+    public int getMeetingMaxId() {
+        try {
+            getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult();
+        } catch (Exception ex) {
+            return -1;
+        }
+        return ((Long) getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult()).intValue();
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return List of Meetings that belongs to the user
+     */
+    public List<Meeting> getMeetingsByOwnerId(User user) {
+        return ((List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList());
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return max id of meeting that user owns
+     */
+    public int getMaxIdOfOwner(User user) {
+        List<Meeting> list = (List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList();
+
+        int max = -1;
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getId() > max) {
+                max = list.get(i).getId();
+            }
+        }
+
+        return max;
+    }
+
 }

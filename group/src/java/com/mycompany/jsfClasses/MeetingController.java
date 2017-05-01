@@ -42,6 +42,9 @@ public class MeetingController implements Serializable {
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
 
     @EJB
+    private com.mycompany.sessionBeans.UserFacade userFacade;
+
+    @EJB
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
 
     @EJB
@@ -49,10 +52,16 @@ public class MeetingController implements Serializable {
 
     // Instance fields
     private List<Meeting> items;
+    private List<Meeting> userSpecificItems;
     private ArrayList<Date> timesForDay;
     private Meeting selected;
+    private Meeting lastMeetingCreated;
     private Date selectedDate;
+    private MeetingUsers mu;
     private boolean isResponding;
+    private Date startTime;
+    private Date endTime;
+    private List<String> tsArray;
     private Date finalDateSelect;
 
     public List<Meeting> getUpcomingMeetingsAfterToday(User user) throws ParseException{
@@ -100,10 +109,13 @@ public class MeetingController implements Serializable {
 
     public MeetingController() {
         items = null;
+        userSpecificItems = null;
         timesForDay = null;
         selected = null;
+        lastMeetingCreated = null;
         selectedDate = null;
         isResponding = false;
+        mu = null;
     }
 
     public Meeting getSelected() {
@@ -135,13 +147,20 @@ public class MeetingController implements Serializable {
     public Meeting prepareCreate() {
         selected = new Meeting();
         initializeEmbeddableKey();
+        User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
+        selected.setOwnerId(user);
+        tsArray = new ArrayList<>();
         return selected;
     }
 
     public void create() {
+        lastMeetingCreated = selected;
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            userSpecificItems = null;
+            mu = null;
+            tsArray = new ArrayList<String>();
         }
     }
 
@@ -154,7 +173,28 @@ public class MeetingController implements Serializable {
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
+            userSpecificItems = null;
+            mu = null;
+            tsArray = new ArrayList<String>();
         }
+    }
+    
+    /**
+     * Destroys the most recently-created meeting. 
+     */
+    public void destroyLast() {
+        System.out.println("destroying last");
+        selected = getMeetingFacade().getMeetingById(getMeetingFacade().getMeetingMaxId());
+        System.out.println(selected.toString());
+        destroy();
+    }
+
+    public List<Meeting> getUserSpecificItems() {
+        if (userSpecificItems == null) {
+            //userSpecificItems = getMeetingFacade().findUserSpecificMeetings(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
+            userSpecificItems = getMeetingFacade().getMeetingsByOwnerId(userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")));
+        }
+        return userSpecificItems;
     }
 
     public List<Meeting> getItems() {
@@ -167,9 +207,25 @@ public class MeetingController implements Serializable {
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
+            User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
             try {
                 if (persistAction != PersistAction.DELETE) {
+                    if (tsArray != null) {
+                        selected.setTimeslots(makeTimeslotsString());
+                    }
                     getMeetingFacade().edit(selected);
+                    int id = getMeetingFacade().getMeetingMaxId();
+                    List<Integer> invitees = getInviteesId();
+                    for (int i : invitees) {
+                        mu = new MeetingUsers(i, id);
+                        mu.setAvailableTimes("");
+                        mu.setResponse(false);
+                        getMeetingUsersFacade().edit(mu);
+                    }
+                    mu = new MeetingUsers(user.getId(), id);
+                    mu.setAvailableTimes("");
+                    mu.setResponse(false);
+                    getMeetingUsersFacade().edit(mu);
                 } else {
                     getMeetingFacade().remove(selected);
                 }
@@ -190,6 +246,75 @@ public class MeetingController implements Serializable {
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
+    }
+
+    public List<Integer> getInviteesId() {
+        String invitees = selected.getInvitees();
+        invitees = invitees.replace(" ", "");
+        String[] inviteeArray = invitees.split(",");
+
+        int userId;
+        List<Integer> userIds = new ArrayList<Integer>();
+        for (String i : inviteeArray) {
+            if (userFacade.findByUsername(i) != null) {
+                userId = userFacade.findByUsername(i).getId();
+                userIds.add(userId);
+            }
+        }
+        return userIds;
+    }
+
+    public String makeTimeslotsString() {
+        String timeslot = "";
+        for (int i = 0; i < tsArray.size() - 1; i++) {
+            timeslot += tsArray.get(i) + ", ";
+        }
+        if (tsArray.size() > 0) {
+            timeslot += tsArray.get(tsArray.size() - 1);
+        }
+        return timeslot;
+    }
+
+    /**
+     * Adds a new time to the meeting's list of potential times
+     */
+    public void updateTime() {
+        FacesMessage resultMessage;
+        if (startTime == null) {
+            resultMessage = new FacesMessage("Please select a time first!");
+            resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+        } else if (!tsArray.contains(startTime.toString())) {
+            tsArray.add(startTime.toString());
+            resultMessage = new FacesMessage("Added new time.");
+        } else {
+            resultMessage = new FacesMessage("You have already added this time!");
+            resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, resultMessage);
+    }
+    
+    /**
+     * Removes all selected times
+     */
+    public void clearTimes() {
+        tsArray = new ArrayList<>();
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Meeting getMeeting(java.lang.Integer id) {
@@ -233,6 +358,23 @@ public class MeetingController implements Serializable {
         this.isResponding = true;
         this.selected = selected;
     }
+
+    public List<String> getTsArray() {
+        return tsArray;
+    }
+
+    public void setTsArray(List<String> tsArray) {
+        this.tsArray = tsArray;
+    }
+
+    public Meeting getLastMeetingCreated() {
+        return lastMeetingCreated;
+    }
+
+    public void setLastMeetingCreated(Meeting lastMeetingCreated) {
+        this.lastMeetingCreated = lastMeetingCreated;
+    }
+    
 
     /**
      * Get the selected date as a readable String
