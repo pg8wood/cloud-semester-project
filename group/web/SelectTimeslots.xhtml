@@ -23,15 +23,34 @@ Copyright © 2016 Jason All rights reserved.
             <h:form id="TimeslotSelectForm" styleClass="ui-datatable-data">
 
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
-                        <p:outputLabel for="datetime" value="Datetime:" />
-                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm:ss" />
-                        <h:outputText value="Add Timeslot" />
-                        <p:commandButton value="updateTime" 
+                    <div align="center">    
+                        <h:outputText value="Choose time:" />
+                        &nbsp;&nbsp;
+                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm" showOn="button" stepMinute="15" showTodayButton="true" />
+                        <br />
+                        &nbsp;&nbsp;
+                        <p:commandButton value="Add Selected Time" 
                                          actionListener="#{meetingController.updateTime}" 
                                          icon="ui-icon-check" 
-                                         update="display, :growl"/>
-                    </p:panelGrid>
+                                         update="display, :growl, TimeslotSelectForm"
+                                         styleClass='commandButton'/>
+                        <br /><br />
+
+                        <!-- Display the times as they're added -->
+                        <p:dataTable id="currentTimeslots" value="#{meetingController.tsArray}" 
+                                     rendered="#{meetingController.tsArray.size() > 0}" 
+                                     var="timeslot" editable="true" editMode="row"
+                                     style="width: 250px;">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Current Timeslots" styleClass="facetHeader" />
+                                </f:facet>
+                                <div align="center">
+                                    <h:outputText value="#{timeslot}" />
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
                 </h:panelGroup>
 
                 <h:panelGroup>

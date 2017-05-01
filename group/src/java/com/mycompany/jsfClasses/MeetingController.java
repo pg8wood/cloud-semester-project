@@ -119,7 +119,7 @@ public class MeetingController implements Serializable {
         initializeEmbeddableKey();
         User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
         selected.setOwnerId(user);
-        tsArray = new ArrayList<String>();
+        tsArray = new ArrayList<>();
         return selected;
     }
 
@@ -239,12 +239,17 @@ public class MeetingController implements Serializable {
      */
     public void updateTime() {
         FacesMessage resultMessage;
-        if (!tsArray.contains(startTime.toString())) {
+        if (startTime == null) {
+            resultMessage = new FacesMessage("Please select a time first!");
+            resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+        }
+        else if (!tsArray.contains(startTime.toString())) {
             tsArray.add(startTime.toString());
-             resultMessage = new FacesMessage("Added new time");
+             resultMessage = new FacesMessage("Added new time.");
         }
         else {
-            resultMessage = new FacesMessage("You have already added this time");
+            resultMessage = new FacesMessage("You have already added this time!");
+            resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
         }
 
         FacesContext.getCurrentInstance().addMessage(null, resultMessage);
@@ -307,6 +312,16 @@ public class MeetingController implements Serializable {
         this.isResponding = true;
         this.selected = selected;
     }
+
+    public List<String> getTsArray() {
+        return tsArray;
+    }
+
+    public void setTsArray(List<String> tsArray) {
+        this.tsArray = tsArray;
+    }
+    
+    
 
     /**
      * Get the selected date as a readable String
