@@ -445,6 +445,13 @@ public class User implements Serializable {
         return true;
     }
 
+    public boolean equalID(User u){
+        System.out.print("checking");
+        if(id == u.id){
+            System.out.print("true");
+        }
+        return (id == u.id);
+    }
     /**
      * @return the String representation of a User id
      */

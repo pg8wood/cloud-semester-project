@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 })
 public class MeetingUsers implements Serializable {
 
-    @Size(max = 256)
+    @Size(max = 4000)
     @Column(name = "available_times")
     private String availableTimes;
 

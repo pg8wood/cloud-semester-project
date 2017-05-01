@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MeetingDetailsDlg" widgetVar="MeetingDetailsDialog" modal="true" resizable="false" appendTo="@(body)" header="Meeting">
+            <h:form id="MeetingDetailsForm">
+                <h:panelGrid id="eventDetails" columns="2">
+                <h:outputLabel for="title" value="Title:" />
+                <h:outputText id="title" value="#{calendarManager.event.title}" style="color: black"/>
+
+                <h:outputLabel for="from" value="From:" />
+                <h:outputText id="from" value="#{calendarManager.event.startDate}" style="color: black"/>
+
+                <h:outputLabel for="to" value="To:" />
+                <h:outputText id="to" value="#{calendarManager.event.endDate}" style="color: black"/>
+
+            </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+
+    </ui:composition>
+</html>

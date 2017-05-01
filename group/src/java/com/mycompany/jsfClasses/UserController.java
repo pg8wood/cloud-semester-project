@@ -6,6 +6,8 @@ import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
 import com.mycompany.sessionBeans.UserFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,7 +30,10 @@ public class UserController implements Serializable {
     private List<User> items = null;
     private User selected;
 
+    private ArrayList<String> potentialTimes;
+
     public UserController() {
+        potentialTimes = new ArrayList<>();
     }
 
     public User getSelected() {
@@ -120,6 +125,52 @@ public class UserController implements Serializable {
     public List<User> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+
+    public void updatePotentialAvailability(String timeslot) {
+        if (potentialTimes == null) {
+            potentialTimes = new ArrayList();
+        }
+
+        if (potentialTimes.contains(timeslot)) {
+            potentialTimes.remove(timeslot);
+        } else {
+            potentialTimes.add(timeslot);
+        }
+        System.out.println("TIMES AVAILABLE: " + potentialTimes);
+
+    }
+
+    public ArrayList<String> getPotentialTimes() {
+        return potentialTimes;
+    }
+
+    public void setPotentialTimes(ArrayList<String> potentialTimes) {
+        this.potentialTimes = potentialTimes;
+    }
+
+    public void clearPotentialTimes() {
+        this.potentialTimes = new ArrayList();
+    }
+
+    public boolean determineAvailabilityPotentialAtTime(String timeslot) {
+        if (potentialTimes != null) {
+            boolean timeSelected = potentialTimes.contains(timeslot);
+            return timeSelected;
+        }
+        return false;
+    }
+    
+    /**
+     * Re
+     * @param d
+     * @return 
+     */
+    public boolean checkboxShouldBeChecked(Date d) {
+//        System.out.println("potential times: " + potentialTimes);
+//        System.out.println("checking for: " + d.toString());
+        return potentialTimes.contains(d.toString());
+    }
+    
 
     @FacesConverter(forClass = User.class)
     public static class UserControllerConverter implements Converter {

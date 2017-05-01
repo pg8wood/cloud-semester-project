@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 Created by Osman Balci on 2016.05.30 
-Copyright © 2016 Osman Balci. All rights reserved.
+Copyright ⓒ 2016 Osman Balci. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -12,31 +12,31 @@ Copyright © 2016 Osman Balci. All rights reserved.
 
     <ui:composition>
 
+        <script type="text/javascript" src="resources/js/jsfcrud.js"></script>
+
         <!--
         ********************************************
-        Dialog pop-up window to CREATE a new company
+        Dialog pop-up window to CREATE a new meeting
         ********************************************
         -->
         <p:dialog id="MeetingCreateDlg" widgetVar="MeetingCreateDialog" modal="true" resizable="false" 
-                  appendTo="@(body)" header="Create Meeting">
+                  appendTo="@(body)" header="Create Meeting" closable="false">
 
             <h:form id="MeetingCreateForm" styleClass="ui-datatable-data">
 
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
 
-                        <!-- No need for the user to be concerned about the database Primary Key id,
-                        which is auto-generated on the server side.
-                        
-                        <p:outputLabel value="#{bundle.CreateMeetingLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{meetingController.selected.id}" title="#{bundle.CreateMeetingTitle_id}" 
-                        required="true" requiredMessage="#{bundle.CreateMeetingRequiredMessage_id}"/>
-                        -->
-
-                        <p:outputLabel value="Address1" for="address1" />
+                        <p:outputLabel value="Address" for="address1" />
                         <p:inputText id="address1" styleClass="dataFields" value="#{meetingController.selected.address1}" 
-                                     title="Address1" required="true" 
-                                     requiredMessage="Address1 field is required!"/>
+                                     title="Address" required="true" 
+                                     requiredMessage="Address field is required!">
+                        </p:inputText>
+
+                        <p:outputLabel value="Invitees" for="invitees" />
+                        <p:inputText id="invitees" styleClass="dataFields" value="#{meetingController.selected.invitees}" 
+                                     title="Invitees" required="true" 
+                                     requiredMessage="Invitees field is required!"/>
 
                         <p:outputLabel value="City" for="city" />
                         <p:inputText id="city" styleClass="dataFields" value="#{meetingController.selected.city}" 
@@ -69,20 +69,23 @@ Copyright © 2016 Osman Balci. All rights reserved.
                 <h:panelGroup>
                     <p:spacer height="10"/>
                     <div align="center">
-                        <!-- SAVE button -->
-                        <p:commandButton actionListener="#{meetingController.create}" value="#{bundle.Save}" 
-                                         styleClass="commandButton" icon="ui-icon-disk" ajax="false"
-                                         update="display,:MeetingListForm:datalist,:growl" 
-                                         oncomplete="handleSubmit(args,'MeetingCreateDialog');"/>
+                        <!-- Select timeslot button -->
+                        <p:commandButton id="selectTimeslot"
+                                         icon="ui-icon-clock" 
+                                         value="Select Meeting Times"
+                                         update=":growl" 
+                                         oncomplete="handleSubmit(args, 'MeetingCreateDialog', 'TimeslotSelectDialog')"
+                                         styleClass="commandButton" 
+                                         />
                         &nbsp;
                         <!-- CANCEL button -->
-                        <p:commandButton value="#{bundle.Cancel}" onclick="PF('MeetingCreateDialog').hide()"    
+                        <p:commandButton value="#{bundle.Cancel}" 
+                                         onclick="PF('MeetingCreateDialog').hide()"    
                                          styleClass="commandButton" icon="ui-icon-cancel" />
                     </div>
                 </h:panelGroup>
 
             </h:form>
-
         </p:dialog>
     </ui:composition>
 </html>

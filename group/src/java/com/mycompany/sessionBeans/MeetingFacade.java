@@ -10,7 +10,6 @@ import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.Stateless;
@@ -45,7 +44,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      */
     public void deserializeTimeslots(Meeting meeting) {
         dateList = new ArrayList();
-        
+
         Scanner serializedStringScan = new Scanner(meeting.getTimeslots());
         serializedStringScan.useDelimiter(",");
 
@@ -74,6 +73,111 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
+    public ArrayList<Date> deserializeResponseTimes(String times) {
+        ArrayList<Date> dList = new ArrayList();
+
+        Scanner serializedStringScan = new Scanner(times);
+        serializedStringScan.useDelimiter(",");
+
+        while (serializedStringScan.hasNext()) {
+            String nextTime = serializedStringScan.next();
+            
+            if (nextTime.equals("")) {
+                return dList;
+            } 
+            
+            Scanner dateScan = new Scanner(nextTime);
+            /* Serialized dates are stored in the database in the form: 
+           java.util.Date.toString(),java.util.date.toString,... */            
+            String dayOfWeek = dateScan.next();
+            String monthName = dateScan.next();
+            int dayNumber = dateScan.nextInt();
+
+            // Time is stored in the form HH:MM:SS
+            Scanner timeScan = new Scanner(dateScan.next());
+            timeScan.useDelimiter(":");
+            int hour = timeScan.nextInt();
+            int minute = timeScan.nextInt();
+            // No need to store seconds
+
+            // Skip time zone
+            dateScan.next();
+
+            int year = dateScan.nextInt() - 1900;
+
+            // Store the parsed Dates into the list
+            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+            if (dList.isEmpty()) {
+                dList.add(newDate);
+            } else {
+                for (int i = 0; i < dList.size(); i++) {
+
+                    if (dList.get(i).equals(newDate)) {
+                        break;
+                    } else {
+                        if (i == dList.size() - 1) {
+                            dList.add(newDate);
+                        }
+                    }
+
+                }
+            }
+       }
+        return dList;
+    }
+
+    /**
+     * Turns a String of comma separated times into
+     * an ArrayList of Date objects
+     * @param times
+     * @return ArrayList<Date> the list of times 
+     */
+    public ArrayList<Date> deserialize(String times) {
+        ArrayList<Date> dList = new ArrayList();
+
+        Scanner serializedStringScan = new Scanner(times);
+        serializedStringScan.useDelimiter(",");
+
+        while (serializedStringScan.hasNext()) {
+            Scanner dateScan = new Scanner(serializedStringScan.next());
+            /* Serialized dates are stored in the database in the form: 
+           java.util.Date.toString(),java.util.date.toString,... */
+            String dayOfWeek = dateScan.next();
+            String monthName = dateScan.next();
+            int dayNumber = dateScan.nextInt();
+
+            // Time is stored in the form HH:MM:SS
+            Scanner timeScan = new Scanner(dateScan.next());
+            timeScan.useDelimiter(":");
+            int hour = timeScan.nextInt();
+            int minute = timeScan.nextInt();
+            // No need to store seconds
+
+            // Skip time zone
+            dateScan.next();
+
+            int year = dateScan.nextInt() - 1900;
+
+            // Store the parsed Dates into the list
+            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+
+            dList.add(newDate);
+
+        }
+        return dList;
+    }
+
+    /** 
+     * Converts a String day name to its corresponding day number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getDayOfWeekInt(String dayName) {
         switch (dayName) {
             case "Sun":
@@ -95,6 +199,11 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
+     /** 
+     * Converts a String month name to its corresponding month number
+     * @param dayName
+     * @return Integer the number of the day 
+     */
     private int getMonthInt(String monthName) {
         switch (monthName) {
             case "Jan":
@@ -125,55 +234,53 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
                 return 0;
         }
     }
-    
+
     /**
-     * Gets a String representation of the meeting's time 
-     * 
+     * Gets a String representation of the meeting's time
+     *
      * @param meetingDate the date of the meeting to examine
      * @return String the meeting's time in String format
      */
     public String getMeetingString(Date meetingDate) {
         StringBuilder sb = new StringBuilder();
-        
-       if (meetingDate.getHours() > 12) {
-           sb.append(Integer.toString(meetingDate.getHours()))
-                   .append(":")
-                   .append(String.format("%02d", meetingDate.getMinutes()))
-                   .append(" AM");
-       }
-       else {
-           sb.append(Integer.toString(meetingDate.getHours() % 12))
-                   .append(":")
-                   .append(String.format("%02d", meetingDate.getMinutes()))
-                   .append(" PM");
-       }
-       
-       return sb.toString();
+
+        if (meetingDate.getHours() > 12) {
+            sb.append(Integer.toString(meetingDate.getHours()))
+                    .append(":")
+                    .append(String.format("%02d", meetingDate.getMinutes()))
+                    .append(" AM");
+        } else {
+            sb.append(Integer.toString(meetingDate.getHours() % 12))
+                    .append(":")
+                    .append(String.format("%02d", meetingDate.getMinutes()))
+                    .append(" PM");
+        }
+
+        return sb.toString();
     }
-    
+
     /**
      * Gets all the available timeslots for a given meeting.
-     * 
+     *
      * @param meeting The meeting to examine
      * @return ArrayList<Date> the list of available timeslots
      */
     public ArrayList<Date> getTimeslotsForMeeting(Meeting meeting) {
         deserializeTimeslots(meeting);
-        return (ArrayList<Date>)dateList;
+        return (ArrayList<Date>) dateList;
     }
-    
+
     /**
      * Gets all the participants for a given meeting.
-     * 
+     *
      * @param meeting The meeting to examine
      * @return ArrayList<User> the list of users participating
      */
-    public ArrayList<User> getParticipantList(Meeting meeting){
+    public ArrayList<User> getParticipantList(Meeting meeting) {
         int meetingId = meeting.getId();
-        List<MeetingUsers> meetingUsers = (List<MeetingUsers>)getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
+        List<MeetingUsers> meetingUsers = (List<MeetingUsers>) getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
         ArrayList<User> participantList = new ArrayList<User>();
-        for (MeetingUsers x : meetingUsers)
-        {
+        for (MeetingUsers x : meetingUsers) {
             participantList.add(x.getUser());
         }
         return participantList;
@@ -194,16 +301,58 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
     public void setSelectedDate(Date selectedDate) {
         this.selectedDate = selectedDate;
     }
-    
-    
 
     /**
      * Gets a specified meeting that a user is a part of
+     *
      * @param id the meeting's id
      * @return Meeting the meeting
      */
     public Meeting getMeetingById(int id) {
         return ((Meeting) getEntityManager().createNamedQuery("Meeting.findById").setParameter("id", id).getSingleResult());
+    }
+
+    /**
+     * Gets a meeting with maximum id
+     *
+     * @return Meeting the meeting
+     */
+    public int getMeetingMaxId() {
+        try {
+            getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult();
+        } catch (Exception ex) {
+            return -1;
+        }
+        return ((Long) getEntityManager().createNativeQuery("SELECT ID FROM Meeting ORDER BY ID DESC LIMIT 1").getSingleResult()).intValue();
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return List of Meetings that belongs to the user
+     */
+    public List<Meeting> getMeetingsByOwnerId(User user) {
+        return ((List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList());
+    }
+
+    /**
+     * Gets a specified meeting that a user is a part of
+     *
+     * @param user the User
+     * @return max id of meeting that user owns
+     */
+    public int getMaxIdOfOwner(User user) {
+        List<Meeting> list = (List<Meeting>) getEntityManager().createNamedQuery("Meeting.findByOwnerId").setParameter("owner_id", user).getResultList();
+
+        int max = -1;
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getId() > max) {
+                max = list.get(i).getId();
+            }
+        }
+
+        return max;
     }
 
 }
