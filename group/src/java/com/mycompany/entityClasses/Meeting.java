@@ -44,8 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Meeting.findByZipcode", query = "SELECT m FROM Meeting m WHERE m.zipcode = :zipcode")
     , @NamedQuery(name = "Meeting.findByTopic", query = "SELECT m FROM Meeting m WHERE m.topic = :topic")
     , @NamedQuery(name = "Meeting.findByDescription", query = "SELECT m FROM Meeting m WHERE m.description = :description")
-    
-
+    , @NamedQuery(name = "Meeting.findByOwnerId", query = "SELECT m FROM Meeting m WHERE m.ownerId = :owner_id")
 })
 public class Meeting implements Serializable {
 
@@ -105,6 +104,8 @@ public class Meeting implements Serializable {
     @ManyToOne
     private User ownerId;
 
+    private String invitees;
+
 //    // Instance fields
 //    private HashMap<Calendar, List<String>> timesByDateMap;
     public Meeting() {
@@ -152,6 +153,14 @@ public class Meeting implements Serializable {
 
     public void setAddress2(String address2) {
         this.address2 = address2;
+    }
+
+    public String getInvitees() {
+        return invitees;
+    }
+
+    public void setInvitees(String invitees) {
+        this.invitees = invitees;
     }
 
     public String getCity() {
@@ -284,15 +293,15 @@ public class Meeting implements Serializable {
 
     /**
      * Gets the meeting's whole address
-     * 
-     * @return String the meeting's whole address in the format
-     * 123 Drillfield Drive Blacksburg, VA
+     *
+     * @return String the meeting's whole address in the format 123 Drillfield
+     * Drive Blacksburg, VA
      */
     public String getFullAddress() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(address1).append(" ");
-        
+
         // Address line 2 is not required, so it may be null
         if (address2 != null) {
             sb.append(address2).append(" ");
