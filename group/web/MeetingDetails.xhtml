@@ -36,11 +36,30 @@
                         <p class="indigo-text text-darken-4">#{calendarManager.event.endDate}</p>
                     </div>
                 </div>
-                
+                <div class="row">
+                    <div class="col s2">
+                        <p class="indigo-text text-darken-4">Participants: </p>
+                    </div>
+                    <div class="col s10">
+                        <p class="indigo-text text-darken-4">#{calendarManager.getSelectedParticipants()}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s2">
+                        <p class="indigo-text text-darken-4">Location: </p>
+                    </div>
+                    <div class="col s10">
+                        <h:outputText value="#{calendarManager.selectedMeeting.address1}" class="indigo-text text-darken-4"/>
+                        <br />
+                        <h:outputText value="#{calendarManager.selectedMeeting.city}, #{calendarManager.selectedMeeting.state} #{calendarManager.selectedMeeting.zipcode}" class="indigo-text text-darken-4"/>
+
+                    </div>
+                </div>
+
             </h:form>
         </p:dialog>
-        
-        
+
+
 
     </ui:composition>
 </html>
