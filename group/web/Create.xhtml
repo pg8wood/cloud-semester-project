@@ -20,71 +20,88 @@ Copyright ⓒ 2016 Osman Balci. All rights reserved.
         ********************************************
         -->
         <p:dialog id="MeetingCreateDlg" widgetVar="MeetingCreateDialog" modal="true" resizable="false" 
-                  appendTo="@(body)" header="Create Meeting" closable="false">
+                  appendTo="@(body)" header="Create Meeting" closable="false"
+                  width="800" height="550" class="grey lighten-3">
 
             <h:form id="MeetingCreateForm" styleClass="ui-datatable-data">
-
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
-
-                        <p:outputLabel value="Address" for="address1" />
-                        <p:inputText id="address1" styleClass="dataFields" value="#{meetingController.selected.address1}" 
-                                     title="Address" required="true" 
+                
+                <div class="row input-field">
+                    <p:outputLabel value="Invitees" for="invitees" />
+                    <p:inputText id="invitees" value="#{meetingController.selected.invitees}" 
+                                     required="true" 
+                                     requiredMessage="Invitees field is required!"/>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <p:outputLabel value="Address Line 1" for="address1" />
+                        <p:inputText id="address1" value="#{meetingController.selected.address1}" 
+                                     required="true" 
                                      requiredMessage="Address field is required!">
                         </p:inputText>
-
-                        <p:outputLabel value="Invitees" for="invitees" />
-                        <p:inputText id="invitees" styleClass="dataFields" value="#{meetingController.selected.invitees}" 
-                                     title="Invitees" required="true" 
-                                     requiredMessage="Invitees field is required!"/>
-
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <p:outputLabel value="Address Line 2" for="address2" />
+                        <p:inputText id="address2" value="#{meetingController.selected.address2}" 
+                                     required="false">
+                        </p:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s3 input-field">
                         <p:outputLabel value="City" for="city" />
-                        <p:inputText id="city" styleClass="dataFields" value="#{meetingController.selected.city}" 
+                        <p:inputText id="city" value="#{meetingController.selected.city}" 
                                      title="City" required="true" 
                                      requiredMessage="City field is required!"/>
-
+                    </div>
+                    <div class="col s4 input-field">
                         <p:outputLabel value="State" for="state" />
                         <p:inputText id="state" styleClass="dataFields" value="#{meetingController.selected.state}" 
                                      title="State" required="true" 
                                      requiredMessage="State field is required!"/>
-
+                    </div>
+                    <div class="col s4 input-field">
                         <p:outputLabel value="Zip Code" for="zipCode" />
-                        <p:inputText id="zipCode" styleClass="dataFields" value="#{meetingController.selected.zipcode}" 
-                                     title="Zip Code" required="true" 
+                        <p:inputText id="zipCode" value="#{meetingController.selected.zipcode}" 
+                                     required="true" 
                                      requiredMessage="Zip Code field is required!"/>
-
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 input-field">
                         <p:outputLabel value="Topic" for="topic" />
                         <p:inputText id="topic" styleClass="dataFields" value="#{meetingController.selected.topic}" 
                                      title="Topic" required="true" 
                                      requiredMessage="Topic field is required!"/>
-
+                    </div>
+                    <div class="col s8 input-field">
                         <p:outputLabel value="Description" for="description" />
                         <p:inputText id="description" styleClass="dataFields" value="#{meetingController.selected.description}" 
                                      title="Description" required="true" 
                                      requiredMessage="Description field is required!"/>
-
-                    </p:panelGrid>
-                </h:panelGroup>
-
-                <h:panelGroup>
-                    <p:spacer height="10"/>
-                    <div align="center">
-                        <!-- Select timeslot button -->
-                        <p:commandButton id="selectTimeslot"
-                                         icon="ui-icon-clock" 
+                    </div>
+                    <div class="row center">
+                        <div class="col s6 push-s1">
+                            <p:commandButton id="selectTimeslot"
                                          value="Select Meeting Times"
                                          update=":growl" 
                                          oncomplete="handleSubmit(args, 'MeetingCreateDialog', 'TimeslotSelectDialog')"
-                                         styleClass="commandButton" 
+                                         class="btn indigo darken-4 white-text"
+                                         style="background: none;"
                                          />
-                        &nbsp;
-                        <!-- CANCEL button -->
-                        <p:commandButton value="#{bundle.Cancel}" 
+                        </div>
+                        <div class="col s6 pull-s1">
+                            <p:commandButton value="#{bundle.Cancel}" 
                                          onclick="PF('MeetingCreateDialog').hide()"    
-                                         styleClass="commandButton" icon="ui-icon-cancel" />
+                                         class="btn indigo darken-4 white-text"
+                                         style="background: none;"
+                                         />
+                        </div>
+                        
                     </div>
-                </h:panelGroup>
-
+                    
+                </div>
             </h:form>
         </p:dialog>
     </ui:composition>

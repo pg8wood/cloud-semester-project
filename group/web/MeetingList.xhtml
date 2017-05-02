@@ -30,9 +30,7 @@ Copyright © 2016 Jason. All rights reserved.
                 as an overlay. The following will display the messages for 5 seconds and then fade away.
                 -->
                 <p:growl id="growl" life="4000" />
-
                 <h:form id="MeetingListForm">
-
                     <p:panel header="Meetings I Own">
 
                         <!-- Read about p:dataTable in the PrimeFaces User Guide and learn about it:
@@ -40,13 +38,14 @@ Copyright © 2016 Jason. All rights reserved.
                         
                         The table is displayed as sorted in the order of database Primary Key (id) values.
                         -->
-                        <p:dataTable id="datalist" value="#{meetingController.meetingFacade.getMeetingsByOwnerId(accountManager.selected)}" var="item"
-                                     selectionMode="single" selection="#{meetingController.selected}"
-                                     paginator="true"
+                        <p:dataTable id="datalist" 
+                                     value="#{meetingController.meetingFacade.getMeetingsByOwnerId(accountManager.selected)}" 
+                                     var="item"
+                                     selectionMode="single" 
+                                     selection="#{meetingController.selected}"
+                                     
                                      rowKey="#{item.id}"
-                                     rows="10"
-                                     rowsPerPageTemplate="5,10,15,20,30,40,50"
-                                     styleClass="dataTable"
+                                     
                                      >
 
                             <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
@@ -71,9 +70,9 @@ Copyright © 2016 Jason. All rights reserved.
                             in alphabetical order A to Z. Clicking it again reverses the order to Z to A. -->
                             <p:column sortBy="#{item.address1}">
                                 <f:facet name="header">
-                                    <h:outputText value="Address" styleClass="facetHeader"/>
+                                    <h:outputText value="Address" />
                                 </f:facet>
-                                <h:outputText styleClass="dataFields" value="#{item.address1}"/>
+                                <h:outputText value="#{item.address1}"/>
                             </p:column>
 
                             <p:column sortBy="#{item.timeslots}">

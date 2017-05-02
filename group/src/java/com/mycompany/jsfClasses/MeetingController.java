@@ -315,6 +315,7 @@ public class MeetingController implements Serializable {
                     resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
                 } else {
                     tsArray.add(startTime.toString());
+                    
                     resultMessage = new FacesMessage("Added new time.");
                 }
                 
