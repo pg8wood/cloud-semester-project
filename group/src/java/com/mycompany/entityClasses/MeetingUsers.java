@@ -1,6 +1,6 @@
 /*
- * Created by Alex Martin on 2017.04.13  * 
- * Copyright © 2017 Alex Martin. All rights reserved. * 
+ * Created by Patrick Gatewood on 2017.05.02  * 
+ * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
  */
 package com.mycompany.entityClasses;
 
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author alexmartin
+ * @author PatrickGatewood
  */
 @Entity
 @Table(name = "Meeting_Users")
@@ -28,20 +28,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "MeetingUsers.findByUserId", query = "SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId")
     , @NamedQuery(name = "MeetingUsers.findByMeetingId", query = "SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.meetingId = :meetingId")
     , @NamedQuery(name = "MeetingUsers.findByResponse", query = "SELECT m FROM MeetingUsers m WHERE m.response = :response")
+    , @NamedQuery(name = "MeetingUsers.findByAvailableTimes", query = "SELECT m FROM MeetingUsers m WHERE m.availableTimes = :availableTimes")
     , @NamedQuery(name = "MeetingUsers.findByMeetingIdAndResponse", query = "SELECT m FROM MeetingUsers m WHERE m.response = :response AND m.meetingUsersPK.meetingId = :meetingId")
     , @NamedQuery(name = "MeetingUsers.findByUserIdAndResponse", query = "SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response")
 })
 public class MeetingUsers implements Serializable {
-
-    @Size(max = 4000)
-    @Column(name = "available_times")
-    private String availableTimes;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MeetingUsersPK meetingUsersPK;
     @Column(name = "response")
     private Boolean response;
+    @Size(max = 4000)
+    @Column(name = "available_times")
+    private String availableTimes;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
@@ -74,6 +74,14 @@ public class MeetingUsers implements Serializable {
 
     public void setResponse(Boolean response) {
         this.response = response;
+    }
+
+    public String getAvailableTimes() {
+        return availableTimes;
+    }
+
+    public void setAvailableTimes(String availableTimes) {
+        this.availableTimes = availableTimes;
     }
 
     public User getUser() {
@@ -114,15 +122,7 @@ public class MeetingUsers implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.entityClasses.MeetingUsers[ meetingUsersPK=" + meetingUsersPK + " ]";
+        return "com.mycompany.entityClasses.MeetingUsers[ meetingUsersPK=" + meetingUsersPK + " response: " + response + " ]";
     }
 
-    public String getAvailableTimes() {
-        return availableTimes;
-    }
-
-    public void setAvailableTimes(String availableTimes) {
-        this.availableTimes = availableTimes;
-    }
-    
 }

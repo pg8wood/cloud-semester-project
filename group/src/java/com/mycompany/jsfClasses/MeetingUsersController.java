@@ -47,6 +47,7 @@ public class MeetingUsersController implements Serializable {
 
     public void setSelected(User user, Meeting meeting) {
         current = ejbFacade.getMeetingUser(user, meeting);
+        System.out.println("current meetingusers object: " + current.toString());
     }
 
     private MeetingUsersFacade getFacade() {
@@ -94,7 +95,6 @@ public class MeetingUsersController implements Serializable {
             current.getMeetingUsersPK().setMeetingId(current.getMeeting().getId());
             current.getMeetingUsersPK().setUserId(current.getUser().getId());
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -112,7 +112,8 @@ public class MeetingUsersController implements Serializable {
         try {
             current.getMeetingUsersPK().setMeetingId(current.getMeeting().getId());
             current.getMeetingUsersPK().setUserId(current.getUser().getId());
-            getFacade().edit(current);
+            performDestroy();
+            create();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersUpdated"));
             return "View";
         } catch (Exception e) {
@@ -146,7 +147,6 @@ public class MeetingUsersController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -213,10 +213,12 @@ public class MeetingUsersController implements Serializable {
         } else {
             finalTime = String.join(", ", availability);
         }
-        
+
+        System.out.println("User availability string set to " + finalTime);
+
         // Update the growl message
         FacesContext context = FacesContext.getCurrentInstance();
-        
+
         current.setAvailableTimes(finalTime);
         current.setResponse(true);
         update();

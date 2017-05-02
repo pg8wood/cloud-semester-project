@@ -22,25 +22,17 @@ public final class Constants {
         Therefore, we use the following two external directories 
         for the storage and retrieval of user's files.
     
-    Windows OS Users should use the following: 
+     */
+    public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage/";
+    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/PhotoStorage/";
+
+    /*
+Windows OS Users should use the following: 
     public static final String FILES_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\FileStorage\\";  
     public static final String PHOTOS_ABSOLUTE_PATH = "C:\\users\\username\\CloudStorage\\PhotoStorage\\";
      */
-    public static final String FILES_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\FileStorage\\";
-    public static final String PHOTOS_ABSOLUTE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\UserPhotoStorage\\";
 
-    /*
-    URL to the sign in page
-     */
-    public static final String MYMEETINGS_URL = "http://localhost:8080/group/MyMeetings.xhtml";
-    /*
-    URL to the image in the email
-     */
-    //public static final String EMAIL_IMAGE = "<img src=\"https://lh5.googleusercontent.com/mDjLolBdAY0ZZSLWxPZuYR2q65NjLdwWJT5SfAce8Qle7gkfowY4LjTYwXRCc56QFl0PJk6gfa0tPbI=w1600-h677\" style=\"width:230px;height:64px;\">";
-    //public static final String EMAIL_IMAGE = "<img src=\"https://drive.google.com/file/d/0B97pytL_OloUUE82aVRyTlhDcnM/view\" style=\"width:230px;height:64px;\">";
-    //public static final String EMAIL_IMAGE = "<img src=\"https://drive.google.com/file/d/0B97pytL_OloUUE82aVRyTlhDcnM/view\" style=\"width:230px;height:64px;\">";
-    public static final String EMAIL_IMAGE = "<img src=\"resources/images/schedule_logo.jpg\" style=\"width:230px;height:64px;\">";
-    /*
+ /*
     In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
     Alternate Document Root directory with the following statement:
         
@@ -52,9 +44,12 @@ public final class Constants {
     public static final String PHOTOS_RELATIVE_PATH = "CloudStorage/PhotoStorage/";
     public static final String DEFAULT_PHOTO_RELATIVE_PATH = "CloudStorage/PhotoStorage/defaultUserPhoto.png";
      */
-    public static final String FILES_RELATIVE_PATH = "MeetingsStorage\\FileStorage\\";
-    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
-    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\MeetingsStorage\\UserPhotoStorage\\defaultUserPhoto.png";
+//    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
+//    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage\\UserPhotoStorage\\";
+//    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "C:\\Users\\Erin\\Google Drive\\NetBeansProjects\\UserPhotoStorage\\defaultUserPhoto.png";
+    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
+    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
+    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/defaultUserPhoto.png";
 
     /*
 Windows OS Users should use the following: 
