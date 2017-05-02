@@ -5,20 +5,20 @@ Composed by Patrick Gatewood on April 8, 2017.
 
 @import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
 
-/*html, body {
+html, body {
     background-color: #79879b;
-}*/
+}
 
-/*h1 {
+h1 {
     font-size: 40pt;
     font-family: Fredericka the Great;
     color: white;
-}*/
+}
 
-/*h2 {
+h2 {
     font-size: 15pt;
     color: #4f4f4f;
-}*/
+}
 
 form {
     display: inline;
@@ -45,11 +45,6 @@ Sidebar styles
 
 .sidebarContent {
     margin: 20px;
-}
-
-.ui-panelgrid .ui-panelgrid-cell {
-    border: none;
-    background: #a4acba !important;
 }
 
 /* fixed sidebar applied dynamtically with JS */ 

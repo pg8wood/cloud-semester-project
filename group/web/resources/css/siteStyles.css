@@ -38,14 +38,14 @@ Composed by Osman Balci on December 4, 2016.
 }*/
 
 /* Style the text used under the standard HTML tag "body" */
-/*body {
+    body {
     font-family: "Times New Roman", Times, Serif;
     font-size: 12pt;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
     color: black;
-}*/
+}
 
 /* Style the text used under the standard HTML tag "p" for paragraph */
 p {
