@@ -64,7 +64,8 @@ Copyright © 2016 Osman Balci. All rights reserved.
                     <p:spacer height="10"/>
                     <div align="center">
                         <!-- SAVE button -->
-                        <p:commandButton actionListener="#{meetingController.create}" value="#{bundle.Save}" 
+                        <p:commandButton action="#{accountManager.selected.prepareEmail(2, meetingController.inviteesEmails)}"
+                                         actionListener="#{meetingController.create}" value="#{bundle.Save}" 
                                          styleClass="commandButton" icon="ui-icon-disk" ajax="false"
                                          update="display,:MeetingListForm:datalist,:growl" 
                                          oncomplete="handleSubmit(args,'MeetingEditDialog');"/>
