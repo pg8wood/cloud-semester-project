@@ -139,14 +139,14 @@ Copyright © 2017 Osman Balci. All rights reserved.
                             <div class="col s9">
                                 <p:repeat 
                                     value="#{meetingController.getMeetingFacade().getParticipantList(meetingController.selected)}" 
-                                    var="person"
+                                    var="invitee"
                                     size="#{meetingController.getMeetingFacade().getParticipantList(meetingController.selected).size()}"
                                     offset="0"
                                     step="1"
                                     varStatus="status">
                                     <div class="chip">
-                                        <img src="#{person.getRelativeThumbnailFilePath()}" />
-                                        #{person.firstName} #{person.lastName}
+                                        <img src="#{invitee.getRelativeThumbnailFilePath()}" />
+                                        #{invitee.firstName} #{invitee.lastName}
                                     </div>
 
                                 </p:repeat>
