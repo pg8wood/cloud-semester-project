@@ -72,7 +72,7 @@ public class MeetingController implements Serializable {
             Date today = new Date();
             for(MeetingUsers mu : meetingusers){
                 Meeting m = mu.getMeeting();
-                if(m.isFinalized()){
+                if(m != null && m.isFinalized()){
                     DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                     try{
                         
@@ -164,6 +164,11 @@ public class MeetingController implements Serializable {
         return selected;
     }
 
+    public Meeting prepareView(Meeting meeting) {
+        selected = meeting;
+        return selected;
+    }
+    
     public void create() {
         lastMeetingCreated = selected;
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));

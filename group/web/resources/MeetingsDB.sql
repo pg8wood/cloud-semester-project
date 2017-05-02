@@ -75,7 +75,7 @@ INSERT INTO User (username, password, first_name, middle_name, last_name, addres
 
 
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots, invitees, finaltime) VALUES
-('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', '', ''),
+('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 2018,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', 'alexmartin, p, johndoe', 'Thu Jan 10 02:00:00 EET 2018'),
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '2: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', '', ''),
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '3: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992,Sat Jan 12 02:45:00 EET 1992,Sat Jan 12 05:00:00 EET 1992', '', ''),
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '4: This is a preloaded meeting to test functionality', 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', '', ''),
