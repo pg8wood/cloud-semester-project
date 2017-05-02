@@ -319,7 +319,7 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public void setUserPhoto(String extension) {
         this.userPhoto = getId() + "." + extension;
     }
@@ -338,7 +338,7 @@ public class User implements Serializable {
     User's photo image file is named as "userId.fileExtension", e.g., 5.jpg for user with id 5.
     Since the user can have only one photo, this makes sense.
      */
-    public String getUserPhoto() {        
+    public String getUserPhoto() {
         return this.userPhoto;
     }
 
@@ -452,13 +452,14 @@ public class User implements Serializable {
         return true;
     }
 
-    public boolean equalID(User u){
+    public boolean equalID(User u) {
         System.out.print("checking");
-        if(id == u.id){
+        if (id == u.id) {
             System.out.print("true");
         }
         return (id == u.id);
     }
+
     /**
      * @return the String representation of a User id
      */
@@ -471,15 +472,34 @@ public class User implements Serializable {
 
     /**
      * Sets the necessary properties to send the email
+     *
      * @param option
+     * @param emails
      * @throws java.lang.Exception
      */
-    public void prepareEmail(int option) throws Exception {
+    public void prepareEmail(int option, List<String> emails) throws Exception {
+        for (String email : emails) {
+            EmailSender emailSender = new EmailSender();
+            emailSender.setEmailTo(email);
+            emailSender.setEmailSubject(prepareEmailSubject(option));
+            emailSender.setEmailBody(prepareEmailBody(option));
+            emailSender.sendEmail();
+        }
+
+    }
+
+    /**
+     * Sets the necessary properties to send the email
+     *
+     * @param option
+     * @param email
+     * @throws java.lang.Exception
+     */
+    public void prepareOwnerEmail(int option, String email) throws Exception {
         EmailSender emailSender = new EmailSender();
-        emailSender.setEmailTo("erink13@vt.edu");
+        emailSender.setEmailTo(email);
         emailSender.setEmailSubject(prepareEmailSubject(option));
         emailSender.setEmailBody(prepareEmailBody(option));
-        System.out.println("test");
         emailSender.sendEmail();
     }
 
@@ -494,18 +514,23 @@ public class User implements Serializable {
 
         switch (option) {
             case 0:
+                //sends to list of invitees
                 emailSubject = "New Meeting Invite!";
                 break;
             case 1:
+                //sends to owner
                 emailSubject = "New Meeting Response!";
                 break;
             case 2:
+                //sends to list of invitees
                 emailSubject = "Upcoming Meeting Updated!";
                 break;
             case 3:
-                emailSubject = "New Meeting Scheduled!";
+                //sends to list of invitees
+                emailSubject = "Upcoming Meeting Has Been Finalized!!";
                 break;
             case 4:
+                //sends to list of invitees
                 emailSubject = "Meeting Cancelled!";
                 break;
             default:
@@ -547,7 +572,7 @@ public class User implements Serializable {
                 break;
             //email participants when owner selects final meeting time
             case 3:
-                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>A Meeting Has Been Officially Scheduled!</b><br /><br />"
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>An Upcoming Meeting Time Has Been Finalized!</b><br /><br />"
                         + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view your upcoming meetings!</div>";
                 break;
             //email participants when owner selects final meeting time

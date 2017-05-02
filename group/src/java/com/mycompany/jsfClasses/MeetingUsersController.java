@@ -206,7 +206,7 @@ public class MeetingUsersController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    public void finalizeMeetingAvailability(ArrayList<String> availability) {
+    public void finalizeMeetingAvailability(ArrayList<String> availability, User user, String ownerEmail) throws Exception {
         String finalTime;
         if (availability.isEmpty()) {
             finalTime = "";
@@ -220,6 +220,8 @@ public class MeetingUsersController implements Serializable {
         current.setAvailableTimes(finalTime);
         current.setResponse(true);
         update();
+        //sends email for a new meeting response
+        user.prepareOwnerEmail(1, ownerEmail);
     }
 
     @FacesConverter(forClass = MeetingUsers.class)

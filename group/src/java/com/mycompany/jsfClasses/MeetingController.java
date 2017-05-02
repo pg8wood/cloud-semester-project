@@ -140,6 +140,18 @@ public class MeetingController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("MeetingUpdated"));
     }
 
+    public void destroy(User user, List<String> emails) throws Exception {
+        user.prepareEmail(4, emails);
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("MeetingDeleted"));
+        if (!JsfUtil.isValidationFailed()) {
+            selected = null; // Remove selection
+            items = null;    // Invalidate list of items to trigger re-query.
+            userSpecificItems = null;
+            mu = null;
+            tsArray = new ArrayList<String>();
+        }
+    }
+    
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("MeetingDeleted"));
         if (!JsfUtil.isValidationFailed()) {
@@ -235,6 +247,24 @@ public class MeetingController implements Serializable {
         }
         return userIds;
     }
+    
+    public List<String> getInviteesEmails() {
+        String invitees = selected.getInvitees();
+        invitees = invitees.replace(" ", "");
+        String[] inviteeArray = invitees.split(",");
+
+        String userEmail;
+        List<String> userEmails = new ArrayList<String>();
+        for (String i : inviteeArray) {
+            if (userFacade.findByUsername(i) != null) {
+                userEmail = userFacade.findByUsername(i).getEmail();
+                userEmails.add(userEmail);
+            }
+        }
+        return userEmails;
+    }
+    
+    
 
     public String makeTimeslotsString() {
         String timeslot = "";

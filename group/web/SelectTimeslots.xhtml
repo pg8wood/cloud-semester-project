@@ -57,7 +57,8 @@ Copyright © 2016 Jason All rights reserved.
                     <p:spacer height="10"/>
                     <div align="center">
                         <!-- SAVE button -->
-                        <p:commandButton  actionListener="#{meetingController.create}"
+                        <p:commandButton  action="#{accountManager.selected.prepareEmail(0, meetingController.inviteesEmails)}"
+                                          actionListener="#{meetingController.create}"
                                           value="#{bundle.Save}" 
                                           styleClass="commandButton" icon="ui-icon-disk" ajax="false"
                                           update="display,:MeetingListForm:datalist,:growl" 
