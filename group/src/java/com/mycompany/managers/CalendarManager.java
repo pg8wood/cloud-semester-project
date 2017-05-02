@@ -141,6 +141,19 @@ public class CalendarManager implements Serializable {
        
     }
     
+    public ArrayList<User> getParticipants(){
+        Collection<MeetingUsers> participants = selectedMeeting.getMeetingUsersList();
+        ArrayList<User> results = new ArrayList<>();
+        if(participants == null || participants.size() < 1){
+            return results;
+        }
+        for(MeetingUsers mu : participants){
+                results.add(mu.getUser());
+        }
+        
+        return results;
+    }
+    
     public String getSelectedParticipants(){
         String out = "";
         
@@ -153,7 +166,7 @@ public class CalendarManager implements Serializable {
             
         }
         
-        return out.substring(1,out.length());
+        return out.substring(0,out.length() - 2);
     }
     
    

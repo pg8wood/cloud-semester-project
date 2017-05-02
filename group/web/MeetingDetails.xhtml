@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition>
 
@@ -16,7 +17,7 @@
                     <div class="col s2">
                         <p class="indigo-text text-darken-4">Title: </p>
                     </div>
-                    <div class="col s9">
+                    <div class="col s10">
                         <p class="indigo-text text-darken-4">#{calendarManager.event.title}</p>
                     </div>
                 </div>
@@ -28,21 +29,28 @@
                         <p class="indigo-text text-darken-4">#{calendarManager.event.startDate}</p>
                     </div>
                 </div>
+                
                 <div class="row">
-                    <div class="col s2">
-                        <p class="indigo-text text-darken-4">End: </p>
-                    </div>
-                    <div class="col s10">
-                        <p class="indigo-text text-darken-4">#{calendarManager.event.endDate}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s2">
-                        <p class="indigo-text text-darken-4">Participants: </p>
-                    </div>
-                    <div class="col s10">
-                        <p class="indigo-text text-darken-4">#{calendarManager.getSelectedParticipants()}</p>
-                    </div>
+                    <c:if test="#{calendarManager.event != null}">
+                            <div class="col s2">
+                                <h:outputText value="Invitees" class="indigo-text text-darken-4" />
+                            </div>
+                            <div class="col s10">
+                                <p:repeat 
+                                    value="#{calendarManager.getParticipants()}" 
+                                    var="person"
+                                    size="#{calendarManager.getParticipants().size()}"
+                                    offset="0"
+                                    step="1"
+                                    varStatus="status">
+                                    <div class="chip">
+                                        <img src="#{person.getRelativeThumbnailFilePath()}" />
+                                        #{person.firstName} #{person.lastName}
+                                    </div>
+
+                                </p:repeat>
+                            </div>
+                    </c:if>
                 </div>
                 <div class="row">
                     <div class="col s2">
