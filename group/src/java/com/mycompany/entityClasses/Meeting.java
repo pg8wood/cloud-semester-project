@@ -48,6 +48,10 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 public class Meeting implements Serializable {
 
+    @Size(max = 256)
+    @Column(name = "invitees")
+    private String invitees;
+
     @OneToMany(mappedBy = "meetingId")
     private Collection<MeetingFile> meetingFileCollection;
 
@@ -103,8 +107,6 @@ public class Meeting implements Serializable {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @ManyToOne
     private User ownerId;
-
-    private String invitees;
 
 //    // Instance fields
 //    private HashMap<Calendar, List<String>> timesByDateMap;

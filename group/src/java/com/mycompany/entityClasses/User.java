@@ -10,6 +10,11 @@ import com.mycompany.sessionBeans.UserPhotoFacade;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.mail.MessagingException;
 import javax.persistence.Basic;
@@ -483,7 +488,20 @@ public class User implements Serializable {
             emailSender.setEmailTo(email);
             emailSender.setEmailSubject(prepareEmailSubject(option));
             emailSender.setEmailBody(prepareEmailBody(option));
-            emailSender.sendEmail();
+            // Send the email on another thread so the user doesn't have 
+            // to wait for execution to complete
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        emailSender.sendEmail();
+                    } catch (MessagingException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
         }
 
     }
@@ -500,7 +518,20 @@ public class User implements Serializable {
         emailSender.setEmailTo(email);
         emailSender.setEmailSubject(prepareEmailSubject(option));
         emailSender.setEmailBody(prepareEmailBody(option));
-        emailSender.sendEmail();
+
+        // Send the email on another thread so the user doesn't have 
+        // to wait for execution to complete
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    emailSender.sendEmail();
+                } catch (MessagingException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     /**
