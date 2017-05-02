@@ -72,7 +72,7 @@ public class MeetingController implements Serializable {
             Date today = new Date();
             for(MeetingUsers mu : meetingusers){
                 Meeting m = mu.getMeeting();
-                if(m.isFinalized()){
+                if(m != null && m.isFinalized()){
                     DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                     try{
                         
@@ -164,6 +164,11 @@ public class MeetingController implements Serializable {
         return selected;
     }
 
+    public Meeting prepareView(Meeting meeting) {
+        selected = meeting;
+        return selected;
+    }
+    
     public void create() {
         lastMeetingCreated = selected;
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));
@@ -227,15 +232,19 @@ public class MeetingController implements Serializable {
                     getMeetingFacade().edit(selected);
                     int id = getMeetingFacade().getMeetingMaxId();
                     List<Integer> invitees = getInviteesId();
+                    
+                    // Set up MeetingUsers objects for invitees
                     for (int i : invitees) {
                         mu = new MeetingUsers(i, id);
                         mu.setAvailableTimes("");
                         mu.setResponse(false);
                         getMeetingUsersFacade().edit(mu);
                     }
+                    
+                    // Set the MeetingUsers object for the owner 
                     mu = new MeetingUsers(user.getId(), id);
-                    mu.setAvailableTimes("");
-                    mu.setResponse(false);
+                    mu.setAvailableTimes(selected.getTimeslots());
+                    mu.setResponse(true);
                     getMeetingUsersFacade().edit(mu);
                 } else {
                     getMeetingFacade().remove(selected);
