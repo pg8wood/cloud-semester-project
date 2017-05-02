@@ -13,7 +13,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
     <!-- This page is constructed based on the siteTemplate -->
-    <ui:composition template="template/siteTemplateOld.xhtml">
+    <ui:composition template="template/siteTemplate.xhtml">
 
         <ui:define name="title">
             <!-- Set the page title -->
@@ -64,7 +64,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </c:if>
                 </h:panelGroup>
 
-                <p:confirmDialog id="confirmDialogBox" global="true" showEffect="fade" hideEffect="fade">
+                <p:confirmDialog id="confirmDialogBox" widgetVar="confirmDialog" global="true">
                     <div align="center">
                         <!-- The value of the first button listed below will be shown as 
                         highlighted (default action) when displayed -->
@@ -72,7 +72,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                          styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         &nbsp;
                         <p:commandButton value="Yes" type="button" 
-                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                         />
                     </div>
                 </p:confirmDialog>
 
