@@ -160,10 +160,8 @@ Style the div component whose unique id is "editableContent" per reference
 <div id="editableContent"> in siteTemplate.xhtml
 */
 #editableContent {
-     /*height = 100% window height - (header height 84px + footer height 100px)*/ 
-    /*height: calc(100% - 184px);*/ 
     height: auto;
-    width: 100%;
+    width: auto;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 100px;

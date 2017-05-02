@@ -13,7 +13,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
     <!-- This page is constructed based on the siteTemplate -->
-    <ui:composition template="template/siteTemplate.xhtml">
+    <ui:composition template="template/siteTemplateOld.xhtml">
 
         <ui:define name="title">
             <!-- Set the page title -->
@@ -28,14 +28,6 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <!-- Growl that shows messages to the user -->
                 <p:growl id="growl" life="5000" /> 
             </h:form>
-
-            <div class="sidebarLeft">
-                <div class="sidebarContent">
-                    <br />
-                    <a href="Calendar.xhtml">My Calendar</a>
-                </div>
-            </div>
-            <script src="resources/js/navbarScroller.js"></script>
 
             <div class="main" align="center">
                 <h1>Invitations</h1>

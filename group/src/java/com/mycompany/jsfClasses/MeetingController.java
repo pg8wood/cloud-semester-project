@@ -258,6 +258,23 @@ public class MeetingController implements Serializable {
             }
         }
     }
+    
+    /**
+     * Autocomplete finding users. 
+     * 
+     * @param query the query being searched 
+     * @return 
+     */
+     public List<String> completeText(String query) {
+        List<User> results = userFacade.findAll();
+        List<String> usernames = new ArrayList();
+        
+        for (User user: results) {
+            usernames.add(user.getUsername());
+        }
+         
+        return usernames;
+    }
 
     public List<Integer> getInviteesId() {
         String invitees = selected.getInvitees();

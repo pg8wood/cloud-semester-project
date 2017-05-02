@@ -38,17 +38,17 @@ Copyright © 2017 Osman Balci. All rights reserved.
         The siteStyles CSS file is linked for use by the entire site. 
         -->
         <h:outputStylesheet library="css" name="siteStyles.css" />
-        
+
         <!-- 
         The following CSS and JavaScript files are required for the
         Image Slider, created by http://www.menucool.com, to work.
         -->
         <h:outputStylesheet library="css" name="js-image-slider.css" />
         <script src="resources/js/js-image-slider.js" type="text/javascript"></script>
-        
-        
-        
-        
+
+
+
+
         <!--
         The icons and the font-awesome.min.css styles provided by http://fontawesome.io/
         are linked for use by the entire site.
@@ -64,7 +64,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
         you can redefine "css" in that page by using <ui:define name="css"> 
         -->
         <ui:insert name="css"/>
-        
+
         <!-- 
         A favicon (short for favorite icon), also known as a shortcut icon, website icon, tab icon, 
         URL icon or bookmark icon, is a file named favicon.ico [https://en.wikipedia.org/wiki/Favicon]
@@ -74,27 +74,26 @@ Copyright © 2017 Osman Balci. All rights reserved.
         Use absolute path for the image file since it will be referenced by all pages in the site.
         -->
         <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon" />
-        
+
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" />
 
         <!--Import Google Icon Font-->
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         
-        
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        
-    </h:head>
+        <!--Let browser know website is optimized for mobile-->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <h:body>  
-        
-        <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
+              </h:head>
+      
+              <h:body>
+
+                <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
 
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
-    
-        
+
+
         <div id="page" class="grey lighten-3">  
 
             <!-- 
@@ -110,29 +109,29 @@ Copyright © 2017 Osman Balci. All rights reserved.
             Changes made in the header component will show up automatically with all pages created 
             based on this siteTemplate for the entire site, achieving great maintainability.
             -->
-            
+
             <div id="header" class="green lighten-1">
                 <ui:insert name="header" >
                     <ui:include src="headerTemplate.xhtml" />
                 </ui:insert>
             </div>
-            
-            <script>
+
+    <script>
                 $(document).ready(function(){
-                    $('.parallax').parallax();
-                    $('select').material_select();
-                    $('.modal').modal();
-                    // Initialize collapse button
-                    $('.button-collapse').sideNav({
-                        menuWidth: 300, // Default is 300
+                $('.parallax').parallax();
+                $('select').material_select();
+                $('.modal').modal();
+                // Initialize collapse button
+                $('.button-collapse').sideNav({
+                menuWidth: 300, // Default is 300
                         edge: 'right', // Choose the horizontal origin
-                      }
+                    }
                     );
                     $('.datepicker').pickadate({
                         selectMonths: true, // Creates a dropdown to control month
                         selectYears: 15 // Creates a dropdown of 15 years to control year
                     });
-                });
+                    });
             </script>
 
 
@@ -153,18 +152,18 @@ Copyright © 2017 Osman Balci. All rights reserved.
             by using <ui:define name="editableContent">. If the page content is not defined,
             contentTemplate's content will be used as default. 
             -->
-            
-            
-<!--            <div class="parallax-container" style="height: 250px;">
-                <div class="parallax" style="z-index: 0;">
-                    <img src="https://i.groupme.com/1191x670.jpeg.612bc0b921154c15bbccec953bc4d2a3.large"
-                         style="display: block; transform: translate3d(-50%, 383px, 0px)" />
-                </div>
-            </div>-->
+
+
+            <!--            <div class="parallax-container" style="height: 250px;">
+                            <div class="parallax" style="z-index: 0;">
+                                <img src="https://i.groupme.com/1191x670.jpeg.612bc0b921154c15bbccec953bc4d2a3.large"
+                                     style="display: block; transform: translate3d(-50%, 383px, 0px)" />
+                            </div>
+                        </div>-->
             <div class="section white">
                 <div id="editableContent">
                     <ui:insert name="editableContent" >
-                        
+
                         <ui:include src="contentTemplate.xhtml" />
                     </ui:insert>
                 </div>
@@ -189,7 +188,7 @@ Copyright © 2017 Osman Balci. All rights reserved.
                     <ui:include src="footerTemplate.xhtml" />
                 </ui:insert>
             </div>
-            
+
         </div>
-    </h:body>
+        </h:body>
 </html>

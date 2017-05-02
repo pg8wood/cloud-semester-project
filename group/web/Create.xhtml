@@ -24,12 +24,21 @@ Copyright ⓒ 2016 Osman Balci. All rights reserved.
                   width="800" height="550" class="grey lighten-3">
 
             <h:form id="MeetingCreateForm" styleClass="ui-datatable-data">
-                
+
                 <div class="row input-field">
                     <p:outputLabel value="Invitees" for="invitees" />
-                    <p:inputText id="invitees" value="#{meetingController.selected.invitees}" 
-                                     required="true" 
-                                     requiredMessage="Invitees field is required!"/>
+<!--                    <p:inputText id="invitees" value="#{meetingController.selected.invitees}" 
+                                 placeholder="Enter usernames separated by commas"
+                                 required="true" 
+                                 requiredMessage="Invitees field is required!"/>-->
+                    <p:autoComplete id="invitees" 
+                                    value="#{meetingController.selected.invitees}" 
+                                    completeMethod="#{meetingController.completeText}" 
+                                    placeholder="Enter usernames separated by commas"
+                                    required="true" 
+                                    requiredMessage="Invitees field is required!"
+                                    style="width: 100%;"
+                                    />
                 </div>
                 <div class="row">
                     <div class="input-field">
@@ -84,23 +93,23 @@ Copyright ⓒ 2016 Osman Balci. All rights reserved.
                     <div class="row center">
                         <div class="col s6 push-s1">
                             <p:commandButton id="selectTimeslot"
-                                         value="Select Meeting Times"
-                                         update=":growl" 
-                                         oncomplete="handleSubmit(args, 'MeetingCreateDialog', 'TimeslotSelectDialog')"
-                                         class="btn indigo darken-4 white-text"
-                                         style="background: none;"
-                                         />
+                                             value="Select Meeting Times"
+                                             update=":growl" 
+                                             oncomplete="handleSubmit(args, 'MeetingCreateDialog', 'TimeslotSelectDialog')"
+                                             class="btn indigo darken-4 white-text"
+                                             style="background: none;"
+                                             />
                         </div>
                         <div class="col s6 pull-s1">
                             <p:commandButton value="#{bundle.Cancel}" 
-                                         onclick="PF('MeetingCreateDialog').hide()"    
-                                         class="btn indigo darken-4 white-text"
-                                         style="background: none;"
-                                         />
+                                             onclick="PF('MeetingCreateDialog').hide()"    
+                                             class="btn indigo darken-4 white-text"
+                                             style="background: none;"
+                                             />
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
             </h:form>
         </p:dialog>

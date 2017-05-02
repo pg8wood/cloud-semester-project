@@ -10,7 +10,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
           xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
           xmlns:h="http://xmlns.jcp.org/jsf/html"
           xmlns:f="http://xmlns.jcp.org/jsf/core"
-          xmlns:p="http://primefaces.org/ui">
+          xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
         <ui:composition>
             <!-- CSS for meetings -->
@@ -25,17 +26,79 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
                 <p style="text-align: center">#{meetingInvitation.description}</p>
-                <p:commandButton widgetVar="respondButton#{meetingInvitation.id}" value="Respond" onclick="PF('respondButton#{meetingInvitation.id}').disable(); PF('dayPanel#{meetingInvitation.id}').expand()" styleClass="commandButton"/>
 
+                <!-- Collapses other panels when an invitation is opened. 
+                This prevents the user from accepting multiple invitations 
+                at once and keeps the interface clean. 
+                
+                NOTE: This script must be included inline because p:repeat tags
+                do not put elements in the DOM in time, and this whole page is 
+                contained in a p:repeat. Therefore this JavaScript needs to be
+                included right here. -->
+                <script type="text/javascript">
+                    function collapseOtherInvitations(keepOpenId) {
+                        if (keepOpenId === -1) {
+                            return;
+                        }
+                        var widgets = PrimeFaces.widgets;
+                        var dayPanelKeepOpen = "dayPanel" + keepOpenId;
+                        var timePanelKeepOpen = "timePanel" + keepOpenId;
+                        var property;
+
+                        for (property in widgets) {
+                            // Don't collapsae the panel currently being opened
+                            if (property.includes(dayPanelKeepOpen)
+                                    || property.includes(timePanelKeepOpen)) {
+                                continue;
+                            }
+
+                            // Collapse day panels
+                            if (property.includes("dayPanel")) {
+                                PF(property).collapse();
+                            }
+
+                            // Collapse time panels
+                            if (property.includes("timePanel")) {
+                                PF(property).collapse();
+                            }
+
+                            // Re-enable all other respond buttons
+                            if (property.includes("respondButton")) {
+                                if (!(property.includes(keepOpenId))) {
+                                    PF(property).enable();
+                                }
+                            }
+                        }
+                    }
+                </script>
+
+                <!-- Respond button clears any selected times and displays 
+                response choices to the user -->
+                <p:commandButton action="#{userController.clearPotentialTimes()}"
+                                 actionListener="#{meetingUsersController.setSelected(accountManager.selected, meetingInvitation)}"
+                                 widgetVar="respondButton#{meetingInvitation.id}" value="Respond" 
+                                 onclick="PF('respondButton#{meetingInvitation.id}').disable();
+                                         PF('dayPanel#{meetingInvitation.id}').expand();
+                                         collapseOtherInvitations('#{meetingInvitation.id}');" 
+                                 styleClass="commandButton"/>
+
+                <!-- Response section: user indicates their availability -->
                 <h:form enctype="multipart/form-data">
-                    <!-- Response section: user indicates their availability date-wise -->
-                    <p:panel class="dayPanel#{meetingInvitation.id}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                    <p:panel class="dayPanel" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                         <hr />
                         <h4>When can you make it?</h4>
                         <!-- Can't go button --> 
-                        <p:commandLink class="declineLink">
-                            <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')"></i>
+                        <p:commandLink actionListener="#{userController.clearPotentialTimes()}"
+                                       action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes)}"
+                                       oncomplete="collapseOtherInvitations('-1')"
+                                       update=":meetingInvitations :growlForm:growl"
+                                       class="declineLink">
+                            <i id="declineIcon#{meetingInvitation.id}" class="fa fa-times" aria-hidden="true"></i>
                             <div class="declineText">Can't go</div>
+
+                            <p:confirm header="Confirmation" 
+                                       message="Are you sure you would like to decline this meeting invitation?" 
+                                       icon="ui-icon-alert"/>
                         </p:commandLink>
 
                         <!-- Div that floats left in order to force #horizontalScrollArea
@@ -46,10 +109,12 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                             <!-- Get list of times for the selected meetingInvitation -->
                             <ui:param name="times" value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
 
-
                             <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
                                 <!-- Clicking this link updates the collapsed time panel and displays it -->
-                                <p:commandLink class="calendarLink" action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" onclick="PF('timePanel#{meetingInvitation.id}').expand()" ajax="true" update="@form" >
+                                <p:commandLink class="calendarLink" 
+                                               action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" 
+                                               onclick="PF('timePanel#{meetingInvitation.id}').expand()" 
+                                               ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}" >
                                     <time datetime="" class="icon">
                                         <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
                                         <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
@@ -64,39 +129,59 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
                         <br />
                         <hr />
-
+                     
+                        <p style="text-align: center;">Times for <b>#{meetingController.getSelectedDateAsString()}</b></p>
+                        <p style="text-align: center;">Double click to select a time.</p>
+                       
+                        <!-- Time selection: user indicates their availability -->
                         <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
-                            <!--<h:form id="test#{meetingInvitation.id}">-->
-                            <p:repeat value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" offset="0" step="1" size="#{meetingController.getTimesForDay().size()}" var="timeslot" varStatus="status"> 
-                                <!-- On/Off switch --> 
-                                <div style="height: 3em;">
-                                    <label class="switch">
-                                        <input type="checkbox" />
-                                        <div class="slider round"></div>
-                                    </label>
-                                    &nbsp;
-                                    <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}"></h:outputText>
-                                </div>
-                            </p:repeat>
-                            <!--</h:form>-->
+                            <h:panelGroup id="timeGroup#{meetingInvitation.id}" >
+                                <ui:param name="timesForDay" value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" />
+                                <p:repeat value="#{timesForDay}" offset="0" step="1" size="#{timesForDay.size()}" var="timeslot" varStatus="status"> 
+
+                                    <!-- On/Off switch --> 
+                                    <p:commandLink id="switch#{meetingInvitation.id}"
+                                                   action="#{userController.updatePotentialAvailability(timeslot)}"
+                                                   ajax="true"
+                                                   update="@form" style='text-decoration: none;'>
+                                        <div style="height: 3em;">
+                                            <label class="switch">
+                                                <ui:fragment rendered="#{userController.checkboxShouldBeChecked(timeslot)}">
+                                                    <input type="checkbox" checked="true"/>
+                                                </ui:fragment>
+
+                                                <ui:fragment rendered="#{!userController.checkboxShouldBeChecked(timeslot)}">
+                                                    <input type="checkbox"/>
+                                                </ui:fragment>
+                                                <div class="slider round"></div>
+                                            </label>
+                                            &nbsp;
+                                            <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}" />
+                                        </div>
+                                    </p:commandLink>
+                                </p:repeat>
+                            </h:panelGroup>
                         </p:panelGrid>
 
                         <br /><br/>
-                        <p:commandButton value="Submit all selected times" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')" styleClass="commandButton"></p:commandButton>
-                        &nbsp;&nbsp;
-                        <!--<p:commandButton value="I can't make it" onclick="hideInvitation('meetingWrapper#{meetingInvitation.id}')" styleClass="commandButton"></p:commandButton>-->
 
-                        <!-- Hide the invitation after the user has submitted -->
-                        <script type="text/javascript">
-                            function hideInvitation(id) {
-                                var e = document.getElementById(id);
-                                e.innerHTML = '<p>You have submitted your response for this invitation.</p>';
-                            }
-                        </script>
+                        <!-- Submit button -->
+                        <p:commandButton action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes)}"
+                                         ajax='true'
+                                         value="Submit all selected times" 
+                                         oncomplete="collapseOtherInvitations('-1')"
+                                         update="upcomingMeetings, meetingInvitations, @form, :growlForm:growl"
+                                         styleClass="commandButton" >
+
+                            <p:confirm header="Confirmation" 
+                                       message="Are you sure you would like to submit all selected dates and times?" 
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
+                        &nbsp;&nbsp;
                     </p:panel> <!-- .timePanel -->
                 </h:form>
-            </div> <!-- #meetingWrapper -->
 
+            </div> <!-- #meetingWrapper -->
 
         </ui:composition>
     </html>

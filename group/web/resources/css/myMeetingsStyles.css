@@ -62,15 +62,9 @@ End Sidebar styles
 }
 
 .main {
-    margin-left: 150px; 
+    /*margin-left: 150px;*/ 
     min-height: 100%;
     padding-left: 75px;
     padding-right: 75px;
-}
-
-/* Prevent footer from overlapping with sidebar */
-#footer {
-    margin-left: 150px;
-    width: calc(100% - 150px);
 }
 
