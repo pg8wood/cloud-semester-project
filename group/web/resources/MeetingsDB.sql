@@ -71,7 +71,7 @@ CREATE TABLE MeetingFile
 INSERT INTO User (username, password, first_name, middle_name, last_name, address1, city, state, zipcode, security_question, security_answer, email, userPhoto) VALUES 
 ('alexmartin', 'password1', 'Alex', 'James', 'Martin', '220 Edge Way', 'Blacksburg', 'VA', '24060', '1', 'answer', 'alexm118@vt.edu', 'spongebob.jpg'),
 ('johndoe', 'password1', 'John', 'Jacob', 'Doe', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'Gandalf.jpg'),
-('p', 'p', 'Patrick', 'Eugene', 'Gatewood', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'johndoe@jd.com', 'penguin.png');
+('p', 'p', 'Patrick', 'Eugene', 'Gatewood', '100 Main Street', 'Blacksburg', 'VA', '24060', '1', 'answer', 'pg8wood@vt.edu', 'penguin.png');
 
 INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, description, timeslots, invitees, finaltime) VALUES
 ('800 West Campus Drive', 'Blacksburg', 'VA', '24060', '1', 'Test Meetings', '1: This is a preloaded meeting to test functionality', 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992,Thu Jan 10 3:00:00 EET 1992,Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992', '', ''),
