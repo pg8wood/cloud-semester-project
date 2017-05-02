@@ -32,8 +32,8 @@ public class LoginFilter implements Filter {
 
     /**
      * Checks HTTP requests and responses and restricts access to the main site
-     * to logged-in users only 
-     * 
+     * to logged-in users only
+     *
      * @param req the HTTP request sent
      * @param res the HTTP response received
      * @param chain
@@ -62,6 +62,9 @@ public class LoginFilter implements Filter {
                 || path.endsWith("index.xhtml?faces-redirect=true")
                 || path.endsWith("CreateAccount.xhtml")
                 || path.endsWith("SignIn.xhtml")
+                || path.endsWith("EnterUsername.xhtml")
+                || path.endsWith("SecurityQuestion.xhtml")
+                || path.endsWith("ResetPassword.xhtml")
                 || path.contains("/resources/")) {
             chain.doFilter(request, response);
         } else if (session == null || session.getAttribute("username") == null) {
@@ -70,7 +73,7 @@ public class LoginFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
-  
+
     /**
      * @see Filter#destroy()
      */
