@@ -60,6 +60,7 @@ public class MeetingController implements Serializable {
     private MeetingUsers mu;
     private boolean isResponding;
     private Date startTime;
+    private String time;
     private Date endTime;
     private List<String> tsArray;
     private Date finalDateSelect;
@@ -107,6 +108,16 @@ public class MeetingController implements Serializable {
 
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    
+    
     public MeetingController() {
         items = null;
         userSpecificItems = null;
@@ -278,17 +289,38 @@ public class MeetingController implements Serializable {
     /**
      * Adds a new time to the meeting's list of potential times
      */
-    public void updateTime() {
-        FacesMessage resultMessage;
-        if (startTime == null) {
-            resultMessage = new FacesMessage("Please select a time first!");
+    public void updateTime() throws ParseException {
+        FacesMessage resultMessage = new FacesMessage("Filler");
+        if (startTime == null || time == null) {
+            resultMessage = new FacesMessage("Please select a date and time first!");
             resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
         } else if (!tsArray.contains(startTime.toString())) {
-            tsArray.add(startTime.toString());
-            resultMessage = new FacesMessage("Added new time.");
-        } else {
-            resultMessage = new FacesMessage("You have already added this time!");
-            resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+            String[] dateComponents = startTime.toString().split(" ");
+            //Update the time section to be the time field input value
+            dateComponents[3] = time;
+            String pattern = "E MMM dd HH:mm Z yyyy";
+            StringBuilder builder = new StringBuilder();
+
+            for (String n : dateComponents) {
+                builder.append(n);
+                builder.append(" ");
+            }
+            builder.deleteCharAt(builder.length() - 1);
+            SimpleDateFormat format = new SimpleDateFormat(pattern);
+            try {
+                System.out.println(builder.toString());
+                startTime = format.parse(builder.toString());
+                if(tsArray.contains(startTime.toString())){
+                    resultMessage = new FacesMessage("You have already added this time!");
+                    resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+                } else {
+                    tsArray.add(startTime.toString());
+                    resultMessage = new FacesMessage("Added new time.");
+                }
+                
+            } catch (Exception e) {
+                resultMessage = new FacesMessage("Error With Time, Please Follow Format HH:MM");
+            }
         }
 
         FacesContext.getCurrentInstance().addMessage(null, resultMessage);

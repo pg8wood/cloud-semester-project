@@ -17,15 +17,24 @@ Copyright © 2016 Jason All rights reserved.
         Dialog pop-up window to CREATE a new company
         ********************************************
         -->
-
-        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" modal="true" resizable="false" 
+        
+        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" 
+                  modal="true" resizable="false" 
                   appendTo="@(body)" header="Add Timeslots" closable="false">
             <h:form id="TimeslotSelectForm" styleClass="ui-datatable-data">
                 <h:panelGroup id="display">
                     <div align="center">    
-                        <h:outputText value="Choose time:" />
-                        &nbsp;&nbsp;
-                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm" showOn="button" stepMinute="15" />
+<!--                        <h:outputText value="Choose time:" />
+                        &nbsp;&nbsp;-->
+<!--                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm" showOn="button" stepMinute="15" />-->
+                        <p:calendar id="datetime" value="#{meetingController.startTime}" />
+                        <div class="row input-field">
+                            <h:outputLabel value="Time" for="time" />
+                            <p:inputText id="time" value="#{meetingController.time}" required="true" class=""
+                                 requiredMessage="Time Slot Needed" label="Time Slot( HH:MM )" >
+                            </p:inputText>
+                        </div>
+                        
                         <br />
                         &nbsp;&nbsp;
                         <p:commandButton value="Add Selected Time" 
