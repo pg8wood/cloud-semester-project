@@ -22,18 +22,91 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             <div style="text-align:center">
                 <h2>#{upcomingMeeting.topic}</h2>
             </div>
-            <p>
-                July 17 at 7:00 AM
-                <span style="float:right; text-decoration:none;">
-                    <a href="#location#{upcomingMeeting.id}">#{upcomingMeeting.address1} 
-                        <br />
-                        #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a></span>
-            </p>            
-            <p text-align="left">
-                #{upcomingMeeting.description}
-            </p>
 
-            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap('#{upcomingMeeting.id}', '#{upcomingMeeting.getFullAddress()}');" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+
+
+<!--            <p>Total invited #{upcomingMeeting.getUserCollection().size()}</p>
+            <p>When people can:   #{meetingController.getAllAvailableTimes(upcomingMeeting)}</p>
+            <p>Who's a flake #{meetingController.getNotResponded(upcomingMeeting).size()}</p>
+            <p>Final Time #{upcomingMeeting.getFinaltime()}</p>-->
+
+            <p:panel id="horizontalScroll#{upcomingMeeting.id}" styleClass="horizontalScrollArea" header="Owner Actions" toggleable="true" collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
+                <h:form id="finalize" rendered="#{!upcomingMeeting.isFinalized()}">
+                    <p:outputLabel value="Finalize Meeting Time "/>
+
+                    <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
+                        <p:ajax event="dateSelect" listener="#{meetingController.onDateSelect}"/>
+                    </p:calendar>
+
+                    <div align="center">
+                        <p:commandButton action="#{accountManager.selected.prepareEmail(3, meetingController.inviteesEmails)}" actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save" ajax="false"/>
+                        &nbsp;     
+                    </div>
+
+
+                    <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
+
+                        <!-- Get list of times for the selected meetingInvitation -->
+                        <ui:param name="times" value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" />
+
+                        <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
+                            <!-- Clicking this link updates the collapsed time panel and displays it -->
+                            <p:commandLink class="calendarLink">
+                                <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
+                                <!--<f:ajax render="@all"/>-->
+                                <time datetime="" class="icon">
+                                    <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
+                                    <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
+                                    <span>#{timeslot.getDate()}</span>
+
+                                </time>
+                                <br></br>
+                                <div>
+
+                                    <h:outputText value="#{timeslot.getHours()}:#{timeslot.getMinutes()}" style="font-weight:bolder"/>
+                                    <h:outputText rendered="#{timeslot.getMinutes() == 0}" value="0" style="font-weight:bolder"/>
+                                    <br></br>
+                                    <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
+                                </div>
+                            </p:commandLink>
+
+                        </p:repeat>
+                        <div>
+                            <br></br>
+                            <h:outputText value="Total Number Invited: #{upcomingMeeting.getUserCollection().size()}" style="font-weight:bolder"/>
+                            <br></br>
+                            <h:outputText value="Yet To Respond: #{meetingController.getNotResponded(upcomingMeeting).size()}" style="font-weight:bolder"/>
+                        </div>
+
+
+                    </p:scrollPanel>
+
+                </h:form>
+                <h:form id="ownFinal" rendered="#{upcomingMeeting.isFinalized()}">
+                    <h:outputText value="You set the final meeting time for:"/>
+                    <br></br>
+                    <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder"/>
+                </h:form>
+                <hr />
+
+            </p:panel>
+
+
+            <p:panelGrid columns="3" styleClass="transparentBackground" style="background-color:#a4acba;" layout="grid">
+
+                <a href="#location#{upcomingMeeting.id}" style="font-weight:bolder">
+                    #{upcomingMeeting.address1} 
+                    <br />
+                    #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a>
+                <h:outputText value="#{upcomingMeeting.description}" style="font-weight:bolder"/>
+
+                <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder" rendered="#{upcomingMeeting.isFinalized()}"/>
+                <h:outputText value="Final Time Not Yet Set" style="font-weight: bolder" rendered="#{!upcomingMeeting.isFinalized()}"/>
+
+
+            </p:panelGrid>
+            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+
 
             <br /><br />
 

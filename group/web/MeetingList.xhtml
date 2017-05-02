@@ -153,10 +153,10 @@ Copyright © 2016 Jason. All rights reserved.
                                 *************************************************** 
                                 -->
                                 <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" 
-                                                 styleClass="commandButton" actionListener="#{meetingController.destroy}" 
+                                                 styleClass="commandButton" actionListener="#{meetingController.destroy(accountManager.selected, meetingController.inviteesEmails)}"
                                                  update=":growl,datalist" disabled="#{empty meetingController.selected}">
 
-                                    <p:confirm header="Confirmation" 
+                                    <p:confirm header="Confirmation"
                                                message="Are you sure you want to permanently delete the Meeting from the database?" 
                                                icon="ui-icon-alert" />
                                 </p:commandButton>

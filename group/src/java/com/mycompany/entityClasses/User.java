@@ -4,12 +4,14 @@
  */
 package com.mycompany.entityClasses;
 
+import com.mycompany.cdibeans.EmailSender;
 import com.mycompany.managers.Constants;
 import com.mycompany.sessionBeans.UserPhotoFacade;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.mail.MessagingException;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -336,7 +338,7 @@ public class User implements Serializable {
     User's photo image file is named as "userId.fileExtension", e.g., 5.jpg for user with id 5.
     Since the user can have only one photo, this makes sense.
      */
-    public String getUserPhoto() {        
+    public String getUserPhoto() {
         return this.userPhoto;
     }
 
@@ -344,6 +346,11 @@ public class User implements Serializable {
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
     }
+<<<<<<< HEAD
+
+    public String getUserPhotoFilePath() {
+        return Constants.PHOTOS_RELATIVE_PATH + this.userPhoto;
+=======
      */
     public String getUserPhotoFilePath() {
         return Constants.PHOTOS_RELATIVE_PATH + getUserPhoto();
@@ -445,13 +452,14 @@ public class User implements Serializable {
         return true;
     }
 
-    public boolean equalID(User u){
+    public boolean equalID(User u) {
         System.out.print("checking");
-        if(id == u.id){
+        if (id == u.id) {
             System.out.print("true");
         }
         return (id == u.id);
     }
+
     /**
      * @return the String representation of a User id
      */
@@ -460,6 +468,127 @@ public class User implements Serializable {
 
         // Returned String is the one shown in the p:dataTable under the User Id column in UserFiles.xhtml.
         return id.toString();
+    }
+
+    /**
+     * Sets the necessary properties to send the email
+     *
+     * @param option
+     * @param emails
+     * @throws java.lang.Exception
+     */
+    public void prepareEmail(int option, List<String> emails) throws Exception {
+        for (String email : emails) {
+            EmailSender emailSender = new EmailSender();
+            emailSender.setEmailTo(email);
+            emailSender.setEmailSubject(prepareEmailSubject(option));
+            emailSender.setEmailBody(prepareEmailBody(option));
+            emailSender.sendEmail();
+        }
+
+    }
+
+    /**
+     * Sets the necessary properties to send the email
+     *
+     * @param option
+     * @param email
+     * @throws java.lang.Exception
+     */
+    public void prepareOwnerEmail(int option, String email) throws Exception {
+        EmailSender emailSender = new EmailSender();
+        emailSender.setEmailTo(email);
+        emailSender.setEmailSubject(prepareEmailSubject(option));
+        emailSender.setEmailBody(prepareEmailBody(option));
+        emailSender.sendEmail();
+    }
+
+    /**
+     * Prepares the email title
+     *
+     * @param option specifies the context of the email
+     * @return emailTitle
+     */
+    public String prepareEmailSubject(int option) {
+        String emailSubject = "";
+
+        switch (option) {
+            case 0:
+                //sends to list of invitees
+                emailSubject = "New Meeting Invite!";
+                break;
+            case 1:
+                //sends to owner
+                emailSubject = "New Meeting Response!";
+                break;
+            case 2:
+                //sends to list of invitees
+                emailSubject = "Upcoming Meeting Updated!";
+                break;
+            case 3:
+                //sends to list of invitees
+                emailSubject = "Upcoming Meeting Has Been Finalized!!";
+                break;
+            case 4:
+                //sends to list of invitees
+                emailSubject = "Meeting Cancelled!";
+                break;
+            default:
+                break;
+        }
+        return emailSubject;
+    }
+
+    /**
+     * Composes the initial content of the Email message.
+     *
+     * @param option specifies the context of the email
+     * @return emailBodyText
+     */
+    public String prepareEmailBody(int option) {
+
+        // Compose the email content in HTML format
+        String emailBodyText = "";
+
+        // The image for the email
+        String imageUrl = Constants.EMAIL_IMAGE;
+
+        switch (option) {
+            //email participant when invited to a meeting 
+            case 0:
+                // To enter a double quote " in a string literal, use the backslash \ escape character as \"
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>You Have Been Invited To A Meeting!</b><br /><br />"
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view your current meeting invitations!</div>";
+                break;
+            //email owner when participants respond
+            case 1:
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>Participants Have Responded To Your Meeting!</b><br /><br />"
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your current meetings!</div>";
+                break;
+            //email participants if owner updates meeting
+            case 2:
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>One of Your Upcoming Meetings Has Been Updated!</b><br /><br />"
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your upcoming meetings!</div>";
+                break;
+            //email participants when owner selects final meeting time
+            case 3:
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>An Upcoming Meeting Time Has Been Finalized!</b><br /><br />"
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view your upcoming meetings!</div>";
+                break;
+            //email participants when owner selects final meeting time
+            case 4:
+                emailBodyText = "<div align=\"center\">" + imageUrl + "<br /><br /><b>One of Your Upcoming Has Been Cancelled!</b><br /><br />"
+                        + "<a href=" + Constants.MYMEETINGS_URL + ">Click here</a> to view the status of your upcoming meetings!</div>";
+                break;
+            default:
+                break;
+        }
+
+        // Set the HTML content to be the body of the email message
+        //editorView.setText(emailBodyText);
+        // Redirect to show the SendMail.xhtml page
+        //return "SendEmail.xhtml?faces-redirect=true";
+        return emailBodyText;
     }
 
     @XmlTransient

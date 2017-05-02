@@ -66,10 +66,10 @@ Copyright © 2016 Osman Balci. All rights reserved.
                     </div>
                     <div class="row center">
                         <div class="col s4 push-s2">
-                            <p:commandButton actionListener="#{meetingController.create}" value="#{bundle.Save}" 
-                                         ajax="false"
+                            <p:commandButton action="#{accountManager.selected.prepareEmail(2, meetingController.inviteesEmails)}"
+                                         actionListener="#{meetingController.create}" value="#{bundle.Save}" 
                                          class="btn indigo darken-4 white-text"
-                                         style="background: none;"
+                                         style="background: none;" ajax="false"
                                          update="display,:MeetingListForm:datalist,:growl" 
                                          oncomplete="handleSubmit(args,'MeetingEditDialog');"/>
                         </div>
