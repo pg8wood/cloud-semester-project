@@ -22,7 +22,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
             <!--<h:form id="test#{meetingInvitation.id}" >-->
-            <div id="meetingWrapper#{meetingInvitation.id}" class="meetingWrapper" align="center">
+            <div id="meetingWrapper#{meetingInvitation.id}" class="card-panel green lighten-1" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
                 <p style="text-align: center">#{meetingInvitation.description}</p>
@@ -80,11 +80,12 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                  onclick="PF('respondButton#{meetingInvitation.id}').disable();
                                          PF('dayPanel#{meetingInvitation.id}').expand();
                                          collapseOtherInvitations('#{meetingInvitation.id}');" 
-                                 styleClass="commandButton"/>
+                                 style="background: none;"
+                                 class="btn indigo darken-4 white-text respond-button"/>
 
                 <!-- Response section: user indicates their availability -->
-                <h:form enctype="multipart/form-data">
-                    <p:panel class="dayPanel" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                <h:form enctype="multipart/form-data" class="timeform">
+                    <p:panel class="dayPanel green lighten-2" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" style="border: none;padding: 0px;" >
                         <hr />
                         <h4>When can you make it?</h4>
                         <!-- Can't go button --> 
@@ -105,7 +106,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         to fill the content width up to #declineLine -->
                         <div style="float: left;"></div>
 
-                        <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
+                        <p:scrollPanel class="green lighten-2" id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
                             <!-- Get list of times for the selected meetingInvitation -->
                             <ui:param name="times" value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
 
@@ -126,7 +127,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </p:panel>  <!-- .dayPanel -->
 
                     <!-- Available time options shown after the user selects a date --> 
-                    <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" styleClass="noBorderPanel">
+                    <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" style="border: none;padding: 0px;" class="green lighten-3">
                         <br />
                         <hr />
                      
@@ -134,7 +135,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <p style="text-align: center;">Double click to select a time.</p>
                        
                         <!-- Time selection: user indicates their availability -->
-                        <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" styleClass="availableTimesTable">
+                        <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" style="padding: 0;" class="green lighten-5">
                             <h:panelGroup id="timeGroup#{meetingInvitation.id}" >
                                 <ui:param name="timesForDay" value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" />
                                 <p:repeat value="#{timesForDay}" offset="0" step="1" size="#{timesForDay.size()}" var="timeslot" varStatus="status"> 
@@ -144,7 +145,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                                    action="#{userController.updatePotentialAvailability(timeslot)}"
                                                    ajax="true"
                                                    update="@form" style='text-decoration: none;'>
-                                        <div>
+                                        <div class="green lighten-3 center">
                                             <label class="switch">
                                                 <ui:fragment rendered="#{userController.checkboxShouldBeChecked(timeslot)}">
                                                     <input type="checkbox" checked="true"/>
@@ -171,7 +172,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                          value="Submit all selected times" 
                                          oncomplete="collapseOtherInvitations('-1')"
                                          update="upcomingMeetings, meetingInvitations, @form, :growlForm:growl"
-                                         styleClass="commandButton" >
+                                         style="background: none;"
+                                         class="btn indigo darken-4 white-text respond-button" >
 
                             <p:confirm header="Confirmation" 
                                        message="Are you sure you would like to submit all selected dates and times?" 
