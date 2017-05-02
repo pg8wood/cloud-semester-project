@@ -28,10 +28,10 @@ Copyright © 2017 Erin Kocis All rights reserved.
     <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/home/cloudsd/Kocis" />
     -->
 
-    <!--<property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/PatrickGatewood/Documents/cloud/"/>-->
+    <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/PatrickGatewood/Documents/cloud/"/>
 
     <!-- Windows OS Users should use the following -->
-    <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />
-    
+    <!--    <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />
+    -->
 
 </glassfish-web-app>
