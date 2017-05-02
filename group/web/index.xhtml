@@ -6,7 +6,8 @@ Copyright © 2017 Osman Balci. All rights reserved.
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -49,20 +50,24 @@ Copyright © 2017 Osman Balci. All rights reserved.
                 </div>
             </div>
             <div class="row">
-                
+
             </div>
-            <div class="row center">
-                <div class="col s6 push-s2">
-                    <a href="CreateAccount.xhtml" class="btn indigo darken-4 white-text">
-                        Create Account
-                    </a>
+
+            <c:if test="#{accountManager.isLoggedIn() == false}">
+                <div align="center">
+                    <div class="col s6 push-s2">
+                        <a href="CreateAccount.xhtml" class="btn indigo darken-4 white-text">
+                            Create Account
+                        </a>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="col s6 pull-s2">
+                        <a href="SignIn.xhtml" class="btn indigo darken-4 white-text">
+                            Sign In
+                        </a>
+                    </div>
                 </div>
-                <div class="col s6 pull-s2">
-                    <a href="SignIn.xhtml" class="btn indigo darken-4 white-text">
-                        Sign In
-                    </a>
-                </div>
-            </div>
+            </c:if> 
             <br /><br />
 
         </ui:define>
