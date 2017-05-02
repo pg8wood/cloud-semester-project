@@ -206,6 +206,15 @@ public class MeetingUsersController implements Serializable {
         return ejbFacade.find(id);
     }
 
+    /**
+     * Saves a user's indicated available  times and sends an email to the 
+     * meeting owner. 
+     * 
+     * @param availability
+     * @param user
+     * @param ownerEmail
+     * @throws Exception if an error occurred 
+     */
     public void finalizeMeetingAvailability(ArrayList<String> availability, User user, String ownerEmail) throws Exception {
         String finalTime;
         if (availability.isEmpty()) {
@@ -222,7 +231,8 @@ public class MeetingUsersController implements Serializable {
         current.setAvailableTimes(finalTime);
         current.setResponse(true);
         update();
-        //sends email for a new meeting response
+        
+        // sends email for a new meeting response
         user.prepareOwnerEmail(1, ownerEmail);
     }
 
