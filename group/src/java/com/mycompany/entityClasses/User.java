@@ -69,7 +69,7 @@ public class User implements Serializable {
     private Collection<Meeting> meetingCollection;
     @OneToMany(mappedBy = "ownerId")
     private Collection<Meeting> meetingCollection1;
-
+    
     // User was a reserved keyword in SQL in 1999, but not any more.
 
     /*
@@ -79,6 +79,7 @@ public class User implements Serializable {
     ========================================================
      */
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -170,6 +171,8 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "userId")
     private Collection<UserFile> userFileCollection;
+    
+    
 
     /*
     ===============================================================
@@ -380,6 +383,7 @@ public class User implements Serializable {
     }
 
     public String getRelativeThumbnailFilePath() {
+        System.out.println("FOUND");
         return Constants.PHOTOS_RELATIVE_PATH + getThumbnailFileName();
     }
 

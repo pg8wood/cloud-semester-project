@@ -1,12 +1,12 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Osman Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.managers;
 
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 public final class Constants {
 
@@ -53,7 +53,7 @@ Windows OS Users should use the following:
     In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
     Alternate Document Root directory with the following statement:
         
-        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
+        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Meeting Scheduler" />
     
     Relative path is defined with respect to the Alternate Document Root starting with 'CloudStorage'.
         

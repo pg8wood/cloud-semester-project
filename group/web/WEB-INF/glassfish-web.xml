@@ -21,17 +21,17 @@ Copyright © 2017 Erin Kocis All rights reserved.
       that allows specification of more than one. Alternate docroots allow web applications to serve
       requests for certain resources from outside their own docroot"
       See page C-46 in [https://glassfish.java.net/docs/4.0/application-deployment-guide.pdf]
-      <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
+      <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Meeting Scheduler" />
     -->
     
     <!-- for deployment 
     <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/home/cloudsd/Kocis" />
     -->
 
-    <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/PatrickGatewood/Documents/cloud/"/>
+    <!--<property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/PatrickGatewood/Documents/cloud/"/>-->
 
     <!-- Windows OS Users should use the following -->
-    <!--    <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />
-    -->
+        <property name="alternatedocroot_1" value="from=/MeetingsStorage/* dir=/Users/alexmartin/" />
+    
 
 </glassfish-web-app>
