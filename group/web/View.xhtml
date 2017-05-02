@@ -8,50 +8,109 @@ Copyright © 2016 Osman Balci. All rights reserved.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition>
 
-        <p:dialog id="MeetingViewDlg" widgetVar="MeetingViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Edit">
+        <p:dialog id="MeetingViewDlg" widgetVar="MeetingViewDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="View"
+                  width="500" height="500"
+                  class="grey lighten-3">
 
             <h:form id="MeetingViewForm" class="ui-datatable-data">
 
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" columnClasses="columnOne, columnTwo" rendered="#{meetingController.selected != null}">
-
-                        <!-- No need for the user to be concerned about the database Primary Key id, 
-                        which is auto-generated on the server side.
+                <h:panelGroup id="display" rendered="#{meetingController.selected != null}">
+                    <c:if test="#{meetingController.selected != null}">
                         
-                        <h:outputText value="#{bundle.ViewMeetingLabel_id}"/>
-                        <h:outputText value="#{meetingController.selected.id}" title="#{bundle.ViewMeetingTitle_id}"/>
-                        -->
+                        <div class="row center">
+                            <div class="col s3">
+                                <h:outputText value="Invitees" class="indigo-text text-darken-4" />
+                            </div>
+                            <div class="col s9">
+                                <p:repeat 
+                                    value="#{meetingController.getMeetingFacade().getParticipantList(meetingController.selected)}" 
+                                    var="person"
+                                    size="#{meetingController.getMeetingFacade().getParticipantList(meetingController.selected).size()}"
+                                    offset="0"
+                                    step="1"
+                                    varStatus="status">
+                                    <div class="chip">
+                                        <img src="#{person.getRelativeThumbnailFilePath()}" />
+                                        #{person.firstName} #{person.lastName}
+                                    </div>
 
-                        <h:outputText value="Address1"/>
-                        <h:outputText value="#{meetingController.selected.address1}" title="Address1"/>
-
-                        <h:outputText value="City"/>
-                        <h:outputText value="#{meetingController.selected.city}" title="City"/>
-
-                        <h:outputText value="State"/>
-                        <h:outputText value="#{meetingController.selected.state}" title="State"/>
-
-                        <h:outputText value="Zip Code"/>
-                        <h:outputText value="#{meetingController.selected.zipcode}" title="Zip Code"/>
-
-                        <h:outputText value="Topic"/>
-                        <h:outputText value="#{meetingController.selected.topic}" title="Topic"/>
-
-                        <h:outputText value="Description"/>
-                        <h:outputText value="#{meetingController.selected.description}" title="Description"/>
-                    </p:panelGrid>
-                </h:panelGroup>
-
-                <h:panelGroup>
-                    <p:spacer height="10"/> 
-                    <div align="center">
-                        <!-- CLOSE button -->   
-                        <p:commandButton value="#{bundle.Close}" onclick="MeetingViewDialog.hide()" styleClass="commandButton" icon="ui-icon-close"/>
+                                </p:repeat>
+                            </div>
+                        </div>
+                    </c:if>
+                    
+                    <div class="row center">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">Address 1:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.address1}</p>
+                        </div>
                     </div>
+                    <c:if test="#{meetingController.selected.address2 != null}">
+                        <div class="row">
+                            <div class="col s4">
+                                <p class="indigo-text text-darken-4">Address 2:</p>
+                            </div>
+                            <div class="col s8">
+                                <p class="indigo-text text-darken-4">#{meetingController.selected.address2}</p>
+                            </div>
+                        </div>
+                    </c:if>
+                    <div class="row">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">City:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.city}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">State:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.state}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">Zipcode:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.zipcode}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">Topic:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.topic}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4">
+                            <p class="indigo-text text-darken-4">Description:</p>
+                        </div>
+                        <div class="col s8">
+                            <p class="indigo-text text-darken-4">#{meetingController.selected.description}</p>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <p:commandButton value="#{bundle.Close}" 
+                                         onclick="MeetingViewDialog.hide()" 
+                                         class="btn indigo darken-4 white-text"
+                                         style="background: none;"/>
+                    </div>
+                    
                 </h:panelGroup>
                 
             </h:form>
