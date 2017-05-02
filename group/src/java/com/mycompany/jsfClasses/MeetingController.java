@@ -227,15 +227,19 @@ public class MeetingController implements Serializable {
                     getMeetingFacade().edit(selected);
                     int id = getMeetingFacade().getMeetingMaxId();
                     List<Integer> invitees = getInviteesId();
+                    
+                    // Set up MeetingUsers objects for invitees
                     for (int i : invitees) {
                         mu = new MeetingUsers(i, id);
                         mu.setAvailableTimes("");
                         mu.setResponse(false);
                         getMeetingUsersFacade().edit(mu);
                     }
+                    
+                    // Set the MeetingUsers object for the owner 
                     mu = new MeetingUsers(user.getId(), id);
-                    mu.setAvailableTimes("");
-                    mu.setResponse(false);
+                    mu.setAvailableTimes(selected.getTimeslots());
+                    mu.setResponse(true);
                     getMeetingUsersFacade().edit(mu);
                 } else {
                     getMeetingFacade().remove(selected);
