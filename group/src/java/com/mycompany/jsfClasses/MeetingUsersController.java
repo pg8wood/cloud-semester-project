@@ -47,7 +47,9 @@ public class MeetingUsersController implements Serializable {
 
     public void setSelected(User user, Meeting meeting) {
         current = ejbFacade.getMeetingUser(user, meeting);
-        System.out.println("current meetingusers object: " + current.toString());
+        current.setUser(user);
+        current.setMeeting(meeting);
+        System.out.println("current meetingusers object: " + current.toString() + "meeting: " + current.getMeeting().toString());
     }
 
     private MeetingUsersFacade getFacade() {
@@ -110,6 +112,11 @@ public class MeetingUsersController implements Serializable {
 
     public String update() {
         try {
+            System.out.println("current meetingusers for update: " + current.toString());
+            System.out.println("current meetingusers meeting for update: " + current.getMeeting().toString());
+            System.out.println("current meetingusers meeting ID for update: " + current.getMeeting().getId());
+            
+            
             current.getMeetingUsersPK().setMeetingId(current.getMeeting().getId());
             current.getMeetingUsersPK().setUserId(current.getUser().getId());
             performDestroy();
@@ -117,6 +124,9 @@ public class MeetingUsersController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MeetingUsersUpdated"));
             return "View";
         } catch (Exception e) {
+            System.out.println("ERROR UPDATING. SEE");
+            e.printStackTrace();
+            
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
@@ -206,8 +216,15 @@ public class MeetingUsersController implements Serializable {
         return ejbFacade.find(id);
     }
 
-
-
+    /**
+     * Saves a user's indicated available  times and sends an email to the 
+     * meeting owner. 
+     * 
+     * @param availability
+     * @param user
+     * @param ownerEmail
+     * @throws Exception if an error occurred 
+     */
     public void finalizeMeetingAvailability(ArrayList<String> availability, User user, String ownerEmail) throws Exception {
         String finalTime;
         if (availability.isEmpty()) {
@@ -224,7 +241,8 @@ public class MeetingUsersController implements Serializable {
         current.setAvailableTimes(finalTime);
         current.setResponse(true);
         update();
-        //sends email for a new meeting response
+        
+        // sends email for a new meeting response
         user.prepareOwnerEmail(1, ownerEmail);
     }
 

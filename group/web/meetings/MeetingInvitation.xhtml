@@ -86,7 +86,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <h4>When can you make it?</h4>
                         <!-- Can't go button --> 
                         <p:commandLink actionListener="#{userController.clearPotentialTimes()}"
-                                       action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes, accountManager.selected, userController.getUser(meetingInvitation.ownerId).email)}"
+                                       action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes, accountManager.selected, meetingController.selected.ownerId.email)}"
                                        oncomplete="collapseOtherInvitations('-1')"
                                        update="meetingInvitations :growlForm:growl"
                                        class="declineLink">
@@ -163,8 +163,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         <br /><br/>
 
                         <!-- Submit button -->
-
-                        <p:commandButton action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes, accountManager.selected, accountManager.selected.email)}"
+                        <p:commandButton action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes, accountManager.selected, meetingController.selected.ownerId.email)}"
                                          ajax='true'
                                          value="Submit all selected times" 
                                          oncomplete="collapseOtherInvitations('-1')"
