@@ -92,7 +92,7 @@ Hyperlinks (or links) are styled differently depending on what state they are in
 
 /* Set the font family for the standard HTML tag "a" for hyperlinks */
 a {
-    font-family: Arial, Helvetica, sans-serif
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 a:link {

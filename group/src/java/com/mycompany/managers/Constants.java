@@ -23,8 +23,8 @@ public final class Constants {
         for the storage and retrieval of user's files.
     
      */
-    public static final String FILES_ABSOLUTE_PATH = "/Users/alexmartin/MeetingsStorage/FileStorage/";
-    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/alexmartin/MeetingsStorage/UserPhotoStorage/";
+    public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage";
+    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/";
 
     /*
 Windows OS Users should use the following: 
