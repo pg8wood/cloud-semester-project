@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.01
- * Copyright © 2017 Osman Balci. All rights reserved.
+ * Created by Osman Meeting Scheduler on 2017.01.01
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved.
  */
 package com.mycompany.cdibeans;
 
@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 
 /* 

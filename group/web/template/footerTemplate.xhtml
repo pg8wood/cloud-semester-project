@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Created by Osman Balci on 2017.01.28
-Copyright © 2017 Osman Balci. All rights reserved.
+Created by Osman Meeting Scheduler on 2017.01.28
+Copyright © 2017 Osman Meeting Scheduler. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,10 +19,35 @@ Copyright © 2017 Osman Balci. All rights reserved.
 
     <!-- Do not enter tags before the composition line since they are ignored by JSF -->
     <ui:composition>
-
-        <table width="80%" border="0" align="center" cellpadding="5" cellspacing="0">
-            <tr>
-                <td align="left" valign="middle">
+        <footer class="page-footer green lighten-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="indigo-text text-darken-4">Meeting Scheduler</h5>
+                        <p class="indigo-text text-darken-4"><a href="http://manta.cs.vt.edu/cs3984" class="indigo-text text-lighten-1">CS3984 Cloud Software Development</a> course semester project app developed by <a href="http://www.patrickgatewood.com/" class="indigo-text text-lighten-1">Patrick Gatewood</a>, Erin Kocis, Alex Martin, Jeffrey Shih, and Jisu You</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="indigo-text text-darken-4">Helpful Links</h5>
+                        <ul>
+                            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
+                            <li>
+                                <a href="http://projectmanagementhacks.com/meeting-tips/" class="indigo-text text-darken-4">
+                                <i class="fa fa-list-alt indigo-text text-darken-4" aria-hidden="true">&nbsp;</i>Run an Effective Meeting</a>
+                            </li>
+                            <li>
+                                <a href="http://www.effectivemeetings.com/meetingplanning/agenda/preparing.asp" class="indigo-text text-darken-4">
+                                <i class="fa fa-pencil-square indigo-text text-darken-4" aria-hidden="true">&nbsp;</i>Prepare for the Meeting</a>
+                            </li>
+                            <li>
+                                <a href="https://www.dropbox.com/" class="indigo-text text-darken-4">
+                                <i class="fa fa-dropbox indigo-text text-darken-4" aria-hidden="true">&nbsp;</i>Dropbox</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright indigo-text text-darken-4">
+                <div class="container col s6 push-s2">
                     <a class="social-roll" href="https://www.facebook.com/">
                         <img src="./resources/images/socialMediaIcons/facebook.png" /></a>
                     <a class="social-roll" href="https://twitter.com/">
@@ -31,25 +56,9 @@ Copyright © 2017 Osman Balci. All rights reserved.
                         <img src="./resources/images/socialMediaIcons/linkedIn.png" /></a>
                     <a class="social-roll" href="https://plus.google.com/">
                         <img src="./resources/images/socialMediaIcons/googlePlus.png" /></a>
-                </td>
-                <td align="right" valign="middle">
-                <!-- 
-                    With the i tag, you can access an icon given at http://fontawesome.io/icons/ by using
-                    its class name. For this to work, the following must be specified in the siteTemplate file:
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
-                    -->
-                    <a href="http://projectmanagementhacks.com/meeting-tips/">
-                        <i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i>Run an Effective Meeting</a>&nbsp;&nbsp;
-                    <a href="http://www.effectivemeetings.com/meetingplanning/agenda/preparing.asp">
-                        <i class="fa fa-pencil-square" aria-hidden="true">&nbsp;</i>Prepare for the Meeting</a>&nbsp;&nbsp;
-                    <!--<a href="https://www.dropbox.com/">-->
-                        <!--<i class="fa fa-dropbox" aria-hidden="true">&nbsp;</i>Dropbox</a>-->
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center" valign="middle" class="arialTen">Copyright &copy; 2017. SCHEDULER NAME TBD, Inc. All rights reserved.</td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </footer>
 
     </ui:composition>
     <!-- Do not enter tags after the composition line since they are ignored by JSF -->

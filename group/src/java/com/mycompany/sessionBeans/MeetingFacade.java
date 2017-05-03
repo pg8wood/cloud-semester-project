@@ -147,7 +147,8 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         while (serializedStringScan.hasNext()) {
             Scanner dateScan = new Scanner(serializedStringScan.next());
             /* Serialized dates are stored in the database in the form: 
-           java.util.Date.toString(),java.util.date.toString,... */
+           java.util.Date.toString(),java.util.date.toString,... */    
+            try {
             String dayOfWeek = dateScan.next();
             String monthName = dateScan.next();
             int dayNumber = dateScan.nextInt();
@@ -168,6 +169,9 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
 
             dList.add(newDate);
+            }
+            catch (Exception e) {
+            }
 
         }
         return dList;
@@ -277,13 +281,17 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      * @return ArrayList<User> the list of users participating
      */
     public ArrayList<User> getParticipantList(Meeting meeting) {
-        int meetingId = meeting.getId();
-        List<MeetingUsers> meetingUsers = (List<MeetingUsers>) getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
-        ArrayList<User> participantList = new ArrayList<User>();
-        for (MeetingUsers x : meetingUsers) {
-            participantList.add(x.getUser());
+        System.out.println(meeting);
+        if(meeting.getId() != null){
+            int meetingId = meeting.getId();
+            List<MeetingUsers> meetingUsers = (List<MeetingUsers>) getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
+            ArrayList<User> participantList = new ArrayList<User>();
+            for (MeetingUsers x : meetingUsers) {
+                participantList.add(x.getUser());
+            }
+            return participantList;
         }
-        return participantList;
+        return new ArrayList<>();
     }
 
     public List<Date> getDateList() {

@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Osman Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.validators;
 
@@ -15,7 +15,7 @@ import javax.faces.validator.ValidatorException;
 /**
  * Validates the zip code inputted.
  * 
- * @author Balci
+ * @author Meeting Scheduler
  */
 public class ZipCodeValidator implements Validator {
 

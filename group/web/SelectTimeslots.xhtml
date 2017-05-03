@@ -17,30 +17,53 @@ Copyright © 2016 Jason All rights reserved.
         Dialog pop-up window to CREATE a new company
         ********************************************
         -->
-
-        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" modal="true" resizable="false" 
-                  appendTo="@(body)" header="Add Timeslots" closable="false">
+        
+        <p:dialog id="TimeslotSelectDlg" widgetVar="TimeslotSelectDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="Add Timeslots" closable="false"
+                  class="grey lighten-3" width="500" height="425">
             <h:form id="TimeslotSelectForm" styleClass="ui-datatable-data">
                 <h:panelGroup id="display">
-                    <div align="center">    
-                        <h:outputText value="Choose time:" />
-                        &nbsp;&nbsp;
-                        <p:calendar id="datetime" value="#{meetingController.startTime}" pattern="MM/dd/yyyy HH:mm" showOn="button" stepMinute="15" />
-                        <br />
-                        &nbsp;&nbsp;
-                        <p:commandButton value="Add Selected Time" 
-                                         actionListener="#{meetingController.updateTime}" 
-                                         icon="ui-icon-check" 
-                                         ajax='true'
+                    <div class="row">
+                        <h:outputText value="Date" class="indigo-text text-darken-4" />
+                    </div>
+                    <div class="row input-field active">
+                        <p:calendar id="datetime" value="#{meetingController.startTime}" label="Day"/>
+                    </div>
+                    <div class="row">
+                        <h:outputText class="indigo-text text-darken-4" value="Time" />
+                    </div>
+                    <div class="row input-field active">
+                        <p:inputText id="time" value="#{meetingController.time}" required="true" class=""
+                             requiredMessage="Time Slot Needed" >
+                        </p:inputText>
+                    </div>
+                    <div class="row center">
+                        <div class="col s6">
+                            <p:commandButton value="Add Selected Time" 
+                                             actionListener="#{meetingController.updateTime}"  
+                                             ajax='true'
+                                             update="display, :growl, TimeslotSelectForm"
+                                             class="btn indigo darken-4 white-text"
+                                             style="background: none;"/>
+                        </div>
+                        <div class="col s6">
+                            <p:commandButton value="Clear Time Slots"
+                                         actionListener="#{meetingController.clearTimes()}"
+                                         ajax="true"
                                          update="display, :growl, TimeslotSelectForm"
-                                         styleClass='commandButton'/>
-                        <br /><br />
+                                         class="btn indigo darken-4 white-text"
+                                         style="background: none;"/>
+                        </div>
 
-                        <!-- Display the times as they're added -->
+                    </div>
+                    <div class="row center-align">
+                        <div class="col s9 push-s2">
                         <p:dataTable id="currentTimeslots" value="#{meetingController.tsArray}" 
-                                     rendered="#{meetingController.tsArray.size() > 0}" 
-                                     var="timeslot" editable="true" editMode="row"
-                                     style="width: 250px;">
+                                         rendered="#{meetingController.tsArray.size() > 0}" 
+                                         var="timeslot" editable="true" editMode="row"
+                                         style="width: 250px;"
+                                         class="center-align">
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="Current Timeslots" styleClass="facetHeader" />
@@ -50,29 +73,31 @@ Copyright © 2016 Jason All rights reserved.
                                 </div>
                             </p:column>
                         </p:dataTable>
+                        </div>
                     </div>
-                </h:panelGroup>
+                    <!-- Display the times as they're added -->
+                    <div class="row center">
+                        <p:commandButton  actionListener="#{meetingController.create}"
+                                              value="#{bundle.Save}" 
+                                              class="btn indigo darken-4 white-text"
+                                              style="background: none;" 
+                                              ajax="false"
+                                              update="display,:MeetingListForm:datalist,:growl" 
+                                              oncomplete="PF('MeetingCreateDialog').hide();"/>
 
-                <h:panelGroup>
-                    <p:spacer height="10"/>
-                    <div align="center">
-                        <!-- SAVE button -->
-                        <p:commandButton  action="#{accountManager.selected.prepareEmail(0, meetingController.inviteesEmails)}"
-                                          actionListener="#{meetingController.create}"
-                                          value="#{bundle.Save}" 
-                                          styleClass="commandButton" icon="ui-icon-disk" ajax="false"
-                                          update="display,:MeetingListForm:datalist,:growl" 
-                                          oncomplete="PF('MeetingCreateDialog').hide();"/>
 
-                        &nbsp;
-                        <!-- CANCEL button -->
+                            &nbsp;
+                            <!-- CANCEL button -->
                         <p:commandButton action="#{meetingController.clearTimes()}"
-                                         value="#{bundle.Cancel}" 
-                                         update="display,:MeetingListForm:datalist,:growl" 
-                                         oncomplete="PF('TimeslotSelectDialog').hide()"    
-                                         styleClass="commandButton" icon="ui-icon-cancel" />
-                    </div>
+                                             value="#{bundle.Cancel}" 
+                                             update="display,:MeetingListForm:datalist,:growl" 
+                                             oncomplete="PF('TimeslotSelectDialog').hide()"    
+                                             class="btn indigo darken-4 white-text"
+                                             style="background: none;" />
+                    </div>    
                 </h:panelGroup>
+                
+                
 
 
             </h:form>

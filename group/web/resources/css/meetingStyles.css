@@ -16,8 +16,9 @@ div .horizontalScrollArea {
     border: none;
     height: auto;
     white-space: nowrap;
-    background-color: #a4acba;
+    background-color: #81c784;
 }
+
 
 
 /* Style to build Calendar icon */
@@ -104,11 +105,6 @@ https://www.w3schools.com/howto/howto_css_switch.asp
 ====================================================
 */
 
-/* Disable text underlining for the switch */
-.fakeSwitch:hover {
-    text-decoration: none;
-}
-
 /* The switch - the box around the slider */
 .switch {
     position: relative;
@@ -128,7 +124,7 @@ https://www.w3schools.com/howto/howto_css_switch.asp
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #C0757E;
+    background-color: #ff1744;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -146,7 +142,7 @@ https://www.w3schools.com/howto/howto_css_switch.asp
 }
 
 input:checked + .slider {
-    background-color: #8FBC8F;
+    background-color: #76ff03;
 }
 
 input:focus + .slider {
@@ -181,6 +177,10 @@ End styles for On/Off switch
     /*margin-left: -41px;*/ 
 }
 
+.hideUntilClick {
+    display: none;
+}
+
 /* Styled column containing the On/Off switches */
 .columnOne * {
     /*border: none;*/
@@ -193,6 +193,10 @@ End styles for On/Off switch
 
 .columnTwo {
     width: 60px;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    padding: 0;
 }
 
 /* Hide the borders of both columns */
@@ -285,7 +289,7 @@ div.item {
     border: none;
 }
 .styledFileUpload .ui-fileupload-content {
-    background: #a3acbb !important;  
+    background: inherit;
     border-left: 5px dashed #4f4f4f;
     border-bottom: 5px dashed #4f4f4f;
     border-right: 5px dashed #4f4f4f;
@@ -305,13 +309,13 @@ div.item {
 
 /* Google Map and map overlay styles */
 .mapOverlay {
-   background:transparent; 
-   position:relative; 
-   width:100%;
-   height:400px; /* your iframe height */
-   top:400px;  /* your iframe height */
-   margin-top:-400px;  /* your iframe height */
-   z-index: 10;
+    background:transparent; 
+    position:relative; 
+    width:100%;
+    height:400px; /* your iframe height */
+    top:400px;  /* your iframe height */
+    margin-top:-400px;  /* your iframe height */
+    z-index: 10;
 }
 
 .noPointerEvents {

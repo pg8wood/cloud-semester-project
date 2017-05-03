@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Created by Osman Balci on 2017.01.28
-Copyright © 2017 Osman Balci. All rights reserved.
+Created by Osman Meeting Scheduler on 2017.01.28
+Copyright © 2017 Osman Meeting Scheduler. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -22,31 +22,18 @@ Copyright © 2017 Osman Balci. All rights reserved.
             <h:form>
                 <p:growl id="messages" showDetail="true" />
 
-                <div align="center">
-                    <h:panelGrid columnClasses="value">
-                        <!--                    <div align="right">
+                <div class="row">
+                    <div class="col s8 push-s1 indigo-text text-darken-4">
+                        <h:panelGrid columnClasses="value">
                         
-                                                <p:schedule id="schedule" value="#{calendarManager.eventModel}" widgetVar="myschedule" timeZone="GMT+2" style="width:1000px">
-                        
-                                                    <p:ajax event="dateSelect" listener="#{CalendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                                                    <p:ajax event="eventSelect" listener="#{CalendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                                                    <p:ajax event="eventMove" listener="#{CalendarManager.onEventMove}" update="messages" />
-                                                    <p:ajax event="eventResize" listener="#{CalendarManager.onEventResize}" update="messages" />
-                        
-                                                </p:schedule>
-                                            </div>-->
 
-                        <p:schedule value="#{calendarManager.getLazyEventModel(accountManager.selected)}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
-
-                            
-                            <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
-                        </p:schedule>
-                    </h:panelGrid>
+                            <p:schedule value="#{calendarManager.getLazyEventModel(accountManager.selected)}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
+                                <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                            </p:schedule>
+                        </h:panelGrid>
+                    </div>
                 </div>
-
             </h:form>
-
-
             <ui:include src="MeetingDetails.xhtml"/>
         </ui:define>
 

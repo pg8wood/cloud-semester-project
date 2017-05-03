@@ -58,12 +58,10 @@ public class Meeting implements Serializable {
     @Size(max = 256)
     @Column(name = "timeslots")
     private String timeslots;
-    
+
     @Size(max = 256)
     @Column(name = "finaltime")
     private String finaltime;
-
-    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "meeting")
     private List<MeetingUsers> meetingUsersList;
@@ -221,15 +219,15 @@ public class Meeting implements Serializable {
     public void setOwnerId(User ownerId) {
         this.ownerId = ownerId;
     }
-    
-    public int getRealOwnerId(){
+
+    public int getRealOwnerId() {
         return ownerId.getId();
     }
-    
-    public boolean isOwner(int id){
+
+    public boolean isOwner(int id) {
         return ownerId.getId() == id;
     }
-    
+
     public String getFinaltime() {
         return finaltime;
     }
@@ -237,8 +235,8 @@ public class Meeting implements Serializable {
     public void setFinaltime(String finaltime) {
         this.finaltime = finaltime;
     }
-    
-    public boolean isFinalized(){
+
+    public boolean isFinalized() {
         return finaltime != null && finaltime.length() > 20;
     }
 

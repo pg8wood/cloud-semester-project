@@ -29,15 +29,6 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <p:growl id="growl" life="5000" /> 
             </h:form>
 
-            <div class="sidebarLeft">
-                <div class="sidebarContent">
-                    <br />
-                    <a href="Calendar.xhtml">My Calendar</a>
-                </div>
-            </div>
-            <script src="resources/js/navbarScroller.js"></script>
-
-
             <div class="main" align="center">
 
                 <h1>Invitations</h1>
@@ -45,7 +36,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <ui:param name="meetingInvitations" value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />
 
                     <c:if test="#{meetingInvitations.size() == 0}" >
-                        You have no new meeting invitations. 
+                        You have no new meeting invitations.
                     </c:if>
 
                     <c:if test="#{meetingInvitations.size() != 0}" >
@@ -74,7 +65,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </c:if>
                 </h:panelGroup>
 
-                <p:confirmDialog id="confirmDialogBox" global="true" showEffect="fade" hideEffect="fade">
+                <p:confirmDialog id="confirmDialogBox" widgetVar="confirmDialog" global="true">
                     <div align="center">
                         <!-- The value of the first button listed below will be shown as 
                         highlighted (default action) when displayed -->
@@ -82,7 +73,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                          styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         &nbsp;
                         <p:commandButton value="Yes" type="button" 
-                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                         />
                     </div>
                 </p:confirmDialog>
 
