@@ -65,7 +65,8 @@ public class LoginFilter implements Filter {
                 || path.endsWith("EnterUsername.xhtml")
                 || path.endsWith("SecurityQuestion.xhtml")
                 || path.endsWith("ResetPassword.xhtml")
-                || path.contains("/resources/")) {
+                || path.contains("/resources/")
+                || path.contains("js")) {
             chain.doFilter(request, response);
         } else if (session == null || session.getAttribute("username") == null) {
             response.sendRedirect(request.getContextPath() + "/SignIn.xhtml");
