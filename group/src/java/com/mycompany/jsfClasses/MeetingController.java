@@ -96,6 +96,7 @@ public class MeetingController implements Serializable {
     }
 
     public void setFinalDateSelect(Date finalDateSelect) {
+        System.out.println("Final time set to: " + finalDateSelect);
         this.finalDateSelect = finalDateSelect;
     }
 
@@ -579,8 +580,6 @@ public class MeetingController implements Serializable {
         System.out.print("This is selected: " + selected.toString());
         selected.setFinaltime(time);
         update();
-
-        System.out.print("updating final time");
     }
 
     /**

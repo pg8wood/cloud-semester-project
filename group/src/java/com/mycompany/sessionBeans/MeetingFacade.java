@@ -147,7 +147,8 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         while (serializedStringScan.hasNext()) {
             Scanner dateScan = new Scanner(serializedStringScan.next());
             /* Serialized dates are stored in the database in the form: 
-           java.util.Date.toString(),java.util.date.toString,... */
+           java.util.Date.toString(),java.util.date.toString,... */    
+            try {
             String dayOfWeek = dateScan.next();
             String monthName = dateScan.next();
             int dayNumber = dateScan.nextInt();
@@ -168,6 +169,9 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
 
             dList.add(newDate);
+            }
+            catch (Exception e) {
+            }
 
         }
         return dList;

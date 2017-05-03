@@ -23,37 +23,30 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <h2>#{upcomingMeeting.topic}</h2>
             </div>
 
-
-
-<!--            <p>Total invited #{upcomingMeeting.getUserCollection().size()}</p>
-            <p>When people can:   #{meetingController.getAllAvailableTimes(upcomingMeeting)}</p>
-            <p>Who's a flake #{meetingController.getNotResponded(upcomingMeeting).size()}</p>
-            <p>Final Time #{upcomingMeeting.getFinaltime()}</p>-->
-
-            <p:panel id="horizontalScroll#{upcomingMeeting.id}" styleClass="horizontalScrollArea" header="Owner Actions" toggleable="true" collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
-                <h:form id="finalize" rendered="#{!upcomingMeeting.isFinalized()}">
-                    <p:outputLabel value="Finalize Meeting Time "/>
-
-                    <p:calendar id="event" value="#{meetingController.finalDateSelect}" pattern="MM/dd/yyyy HH:mm" >
-                        <p:ajax event="dateSelect" listener="#{meetingController.onDateSelect}"/>
-                    </p:calendar>
-
-                    <div align="center">
-                        <p:commandButton action="#{accountManager.selected.prepareEmail(3, meetingController.inviteesEmails)}" actionListener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" value="#{bundle.Save}" styleClass="commandButton" icon="fa fa-save" ajax="false"/>
-                        &nbsp;     
-                    </div>
-
-
+            <p:panel id="horizontalScroll#{upcomingMeeting.id}" 
+                     widgetVar="ownerActionsPanel#{upcomingMeeting.id}" 
+                     styleClass="horizontalScrollArea" 
+                     header="Owner Actions" toggleable="true" 
+                     collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
+                <h:form id="finalize#{upcomingMeeting.id}" rendered="#{!upcomingMeeting.isFinalized()}">
+                    <h:outputText value="Click on a time to set it as the final meeting time."/>
                     <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
 
                         <!-- Get list of times for the selected meetingInvitation -->
                         <ui:param name="times" value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" />
 
-                        <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" var="timeslot" varStatus="status"> 
-                            <!-- Clicking this link updates the collapsed time panel and displays it -->
-                            <p:commandLink class="calendarLink">
-                                <!--<f:ajax render="#{component.namingContainer.parent.namingContainer.clientId}:timePanel" />-->
-                                <!--<f:ajax render="@all"/>-->
+                        <p:repeat value="#{meetingController.getAllAvailableTimes(upcomingMeeting)}" 
+                                  offset="0" step="1" size="#{meetingController.getAllAvailableTimes(upcomingMeeting).size()}" 
+                                  var="timeslot" varStatus="status"> 
+
+                            <!-- Select the final meeting time -->
+                            <p:commandLink 
+                                action="#{accountManager.selected.prepareEmail(3, meetingController.inviteesEmails)}"
+                                actionListener="#{meetingController.setFinalDateSelect(timeslot)}"
+                                class="calendarLink" 
+                                ajax="true"
+                                oncomplete="location.reload();">
+
                                 <time datetime="" class="icon">
                                     <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
                                     <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
@@ -68,6 +61,14 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                                     <br></br>
                                     <h:outputText value="Available Users: #{meetingController.findNumYes(timeslot, upcomingMeeting)}"/>
                                 </div>
+
+                                <p:confirm header="Confirmation"  
+                                           message="Are you sure you would like to set the final meeting time to #{timeslot}?" 
+                                           icon="ui-icon-alert"/>
+
+
+                                <f:ajax listener="#{meetingController.updateFinalTime(upcomingMeeting.id, meetingController.finalDateSelect.toString())}" />
+
                             </p:commandLink>
 
                         </p:repeat>
@@ -82,7 +83,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     </p:scrollPanel>
 
                 </h:form>
-                <h:form id="ownFinal" rendered="#{upcomingMeeting.isFinalized()}">
+                <h:form id="ownFinal#{upcomingMeeting.id}" rendered="#{upcomingMeeting.isFinalized()}">
                     <h:outputText value="You set the final meeting time for:"/>
                     <br></br>
                     <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder"/>
@@ -90,7 +91,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <hr />
 
             </p:panel>
-
+            
 
             <p:panelGrid columns="3" styleClass="transparentBackground" style="background-color:#a4acba;" layout="grid">
 
@@ -209,7 +210,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:panel>
                     </h:form>
                 </div>
-                
+
                 <hr/>
 
                 <!-- Location portion -->

@@ -87,6 +87,10 @@ INSERT INTO Meeting (address1, city, state, zipcode, owner_id, topic, descriptio
 
 INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUES 
 ('1', '1', TRUE, 'Thu Jan 10 02:00:00 EET 1992,Thu Jan 10 02:30:00 EET 1992'),
+('1', '2', TRUE, 'Fri Jan 11 02:00:00 EET 1992'),
+('1', '3', TRUE, 'Thu Jan 10 02:00:00 EET 1992'),
+('1', '4', TRUE, 'Fri Jan 11 02:00:00 EET 1992'),
+('1', '5', TRUE, 'Fri Jan 10 02:00:00 EET 1992'),
 ('2', '1', FALSE, ''),
 ('3', '1', TRUE, 'Fri Jan 11 02:00:00 EET 1992,Sat Jan 12 02:00:00 EET 1992'),
 ('4', '1', FALSE, ''),
@@ -96,5 +100,4 @@ INSERT INTO Meeting_Users (user_id, meeting_id, response, available_times) VALUE
 ('3', '3', FALSE, ''),
 ('3', '4', FALSE, ''),
 ('3', '5', TRUE, ''),
-('1', '5', TRUE, ''),
 ('2', '5', TRUE, '');
