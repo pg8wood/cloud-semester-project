@@ -108,7 +108,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             </p:panelGrid>
             
             <!-- Clicking this button shows more info about the meeting -->
-            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id}, '#{upcomingMeeting.getFullAddress()}');" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
 
             <br /><br />
 
@@ -138,6 +138,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                             </div>
                         </p:repeat>
                     </p:scrollPanel>
+                    <br />
                     <hr/>
                 </center>
 
@@ -217,7 +218,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:panel>
                     </h:form>
                 </div>
-
+                   
+                <br />
                 <hr/>
 
                 <!-- Location portion -->
@@ -244,6 +246,10 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <script>
                     function initMap(id, address) {
                         var mapId = 'map' + id;
+                       
+                       if (typeof(id) === 'undefined') {
+                           return;
+                       }
 
                         geocoder = new google.maps.Geocoder();
                         var latlng = new google.maps.LatLng(-34.397, 150.644);

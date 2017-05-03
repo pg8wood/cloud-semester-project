@@ -307,8 +307,7 @@ public class Meeting implements Serializable {
             sb.append(address2).append(" ");
         }
 
-        sb.append("\n")
-                .append(city)
+        sb.append(city)
                 .append(", ")
                 .append(state);
 
