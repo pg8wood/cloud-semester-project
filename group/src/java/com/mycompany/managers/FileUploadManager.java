@@ -33,7 +33,7 @@ import org.primefaces.event.FileUploadEvent;
 @SessionScoped
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 public class FileUploadManager implements Serializable {
 

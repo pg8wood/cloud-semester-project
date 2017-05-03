@@ -3,39 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/SelectTimeslots.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/AbstractFacade.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/MeetingUsers.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/MeetingList.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/ChangePhoto.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/WEB-INF/web.xml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/filters/LoginFilter.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingUsersController.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/Profile.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/MyMeetings.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/User.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/managers/Constants.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/template/headerTemplate.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/Create.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/meetings/MeetingInvitation.xhtml</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingFacade.java</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/meetings/UpcomingMeeting.xhtml</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/Meeting.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/Calendar.xhtml</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/resources/MeetingsDB.sql</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingUsersFacade.java</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/View.xhtml</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingController.java</file>
-=======
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/AbstractFacade.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/meetings/MeetingInvitation.xhtml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/MeetingUsers.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/Meeting.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/resources/MeetingsDB.sql</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/WEB-INF/web.xml</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/sessionBeans/MeetingUsersFacade.java</file>
             <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/jsfClasses/MeetingUsersController.java</file>
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/MyMeetings.xhtml</file>
->>>>>>> master
-            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/MeetingUsersPK.java</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/web/template/headerTemplate.xhtml</file>
+            <file>file:/Users/PatrickGatewood/Google_Drive/Macbook_Air/NetBeansProjects/cloud-semester-project/group/src/java/com/mycompany/entityClasses/User.java</file>
         </group>
     </open-files>
 </project-private>

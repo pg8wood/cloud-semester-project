@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Osman Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.sessionBeans;
 
@@ -12,14 +12,14 @@ import java.util.List;
 
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 @Stateless
 public class UserFileFacade extends AbstractFacade<UserFile> {
 
     /*
-    Annotating 'private EntityManager em;' with '@PersistenceContext(unitName = "CloudDrive-BalciPU")' implies that
-    the EntityManager instance pointed to by 'em' is associated with the 'CloudDrive-BalciPU' persistence context. 
+    Annotating 'private EntityManager em;' with '@PersistenceContext(unitName = "CloudDrive-Meeting SchedulerPU")' implies that
+    the EntityManager instance pointed to by 'em' is associated with the 'CloudDrive-Meeting SchedulerPU' persistence context. 
     
     Here, Entity is the UserFile object. The persistence context is a set of entity (UserFile) instances in which
     for any persistent entity identity, there is a unique entity instance. 

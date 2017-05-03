@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Osman Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.sessionBeans;
 
@@ -11,15 +11,15 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
 
     /*
     ----------------------------------------------------------------------------------------------------
-    Annotating 'private EntityManager em;' with '@PersistenceContext(unitName = "PizzaHut-BalciPU")' 
-    implies that the EntityManager instance pointed to by 'em' is associated with the 'PizzaHut-BalciPU'
+    Annotating 'private EntityManager em;' with '@PersistenceContext(unitName = "PizzaHut-Meeting SchedulerPU")' 
+    implies that the EntityManager instance pointed to by 'em' is associated with the 'PizzaHut-Meeting SchedulerPU'
     persistence context. The persistence context is a set of entity (User) instances in which for
     any persistent entity (User) identity, there is a unique entity (User) instance.
     Within the persistence context, the entity (User) instances and their life cycle are managed.

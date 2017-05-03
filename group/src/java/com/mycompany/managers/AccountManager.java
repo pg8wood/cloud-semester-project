@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2017.01.28  * 
- * Copyright © 2017 Osman Balci. All rights reserved. * 
+ * Created by Osman Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.managers;
 
@@ -53,7 +53,7 @@ as long as the user's established HTTP session is alive.
 
 /**
  *
- * @author Balci
+ * @author Meeting Scheduler
  */
 
 /*
@@ -766,7 +766,7 @@ public class AccountManager implements Serializable {
         In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
         Alternate Document Root with the following statement:
         
-        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
+        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Meeting Scheduler" />
         
         in Constants.java file, we defined the relative photo file path as
         
@@ -803,7 +803,7 @@ public class AccountManager implements Serializable {
         In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
         Alternate Document Root with the following statement:
         
-        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
+        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Meeting Scheduler" />
         
         in Constants.java file, we defined the relative photo file path as
         
