@@ -17,8 +17,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -543,17 +545,20 @@ public class MeetingController implements Serializable {
         String out = "";
 
         for (MeetingUsers u : users) {
-            //out += "User id: " + u.getUser().getUsername() + "  Times: " + u.getAvailableTimes() + "   ";
+            if (u == null || u.getUser() == null || u.getUser().getId() == null) {
+                break;
+            }
             out += u.getAvailableTimes() + ",";
         }
 
-        String in = out.substring(0, out.length() - 1);
+        String in = out.length() > 0 ? out.substring(0, out.length() - 1) : "";
         System.out.print("FIND ME -------------------------------------------");
         System.out.print(in);
 
         String mmm = "";
         ArrayList<Date> d = getMeetingFacade().deserializeResponseTimes(in);
 
+        Collections.sort(d);
         return d;
     }
 
@@ -568,13 +573,27 @@ public class MeetingController implements Serializable {
 
         input = input.substring(0, input.length() - 1);
         ArrayList<Date> d = getMeetingFacade().deserialize(input);
+        
+        System.out.println("CHECKING NUM YES for " + date.toString());
 
         for (Date toCheck : d) {
-            if (toCheck.equals(date)) {
+            if (toCheck.toString().length() < 10 || date.toString().length() < 5 ) {
+                break;
+            }
+            String compareString = toCheck.toString().substring(4, toCheck.toString().length() - 5);
+            String newCompareString = date.toString().substring(4, date.toString().length() - 5);
+            
+            System.out.println("comparing '" + compareString + "' and '" + newCompareString + "'");
+            
+            
+            if (compareString.equals(newCompareString)) {
+                System.out.println("yes++");
                 yes++;
             }
         }
-        return yes;
+
+        // Subtract one to account for the meeting owner
+        return yes - 1;
     }
 
     public void updateFinalTime(int id, String time) {

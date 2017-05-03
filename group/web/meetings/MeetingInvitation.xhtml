@@ -126,7 +126,10 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </p:panel>  <!-- .dayPanel -->
 
                     <!-- Available time options shown after the user selects a date --> 
-                    <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" style="border: none;padding: 0px;" class="green lighten-3">
+                    <p:panel rendered="true" toggleable="true" closable="true" 
+                             toggleSpeed="500" closeSpeed="500" 
+                             collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" 
+                             widgetVar="timePanel#{meetingInvitation.id}" style="border: none;padding: 0px;" class="green lighten-3">
                      
                         <p style="text-align: center;">Times for <b>#{meetingController.getSelectedDateAsString()}</b></p>
                         <p style="text-align: center;">Double click to select a time.</p>

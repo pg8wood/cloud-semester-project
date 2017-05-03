@@ -116,11 +116,21 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             if (dList.isEmpty()) {
                 dList.add(newDate);
             } else {
+                System.out.println("\n\n\nLooking to see if list contains " + newDate.toString());
                 for (int i = 0; i < dList.size(); i++) {
+                    
+                    String compareString = dList.get(i).toString().substring(4, dList.get(i).toString().length() - 5);
+                    String newCompareString = newDate.toString().substring(4, newDate.toString().length() - 5);
+                    
+                    System.out.println("Comparing [" + compareString + "] and [" + newCompareString + "]");
+                    
 
-                    if (dList.get(i).equals(newDate)) {
+                    // Don't add duplicate entries to the list
+                    if (compareString.equals(newCompareString)) {
+                        System.out.println("Date already in list. Continuing...");
                         break;
                     } else {
+//                        System.out.println("String weren't equal.");
                         if (i == dList.size() - 1) {
                             dList.add(newDate);
                         }

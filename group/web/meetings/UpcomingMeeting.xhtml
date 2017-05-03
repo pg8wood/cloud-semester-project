@@ -75,7 +75,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:repeat>
                         <div>
                             <br></br>
-                            <h:outputText value="Total Number Invited: #{upcomingMeeting.getUserCollection().size()}" style="font-weight:bolder"/>
+                            <h:outputText value="Total Number Invited: #{upcomingMeeting.getUserCollection().size() - 1}" style="font-weight:bolder"/>
                             <br></br>
                             <h:outputText value="Yet To Respond: #{meetingController.getNotResponded(upcomingMeeting).size()}" style="font-weight:bolder"/>
                         </div>
