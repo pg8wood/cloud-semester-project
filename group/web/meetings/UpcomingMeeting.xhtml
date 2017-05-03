@@ -17,7 +17,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             <h:outputStylesheet library="css" name="meetingStyles.css" />
         </h:head>
 
-        <div id="meetingTop#{upcomingMeeting.id}" class="meetingWrapper" align="center">
+        <div id="meetingTop#{upcomingMeeting.id}" class="card-panel green lighten-1" align="center">
             <!-- Upcoming Meeting box -->
             <div style="text-align:center">
                 <h2>#{upcomingMeeting.topic}</h2>
@@ -25,7 +25,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
             <p:panel id="horizontalScroll#{upcomingMeeting.id}" 
                      widgetVar="ownerActionsPanel#{upcomingMeeting.id}" 
-                     styleClass="horizontalScrollArea" 
+                     class="card-panel green lighten-1" 
+                     style="border: none;"
                      header="Owner Actions" toggleable="true" 
                      collapsed="true" rendered="#{upcomingMeeting.isOwner(accountManager.selected.id)}">
                 <h:form id="finalize#{upcomingMeeting.id}" rendered="#{!upcomingMeeting.isFinalized()}">
@@ -88,14 +89,15 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <br></br>
                     <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder"/>
                 </h:form>
-                <hr />
 
             </p:panel>
             
 
-            <p:panelGrid columns="3" styleClass="transparentBackground" style="background-color:#a4acba;" layout="grid">
-
-                <a href="#location#{upcomingMeeting.id}" style="font-weight:bolder">
+            <p:panelGrid columns="3" columnClasses="green lighten-1, green lighten-1, green lighten-1" 
+                         class="green lighten-1" 
+                         layout="grid"
+                         styleClass="noBorder">
+                <a href="#" style="font-weight:bolder; text-decoration: none;">
                     #{upcomingMeeting.address1} 
                     <br />
                     #{upcomingMeeting.city}, #{upcomingMeeting.state} #{upcomingMeeting.zipcode}</a>
@@ -103,18 +105,19 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                 <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder" rendered="#{upcomingMeeting.isFinalized()}"/>
                 <h:outputText value="Final Time Not Yet Set" style="font-weight: bolder" rendered="#{!upcomingMeeting.isFinalized()}"/>
-
-
             </p:panelGrid>
+            
+            <!-- Clicking this button shows more info about the meeting -->
             <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id});" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
-
 
             <br /><br />
 
-            <!-- Response section: user indicates their availability date-wise -->
-            <p:panel visible="false" widgetVar="moreInfoPanel#{upcomingMeeting.id}" styleClass="noBorderPanel" closable="true" >
+            <!-- More info about the meeting follows -->
+            <p:panel visible="false" widgetVar="moreInfoPanel#{upcomingMeeting.id}" 
+                      closable="true"
+                      class="card-panel green lighten-2"
+                      style="border: none !important;">
 
-                <hr/>
                 <!-- Participants portion -->
                 <div style="text-align:center">
                     <h2>Participants</h2>
@@ -135,9 +138,10 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                             </div>
                         </p:repeat>
                     </p:scrollPanel>
+                    <hr/>
                 </center>
 
-                <hr/>
+                
                 <!-- Attachments portion -->
                 <div style="text-align:center">
                     <h2>Attachments</h2>
@@ -200,12 +204,15 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
                                          ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
 
-                        <p:panel id="fileUploadPanel#{upcomingMeeting.id}" collapsed="true" toggleable="true" 
-                                 widgetVar="fileUploadPanel#{upcomingMeeting.id}"> 
+                        <p:panel id="fileUploadPanel#{upcomingMeeting.id}" class="green lighten-2"
+                                 collapsed="true" toggleable="true" 
+                                 widgetVar="fileUploadPanel#{upcomingMeeting.id}"
+                                 style="border: none !important;"> 
                             <div align="center">
                                 <p:fileUpload  fileUploadListener="#{fileUploadManager.handleFileUpload}" multiple="true" 
                                                mode="advanced" sizeLimit="10000000" fileLimit="5"
-                                               dragDropSupport="true" styleClass="styledFileUpload" update="@form"/>   
+                                               dragDropSupport="true" 
+                                               styleClass="styledFileUpload" update="@form"/>   
                             </div>
                         </p:panel>
                     </h:form>

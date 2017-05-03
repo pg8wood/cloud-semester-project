@@ -36,7 +36,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     <ui:param name="meetingInvitations" value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />
 
                     <c:if test="#{meetingInvitations.size() == 0}" >
-                        You have no new meeting invitations. 
+                        You have no new meeting invitations.
                     </c:if>
 
                     <c:if test="#{meetingInvitations.size() != 0}" >

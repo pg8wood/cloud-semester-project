@@ -3,16 +3,14 @@ Cascading Style Sheets (CSS) Style Definitions
 Composed by Patrick Gatewood on April 8, 2017.
 *********************************************/
 
-@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
-
 html, body {
     background-color: #79879b;
 }
 
 h1 {
     font-size: 40pt;
-    font-family: Fredericka the Great;
-    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #34984b;
 }
 
 h2 {
@@ -68,3 +66,11 @@ End Sidebar styles
     padding-right: 75px;
 }
 
+.noBorder * {
+    border: none !important;
+}
+
+hr {  
+    border-top: 2px dashed #8c8b8b;
+    border-bottom: none !important;
+}

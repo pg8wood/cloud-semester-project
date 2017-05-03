@@ -289,7 +289,7 @@ div.item {
     border: none;
 }
 .styledFileUpload .ui-fileupload-content {
-    background: #a3acbb !important;  
+    background: inherit;
     border-left: 5px dashed #4f4f4f;
     border-bottom: 5px dashed #4f4f4f;
     border-right: 5px dashed #4f4f4f;
@@ -309,13 +309,13 @@ div.item {
 
 /* Google Map and map overlay styles */
 .mapOverlay {
-   background:transparent; 
-   position:relative; 
-   width:100%;
-   height:400px; /* your iframe height */
-   top:400px;  /* your iframe height */
-   margin-top:-400px;  /* your iframe height */
-   z-index: 10;
+    background:transparent; 
+    position:relative; 
+    width:100%;
+    height:400px; /* your iframe height */
+    top:400px;  /* your iframe height */
+    margin-top:-400px;  /* your iframe height */
+    z-index: 10;
 }
 
 .noPointerEvents {
