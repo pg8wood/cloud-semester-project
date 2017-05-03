@@ -108,7 +108,11 @@ Copyright © 2017 Erin Kocis. All rights reserved.
             </p:panelGrid>
             
             <!-- Clicking this button shows more info about the meeting -->
-            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id}, '#{upcomingMeeting.getFullAddress()}');" oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton" />
+            <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" 
+                             onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id}, '#{upcomingMeeting.getFullAddress()}');" 
+                             oncomplete="PF('seeMoreButton#{upcomingMeeting.id}').disable()" styleClass="commandButton"
+                             style='background: none;'
+                             class='btn indigo darken-4 white-text respond-button'/>
 
             <br /><br />
 
@@ -203,7 +207,8 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
                         <!-- File upload section -->
                         <p:commandButton value="Upload Files" icon="ui-icon-arrowthick-1-n"
-                                         ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
+                                         ajax="true" styleClass="commandButton" action="#{fileUploadManager.setSelectedMeeting(upcomingMeeting)}" 
+                                         oncomplete="PF('fileUploadPanel#{upcomingMeeting.id}').expand()" />
 
                         <p:panel id="fileUploadPanel#{upcomingMeeting.id}" class="green lighten-2"
                                  collapsed="true" toggleable="true" 
