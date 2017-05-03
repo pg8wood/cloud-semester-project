@@ -42,7 +42,7 @@ CREATE TABLE Meeting
         FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
         topic VARCHAR(64),
         description VARCHAR(256),
-        timeslots VARCHAR (256),
+        timeslots VARCHAR (4000),
         invitees VARCHAR (256),
         finaltime VARCHAR (256)
 );

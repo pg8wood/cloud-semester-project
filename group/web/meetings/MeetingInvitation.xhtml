@@ -81,11 +81,11 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                          collapseOtherInvitations('#{meetingInvitation.id}');" 
                                  style="background: none;"
                                  class="btn indigo darken-4 white-text respond-button"/>
+                <br /> 
 
                 <!-- Response section: user indicates their availability -->
                 <h:form enctype="multipart/form-data" class="timeform">
                     <p:panel class="dayPanel green lighten-2" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" style="border: none;padding: 0px;" >
-                        <hr />
                         <h4>When can you make it?</h4>
                         <!-- Can't go button --> 
                         <p:commandLink actionListener="#{userController.clearPotentialTimes()}"
@@ -127,8 +127,6 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                     <!-- Available time options shown after the user selects a date --> 
                     <p:panel rendered="true" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="timePanel#{meetingInvitation.id}" style="border: none;padding: 0px;" class="green lighten-3">
-                        <br />
-                        <hr />
                      
                         <p style="text-align: center;">Times for <b>#{meetingController.getSelectedDateAsString()}</b></p>
                         <p style="text-align: center;">Double click to select a time.</p>
@@ -143,7 +141,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                     <p:commandLink id="switch#{meetingInvitation.id}"
                                                    action="#{userController.updatePotentialAvailability(timeslot)}"
                                                    ajax="true"
-                                                   update="@form" style='text-decoration: none;'>
+                                                   update="@form" style='text-decoration: none; padding-bottom: 10px;'>
                                         <div class="green lighten-3 center">
                                             <label class="switch">
                                                 <ui:fragment rendered="#{userController.checkboxShouldBeChecked(timeslot)}">

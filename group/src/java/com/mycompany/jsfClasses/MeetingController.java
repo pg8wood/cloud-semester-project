@@ -31,6 +31,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -65,22 +67,22 @@ public class MeetingController implements Serializable {
     private List<String> tsArray;
     private Date finalDateSelect;
 
-    public List<Meeting> getUpcomingMeetingsAfterToday(User user) throws ParseException{
-        if(user != null){
+    public List<Meeting> getUpcomingMeetingsAfterToday(User user) throws ParseException {
+        if (user != null) {
             List<MeetingUsers> meetingusers = getMeetingUsersFacade().getUpcomingMeetings(user);
             List<Meeting> response = new ArrayList<>();
             Date today = new Date();
-            for(MeetingUsers mu : meetingusers){
+            for (MeetingUsers mu : meetingusers) {
                 Meeting m = mu.getMeeting();
-                if(m != null && m.isFinalized()){
+                if (m != null && m.isFinalized()) {
                     DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    try{
-                        
+                    try {
+
                         Date meetingDate = formatter.parse(m.getFinaltime());
-                        if(meetingDate.after(today)){
+                        if (meetingDate.after(today)) {
                             response.add(m);
                         }
-                    } catch (ParseException e){
+                    } catch (ParseException e) {
                         System.out.println("ERROR PARSING DATE");
                     }
 
@@ -90,7 +92,7 @@ public class MeetingController implements Serializable {
         }
         return null;
     }
-    
+
     public Date getFinalDateSelect() {
         return finalDateSelect;
     }
@@ -117,8 +119,6 @@ public class MeetingController implements Serializable {
         this.time = time;
     }
 
-    
-    
     public MeetingController() {
         items = null;
         userSpecificItems = null;
@@ -169,7 +169,7 @@ public class MeetingController implements Serializable {
         selected = meeting;
         return selected;
     }
-    
+
     public void create() {
         lastMeetingCreated = selected;
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MeetingCreated"));
@@ -196,7 +196,7 @@ public class MeetingController implements Serializable {
             tsArray = new ArrayList<String>();
         }
     }
-    
+
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("MeetingDeleted"));
         if (!JsfUtil.isValidationFailed()) {
@@ -207,9 +207,9 @@ public class MeetingController implements Serializable {
             tsArray = new ArrayList<String>();
         }
     }
-    
+
     /**
-     * Destroys the most recently-created meeting. 
+     * Destroys the most recently-created meeting.
      */
     public void destroyLast() {
         System.out.println("destroying last");
@@ -245,7 +245,7 @@ public class MeetingController implements Serializable {
                     getMeetingFacade().edit(selected);
                     int id = getMeetingFacade().getMeetingMaxId();
                     List<Integer> invitees = getInviteesId();
-                    
+
                     // Set up MeetingUsers objects for invitees
                     for (int i : invitees) {
                         mu = new MeetingUsers(i, id);
@@ -253,7 +253,7 @@ public class MeetingController implements Serializable {
                         mu.setResponse(false);
                         getMeetingUsersFacade().edit(mu);
                     }
-                    
+
                     // Set the MeetingUsers object for the owner 
                     mu = new MeetingUsers(user.getId(), id);
                     mu.setAvailableTimes(selected.getTimeslots());
@@ -270,31 +270,37 @@ public class MeetingController implements Serializable {
                     msg = cause.getLocalizedMessage();
                 }
                 if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
+                    // For debugging constraint violations 
+//                    System.out.println("FOUND CONSTRAINT VIOLATION");
+//                    for (ConstraintViolation v : ((ConstraintViolationException) cause).getConstraintViolations()) {
+//                        System.out.println(v.getConstraintDescriptor());
+//                    }
+
+                    JsfUtil.addErrorMessage(ex, "You have added too many meeting times. Please try again with fewer times!");
                 } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                    JsfUtil.addErrorMessage(ex, "You have added too many meeting times. Please try again with fewer times!");
                 }
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                JsfUtil.addErrorMessage(ex, "You have added too many meeting times. Please try again with fewer times!");
             }
         }
     }
-    
+
     /**
-     * Autocomplete finding users. 
-     * 
-     * @param query the query being searched 
-     * @return 
+     * Autocomplete finding users.
+     *
+     * @param query the query being searched
+     * @return
      */
-     public List<String> completeText(String query) {
+    public List<String> completeText(String query) {
         List<User> results = userFacade.findAll();
         List<String> usernames = new ArrayList();
-        
-        for (User user: results) {
+
+        for (User user : results) {
             usernames.add(user.getUsername());
         }
-         
+
         return usernames;
     }
 
@@ -313,7 +319,7 @@ public class MeetingController implements Serializable {
         }
         return userIds;
     }
-    
+
     public List<String> getInviteesEmails() {
         String invitees = selected.getInvitees();
         invitees = invitees.replace(" ", "");
@@ -329,8 +335,6 @@ public class MeetingController implements Serializable {
         }
         return userEmails;
     }
-    
-    
 
     public String makeTimeslotsString() {
         String timeslot = "";
@@ -367,15 +371,15 @@ public class MeetingController implements Serializable {
             try {
                 System.out.println(builder.toString());
                 startTime = format.parse(builder.toString());
-                if(tsArray.contains(startTime.toString())){
+                if (tsArray.contains(startTime.toString())) {
                     resultMessage = new FacesMessage("You have already added this time!");
                     resultMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
                 } else {
                     tsArray.add(startTime.toString());
-                    
+
                     resultMessage = new FacesMessage("Added new time.");
                 }
-                
+
             } catch (Exception e) {
                 resultMessage = new FacesMessage("Error With Time, Please Follow Format HH:MM");
             }
@@ -383,7 +387,7 @@ public class MeetingController implements Serializable {
 
         FacesContext.getCurrentInstance().addMessage(null, resultMessage);
     }
-    
+
     /**
      * Removes all selected times
      */
@@ -464,7 +468,6 @@ public class MeetingController implements Serializable {
     public void setLastMeetingCreated(Meeting lastMeetingCreated) {
         this.lastMeetingCreated = lastMeetingCreated;
     }
-    
 
     /**
      * Get the selected date as a readable String

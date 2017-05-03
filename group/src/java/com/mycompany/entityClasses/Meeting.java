@@ -55,7 +55,7 @@ public class Meeting implements Serializable {
     @OneToMany(mappedBy = "meetingId")
     private Collection<MeetingFile> meetingFileCollection;
 
-    @Size(max = 256)
+    @Size(max = 4000)
     @Column(name = "timeslots")
     private String timeslots;
 
