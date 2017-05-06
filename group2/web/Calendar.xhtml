@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created by Osman Balci on 2017.01.28
+Copyright © 2017 Osman Balci. All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <!-- Do not enter tags before the composition line since they are ignored by JSF -->
+
+    <!-- This page is constructed based on the siteTemplate -->
+    <ui:composition template="/template/siteTemplate.xhtml">
+
+        <!-- Create the content for this page below -->
+        <ui:define name="editableContent">
+
+            <h:form>
+                <p:growl id="messages" showDetail="true" />
+
+                <h:panelGrid columnClasses="value">
+                    <!--                    <div align="right">
+                    
+                                            <p:schedule id="schedule" value="#{calendarManager.eventModel}" widgetVar="myschedule" timeZone="GMT+2" style="width:1000px">
+                    
+                                                <p:ajax event="dateSelect" listener="#{CalendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                                                <p:ajax event="eventSelect" listener="#{CalendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                                                <p:ajax event="eventMove" listener="#{CalendarManager.onEventMove}" update="messages" />
+                                                <p:ajax event="eventResize" listener="#{CalendarManager.onEventResize}" update="messages" />
+                    
+                                            </p:schedule>
+                                        </div>-->
+
+                    <h3>Lazy Schedule</h3>
+
+                    <p:schedule value="#{calendarManager.lazyEventModel}" widgetVar="myschedule" timeZone="GMT-4" style="width:1000px">
+
+                        <p:ajax event="dateSelect" listener="#{calendarManager.onDateSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                        <p:ajax event="eventSelect" listener="#{calendarManager.onEventSelect}" update=":MeetingDetailsForm" oncomplete="PF('MeetingDetailsDialog').show();" />
+                    </p:schedule>
+                </h:panelGrid>
+
+
+            </h:form>
+            
+
+            <ui:include src="MeetingDetails.xhtml"/>
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+
