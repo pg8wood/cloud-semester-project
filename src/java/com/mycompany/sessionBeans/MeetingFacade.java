@@ -9,6 +9,7 @@ import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -69,15 +70,17 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
             int year = dateScan.nextInt();
 
             // Store the parsed Dates into the list
-            dateList.add(new Date(year, getMonthInt(monthName), dayNumber, hour, minute));
+            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+            newDate = checkYear(newDate);
+            dateList.add(newDate);
         }
     }
 
     /**
-     * Turns a String of comma separated times into
-     * an ArrayList of Date objects
+     * Turns a String of comma separated times into an ArrayList of Date objects
+     *
      * @param times
-     * @return ArrayList<Date> the list of times 
+     * @return ArrayList<Date> the list of times
      */
     public ArrayList<Date> deserializeResponseTimes(String times) {
         ArrayList<Date> dList = new ArrayList();
@@ -87,14 +90,14 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
         while (serializedStringScan.hasNext()) {
             String nextTime = serializedStringScan.next();
-            
+
             if (nextTime.equals("")) {
                 return dList;
-            } 
-            
+            }
+
             Scanner dateScan = new Scanner(nextTime);
             /* Serialized dates are stored in the database in the form: 
-           java.util.Date.toString(),java.util.date.toString,... */            
+           java.util.Date.toString(),java.util.date.toString,... */
             String dayOfWeek = dateScan.next();
             String monthName = dateScan.next();
             int dayNumber = dateScan.nextInt();
@@ -113,17 +116,17 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
             // Store the parsed Dates into the list
             Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+            newDate = checkYear(newDate);
             if (dList.isEmpty()) {
                 dList.add(newDate);
             } else {
                 System.out.println("\n\n\nLooking to see if list contains " + newDate.toString());
                 for (int i = 0; i < dList.size(); i++) {
-                    
+
                     String compareString = dList.get(i).toString().substring(4, dList.get(i).toString().length() - 5);
                     String newCompareString = newDate.toString().substring(4, newDate.toString().length() - 5);
-                    
+
                     System.out.println("Comparing [" + compareString + "] and [" + newCompareString + "]");
-                    
 
                     // Don't add duplicate entries to the list
                     if (compareString.equals(newCompareString)) {
@@ -138,15 +141,15 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
 
                 }
             }
-       }
+        }
         return dList;
     }
 
     /**
-     * Turns a String of comma separated times into
-     * an ArrayList of Date objects
+     * Turns a String of comma separated times into an ArrayList of Date objects
+     *
      * @param times
-     * @return ArrayList<Date> the list of times 
+     * @return ArrayList<Date> the list of times
      */
     public ArrayList<Date> deserialize(String times) {
         ArrayList<Date> dList = new ArrayList();
@@ -157,40 +160,53 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         while (serializedStringScan.hasNext()) {
             Scanner dateScan = new Scanner(serializedStringScan.next());
             /* Serialized dates are stored in the database in the form: 
-           java.util.Date.toString(),java.util.date.toString,... */    
+           java.util.Date.toString(),java.util.date.toString,... */
             try {
-            String dayOfWeek = dateScan.next();
-            String monthName = dateScan.next();
-            int dayNumber = dateScan.nextInt();
+                String dayOfWeek = dateScan.next();
+                String monthName = dateScan.next();
+                int dayNumber = dateScan.nextInt();
 
-            // Time is stored in the form HH:MM:SS
-            Scanner timeScan = new Scanner(dateScan.next());
-            timeScan.useDelimiter(":");
-            int hour = timeScan.nextInt();
-            int minute = timeScan.nextInt();
-            // No need to store seconds
+                // Time is stored in the form HH:MM:SS
+                Scanner timeScan = new Scanner(dateScan.next());
+                timeScan.useDelimiter(":");
+                int hour = timeScan.nextInt();
+                int minute = timeScan.nextInt();
+                // No need to store seconds
 
-            // Skip time zone
-            dateScan.next();
+                // Skip time zone
+                dateScan.next();
 
-            int year = dateScan.nextInt() - 1900;
+                int year = dateScan.nextInt();
 
-            // Store the parsed Dates into the list
-            Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
+                // Store the parsed Dates into the list
+                Date newDate = new Date(year, getMonthInt(monthName), dayNumber, hour, minute);
 
-            dList.add(newDate);
-            }
-            catch (Exception e) {
+                newDate = checkYear(newDate);
+                dList.add(newDate);
+            } catch (Exception e) {
             }
 
         }
         return dList;
     }
 
-    /** 
+    private Date checkYear(Date date) {
+
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        int year = cl.get(Calendar.YEAR);
+        if (year > 3000) {
+            cl.add(Calendar.YEAR, -1900);
+        }
+        //System.out.print("Year check: " + cl.getTime().toString());
+        return cl.getTime();
+    }
+
+    /**
      * Converts a String day name to its corresponding day number
+     *
      * @param dayName
-     * @return Integer the number of the day 
+     * @return Integer the number of the day
      */
     private int getDayOfWeekInt(String dayName) {
         switch (dayName) {
@@ -213,10 +229,11 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
         }
     }
 
-     /** 
+    /**
      * Converts a String month name to its corresponding month number
+     *
      * @param dayName
-     * @return Integer the number of the day 
+     * @return Integer the number of the day
      */
     private int getMonthInt(String monthName) {
         switch (monthName) {
@@ -292,7 +309,7 @@ public class MeetingFacade extends AbstractFacade<Meeting> {
      */
     public ArrayList<User> getParticipantList(Meeting meeting) {
         System.out.println(meeting);
-        if(meeting.getId() != null){
+        if (meeting.getId() != null) {
             int meetingId = meeting.getId();
             List<MeetingUsers> meetingUsers = (List<MeetingUsers>) getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meetingId).setParameter("response", true).getResultList();
             ArrayList<User> participantList = new ArrayList<User>();
