@@ -8,6 +8,7 @@ package com.mycompany.sessionBeans;
 import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,10 +54,9 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
      * @return List the list of meetings
      */
     public List<MeetingUsers> getUpcomingMeetings(User user) {
-        return getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response AND m.availableTimes != :emptyString")
+        return getEntityManager().createQuery("SELECT m FROM MeetingUsers m WHERE m.meetingUsersPK.userId = :userId AND m.response = :response")
                 .setParameter("userId", user.getId())
                 .setParameter("response", true)
-                .setParameter("emptyString", "")
                 .getResultList();
     }
 
@@ -81,6 +81,17 @@ public class MeetingUsersFacade extends AbstractFacade<MeetingUsers> {
 
     public List<MeetingUsers> getResponded(Meeting meeting) {
         return getEntityManager().createNamedQuery("MeetingUsers.findByMeetingIdAndResponse").setParameter("meetingId", meeting.getId()).setParameter("response", true).getResultList();
+
+    }
+    
+    public List<MeetingUsers> getMeetings (User u) {
+        
+        List<MeetingUsers> muL = getEntityManager().createNamedQuery("MeetingUsers.findByUserId").setParameter("userId", u.getId()).getResultList();
+        for(int i = 0; i < muL.size(); i++){
+            System.out.print("MMM: " + muL.get(i).toString());
+        }
+        
+        return muL;
 
     }
 

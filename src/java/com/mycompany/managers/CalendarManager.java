@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -46,6 +47,8 @@ public class CalendarManager implements Serializable {
 
     @EJB
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
+    @EJB
+    private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
 
     private Collection<Meeting> meetingsList;
     
@@ -74,18 +77,33 @@ public class CalendarManager implements Serializable {
                     if (user.getMeetingCollection().isEmpty()) {
                         System.out.print("no meetings");
                     } else {
-                        meetingsList = user.getMeetingCollection();
-                        for (Meeting m : meetingsList) {
-                            System.out.print(m.getDescription());
-                            Meeting updatedM = meetingFacade.getMeetingById(m.getId());
+                        
+//                        meetingsList = user.getMeetingCollection();
+//                        for (Meeting m : meetingsList) {
+//                            System.out.print(m.getDescription());
+//                            Meeting updatedM = meetingFacade.getMeetingById(m.getId());
+//                            
+//                            if (updatedM.getFinaltime() != null && updatedM.getFinaltime().length() > 0) {
+//                                System.out.print("Final Start Time: " + updatedM.getFinaltime());
+//                                ArrayList<Date> dateObj = meetingFacade.deserialize(updatedM.getFinaltime());
+//                                System.out.print("AFter deserialized: " + dateObj.get(0).toString());
+//                                Date endTime = addHour(dateObj.get(0));
+//                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), yearCheck(dateObj.get(0)), endTime));
+//                                System.out.print("Shouldve Added");
+//                            }
+//                        }
+                        
+                        List<MeetingUsers> muL = meetingUsersFacade.getMeetings(user);
+                        for(MeetingUsers mu: muL){
+                            Meeting updatedM = meetingFacade.getMeetingById(mu.getMeeting().getId());
                             
                             if (updatedM.getFinaltime() != null && updatedM.getFinaltime().length() > 0) {
-                                System.out.print("Final Start Time: " + updatedM.getFinaltime());
+                                //System.out.print("Final Start Time: " + updatedM.getFinaltime());
                                 ArrayList<Date> dateObj = meetingFacade.deserialize(updatedM.getFinaltime());
-                                System.out.print("AFter deserialized: " + dateObj.get(0).toString());
+                                //System.out.print("AFter deserialized: " + dateObj.get(0).toString());
                                 Date endTime = addHour(dateObj.get(0));
-                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), dateObj.get(0), endTime));
-                                System.out.print("Shouldve Added");
+                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), yearCheck(dateObj.get(0)), endTime));
+                                //System.out.print("Shouldve Added");
                             }
                         }
                     }
@@ -97,6 +115,17 @@ public class CalendarManager implements Serializable {
     }
 
 
+    private Date yearCheck(Date date){
+        Calendar cl = Calendar.getInstance(); 
+        cl.setTime(date);
+        int year = cl.get(Calendar.YEAR);
+        if(year > 3000){
+            cl.add(Calendar.YEAR, -1900);
+        }
+        System.out.print("Year check: " + cl.getTime().toString());
+        return cl.getTime();
+    }
+    
     private Date addHour(Date date) {
         
         Calendar cl = Calendar.getInstance(); 
@@ -104,8 +133,11 @@ public class CalendarManager implements Serializable {
         cl.add(Calendar.HOUR, 1);
         cl.add(Calendar.DAY_OF_WEEK, -1);
         cl.add(Calendar.DATE, 1);
-        //cl.add(Calendar.YEAR, -1900);
-        System.out.print(cl.getTime().toString());
+        int year = cl.get(Calendar.YEAR);
+        if(year > 3000){
+            cl.add(Calendar.YEAR, -1900);
+        }
+        System.out.print("Add hour: " + cl.getTime().toString());
         return cl.getTime();
         
     }
