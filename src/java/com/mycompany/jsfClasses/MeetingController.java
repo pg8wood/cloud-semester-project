@@ -241,26 +241,56 @@ public class MeetingController implements Serializable {
             User user = userFacade.findByUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    if (tsArray != null) {
-                        selected.setTimeslots(makeTimeslotsString());
-                    }
-                    getMeetingFacade().edit(selected);
-                    int id = getMeetingFacade().getMeetingMaxId();
-                    List<Integer> invitees = getInviteesId();
+                    if (persistAction == PersistAction.CREATE) {
+                        if (tsArray != null) {
+                            selected.setTimeslots(makeTimeslotsString());
+                        }
+                        getMeetingFacade().edit(selected);
+                        int id = getMeetingFacade().getMeetingMaxId();
+                        List<Integer> invitees = getInviteesId();
 
-                    // Set up MeetingUsers objects for invitees
-                    for (int i : invitees) {
-                        mu = new MeetingUsers(i, id);
-                        mu.setAvailableTimes("");
-                        mu.setResponse(false);
+                        // Set up MeetingUsers objects for invitees
+                        for (int i : invitees) {
+                            mu = new MeetingUsers(i, id);
+                            mu.setAvailableTimes("");
+                            mu.setResponse(false);
+                            getMeetingUsersFacade().edit(mu);
+                        }
+
+                        // Set the MeetingUsers object for the owner 
+                        mu = new MeetingUsers(user.getId(), id);
+                        mu.setAvailableTimes(selected.getTimeslots());
+                        mu.setResponse(true);
+                        getMeetingUsersFacade().edit(mu);
+                    }
+                    if (persistAction == PersistAction.UPDATE) {
+                        if (tsArray != null) {
+                            selected.setTimeslots(makeTimeslotsString());
+                        }
+                        getMeetingFacade().edit(selected);
+                        int id = getMeetingFacade().getMeetingMaxId();
+                        List<Integer> invitees = getInviteesId();
+
+                        // Set up MeetingUsers objects for invitees
+                        for (int i : invitees) {
+                            mu = new MeetingUsers(i, id);
+                            mu.setAvailableTimes("");
+                            if (mu.getResponse() == true) {
+                                mu.setResponse(true);
+                            }
+                            else{
+                                mu.setResponse(false);
+                            }
+                            getMeetingUsersFacade().edit(mu);
+                        }
+
+                        // Set the MeetingUsers object for the owner 
+                        mu = new MeetingUsers(user.getId(), id);
+                        mu.setAvailableTimes(selected.getTimeslots());
+                        mu.setResponse(true);
                         getMeetingUsersFacade().edit(mu);
                     }
 
-                    // Set the MeetingUsers object for the owner 
-                    mu = new MeetingUsers(user.getId(), id);
-                    mu.setAvailableTimes(selected.getTimeslots());
-                    mu.setResponse(true);
-                    getMeetingUsersFacade().edit(mu);
                 } else {
                     getMeetingFacade().remove(selected);
                 }
@@ -544,11 +574,13 @@ public class MeetingController implements Serializable {
         List<MeetingUsers> users = getMeetingUsersFacade().getResponded(m);
         String out = "";
 
-        for (MeetingUsers u : users) {
-            if (u == null || u.getUser() == null || u.getUser().getId() == null) {
-                break;
+        if (users.size() > 1) {
+            for (MeetingUsers u : users) {
+//            if (u == null || u.getUser() == null || u.getUser().getId() == null) {
+//                break;
+//            }
+                out += u.getAvailableTimes() + ",";
             }
-            out += u.getAvailableTimes() + ",";
         }
 
         String in = out.length() > 0 ? out.substring(0, out.length() - 1) : "";
@@ -573,19 +605,18 @@ public class MeetingController implements Serializable {
 
         input = input.substring(0, input.length() - 1);
         ArrayList<Date> d = getMeetingFacade().deserialize(input);
-        
+
         System.out.println("CHECKING NUM YES for " + date.toString());
 
         for (Date toCheck : d) {
-            if (toCheck.toString().length() < 10 || date.toString().length() < 5 ) {
+            if (toCheck.toString().length() < 10 || date.toString().length() < 5) {
                 break;
             }
             String compareString = toCheck.toString().substring(4, toCheck.toString().length() - 5);
             String newCompareString = date.toString().substring(4, date.toString().length() - 5);
-            
+
             System.out.println("comparing '" + compareString + "' and '" + newCompareString + "'");
-            
-            
+
             if (compareString.equals(newCompareString)) {
                 System.out.println("yes++");
                 yes++;
@@ -714,11 +745,9 @@ public class MeetingController implements Serializable {
     }
 
     /**
-     * Gets the appropriate String for the ConfirmDialog based on how the user
-     * has responded to an invitation.
+     * Gets the appropriate String for the ConfirmDialog based on how the user has responded to an invitation.
      *
-     * @param availableTimes the list of times the user has indicated that they
-     * are available
+     * @param availableTimes the list of times the user has indicated that they are available
      * @return String the message to show the user
      */
     public String getConfirmationMessage(ArrayList<String> availableTimes) {
