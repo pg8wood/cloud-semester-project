@@ -350,25 +350,10 @@ public class User implements Serializable {
         return this.userPhoto;
     }
 
-    /*
-    public void setUserPhoto(String userPhoto) {
-        this.userPhoto = userPhoto;
-    }
-<<<<<<< HEAD
-
-    public String getUserPhotoFilePath() {
-        return Constants.PHOTOS_RELATIVE_PATH + this.userPhoto;
-=======
-     */
     public String getUserPhotoFilePath() {
         return Constants.PHOTOS_RELATIVE_PATH + getUserPhoto();
     }
 
-    /*
-    public void setThumbnailFileName(String thumbnailFileName) {
-        this.thumbnailFileName = thumbnailFileName;
-    }
-     */
 
  /*
     The thumbnail photo image size is set to 200x200px in Constants.java as follows:
@@ -482,15 +467,19 @@ public class User implements Serializable {
     /**
      * Sets the necessary properties to send the email
      *
-     * @param option
-     * @param emails
+     * @param option determines which type of email to send
+     * @param emails list of emails to send email to
      * @throws java.lang.Exception
      */
     public void prepareEmail(int option, List<String> emails) throws Exception {
         for (String email : emails) {
+            //create new email sender
             EmailSender emailSender = new EmailSender();
+            //set the email recipient
             emailSender.setEmailTo(email);
+            //prepare the email subject
             emailSender.setEmailSubject(prepareEmailSubject(option));
+            //prepare the email body
             emailSender.setEmailBody(prepareEmailBody(option));
             // Send the email on another thread so the user doesn't have 
             // to wait for execution to complete
@@ -618,11 +607,6 @@ public class User implements Serializable {
             default:
                 break;
         }
-
-        // Set the HTML content to be the body of the email message
-        //editorView.setText(emailBodyText);
-        // Redirect to show the SendMail.xhtml page
-        //return "SendEmail.xhtml?faces-redirect=true";
         return emailBodyText;
     }
 

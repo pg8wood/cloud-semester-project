@@ -299,8 +299,16 @@ public class MeetingController implements Serializable {
         List<User> results = userFacade.findAll();
         List<String> usernames = new ArrayList();
 
+        // Search all users
         for (User user : results) {
-            usernames.add(user.getUsername());
+            if (!query.contains(user.getUsername())) {
+                // Append the suggested user properly
+                if (query.endsWith(",") || query.endsWith(", ")) {
+                    usernames.add(query + user.getUsername());
+                } else {
+                    usernames.add(query + ", " + user.getUsername());
+                }
+            }
         }
 
         return usernames;
@@ -573,19 +581,18 @@ public class MeetingController implements Serializable {
 
         input = input.substring(0, input.length() - 1);
         ArrayList<Date> d = getMeetingFacade().deserialize(input);
-        
+
         System.out.println("CHECKING NUM YES for " + date.toString());
 
         for (Date toCheck : d) {
-            if (toCheck.toString().length() < 10 || date.toString().length() < 5 ) {
+            if (toCheck.toString().length() < 10 || date.toString().length() < 5) {
                 break;
             }
             String compareString = toCheck.toString().substring(4, toCheck.toString().length() - 5);
             String newCompareString = date.toString().substring(4, date.toString().length() - 5);
-            
+
             System.out.println("comparing '" + compareString + "' and '" + newCompareString + "'");
-            
-            
+
             if (compareString.equals(newCompareString)) {
                 System.out.println("yes++");
                 yes++;

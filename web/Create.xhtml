@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-Created by  Meeting Scheduler on 2016.05.30 
-Copyright ⓒ 2016  Meeting Scheduler. All rights reserved.
+Created by Meeting Scheduler on 2016.05.30 
+Copyright ⓒ 2016 Meeting Scheduler. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -27,10 +27,8 @@ Copyright ⓒ 2016  Meeting Scheduler. All rights reserved.
 
                 <div class="row input-field">
                     <p:outputLabel value="Invitees" for="invitees" />
-<!--                    <p:inputText id="invitees" value="#{meetingController.selected.invitees}" 
-                                 placeholder="Enter usernames separated by commas"
-                                 required="true" 
-                                 requiredMessage="Invitees field is required!"/>-->
+                    
+                    <!-- AutoComplete for invitees to aid in selecting participants -->
                     <p:autoComplete id="invitees" 
                                     value="#{meetingController.selected.invitees}" 
                                     completeMethod="#{meetingController.completeText}" 

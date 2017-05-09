@@ -23,8 +23,8 @@ public final class Constants {
         for the storage and retrieval of user's files.
     
      */
-    public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorage";
-    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/";
+    public static final String FILES_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorageLocation-Team4/FileStorage";
+    public static final String PHOTOS_ABSOLUTE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorageLocation-Team4/UserPhotoStorage/";
 
     /*
     URL to the sign in page
@@ -33,19 +33,10 @@ public final class Constants {
     /*
     URL to the image in the email
      */
-    public static final String EMAIL_IMAGE = "<img src=\"resources/images/schedule_logo.jpg\" style=\"width:230px;height:64px;\">";
-    /*
-    In glassfish-web.xml file, we designated the '/CloudStorage/' directory as the
-    Alternate Document Root directory with the following statement:
-        
-        <property name="alternatedocroot_1" value="from=/CloudStorage/* dir=/Users/Balci" />
-    
-    Relative path is defined with respect to the Alternate Document Root starting with 'CloudStorage'.
-     */
-
-    public static final String FILES_RELATIVE_PATH = "CloudStorage/FileStorage/";
-    public static final String PHOTOS_RELATIVE_PATH = "MeetingsStorage/UserPhotoStorage/";
-    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/UserPhotoStorage/defaultUserPhoto.png";
+    public static final String EMAIL_IMAGE = "<img src=\"http://venus.cs.vt.edu/group/resources/images/schedule_logo.jpg\" style=\"width:230px;height:64px;\">";
+    public static final String FILES_RELATIVE_PATH = "FileStorageLocation-Team4/FileStorage/";
+    public static final String PHOTOS_RELATIVE_PATH = "FileStorageLocation-Team4/FileStorage/UserPhotoStorage/";
+    public static final String DEFAULT_PHOTO_RELATIVE_PATH = "/Users/PatrickGatewood/Documents/cloud/CloudStorage/FileStorageLocation-Team4/FileStorage/UserPhotoStorage/defaultUserPhoto.png";
 
 
     /* Temporary filename */

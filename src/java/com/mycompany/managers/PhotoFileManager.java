@@ -226,29 +226,12 @@ public class PhotoFileManager implements Serializable {
             //sets the file extension for the photo
             user.setUserPhoto(fileExtension);
             getUserFacade().edit(user);
-            /*
-            Obtain the list of Photo objects that belong to the User whose
-            database primary key is user.getId()
-             */
-            //List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(user.getId());
-            //if (!photoList.isEmpty()) {
-            // Remove the photo from the database
-            //   getUserPhotoFacade().remove(photoList.get(0));
-            //}
-            // Construct a new Photo object with file extension and user's object reference
-            //UserPhoto newPhoto = new UserPhoto(fileExtension, user);
-            // Create a record for the new Photo object in the database
-            //getUserPhotoFacade().create(newPhoto);
-            // Obtain the object reference of the first Photo object of the
-            // user whose primary key is user.getId()
-            //UserPhoto photo = getUserPhotoFacade().findPhotosByUserID(user.getId()).get(0);
 
             // Reconvert the uploaded file into an input stream of bytes.
             inputStream = file.getInputstream();
 
             // Write the uploaded file's input stream of bytes under the photo object's
             // filename using the inputStreamToFile method given below
-            //File uploadedFile = inputStreamToFile(inputStream, photo.getPhotoFilename());
             File uploadedFile = inputStreamToFile(inputStream, user.getUserPhoto());
 
             // Create and save the thumbnail version of the uploaded file
@@ -387,17 +370,6 @@ public class PhotoFileManager implements Serializable {
         // Obtain the object reference of the signed-in user
         User signedInUser = getUserFacade().findByUsername(usernameOfSignedInUser);
 
-        // Obtain the id (primary key in the database) of the signedInUser object
-        //Integer userId = signedInUser.getId();
-
-        /*
-        Obtain the list of Photo file objects that belong to the signed-in user whose
-        database primary key is userId. The list will contain only one photo or nothing.
-         */
-        //List<UserPhoto> photoList = getUserPhotoFacade().findPhotosByUserID(userId);
-        //if (!photoList.isEmpty()) {
-        // Obtain the object reference of the first Photo object in the list
-        //UserPhoto photo = photoList.get(0);
         try {
             // Delete the photo file from CloudStorage/PhotoStorage
             Files.deleteIfExists(Paths.get(signedInUser.getPhotoFilePath()));
@@ -408,8 +380,6 @@ public class PhotoFileManager implements Serializable {
             // Delete the temporary file from CloudStorage/PhotoStorage
             Files.deleteIfExists(Paths.get(signedInUser.getTemporaryFilePath()));
 
-            // Delete the photo file record from the CloudDriveDB database
-            //getUserPhotoFacade().remove(photo);
             // UserPhotoFacade inherits the remove() method from AbstractFacade
         } catch (IOException e) {
             resultMsg = new FacesMessage("Something went wrong while deleting the photo file! See: " + e.getMessage());
