@@ -4,17 +4,12 @@
  */
 package com.mycompany.jsfClasses;
 
-import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.User;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 
@@ -48,15 +43,6 @@ public class MyMeetingsController implements Serializable {
         return loggedInUser;
     }
 
-    public void onDateSelect(SelectEvent event) {
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        newDateString = format.format(event.getObject());
-    }
-
-//    public List<Meeting> getLoggedInUserMeetings() {
-//        return (List<Meeting>) loggedInUser.getMeetingCollection();
-//    }
-
     public Date getNewDate() {
         return newDate;
     }
@@ -73,12 +59,4 @@ public class MyMeetingsController implements Serializable {
         this.newDateString = newDateString;
     }
     
-    
-    
-  
-    
-    
-    
-    
-
 }

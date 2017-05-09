@@ -1,6 +1,6 @@
 /*
- * Created by Osman Meeting Scheduler on 2017.01.28  * 
- * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
+ * Created by  Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017  Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.managers;
 
@@ -39,7 +39,7 @@ public class FileDownloadManager implements Serializable {
     ===============================
      */
 
-    /*
+ /*
     Using the @Inject annotation, the compiler is directed to store the object reference of the
     MeetingFileController CDI-named bean into the instance variable userFileController at runtime.
     With this injection, the instance variables and instance methods of the MeetingFileController
@@ -77,15 +77,6 @@ public class FileDownloadManager implements Serializable {
         String nameOfFileToDownload = fileToDownload.getFilename();
         String absolutePathOfFileToDownload = fileToDownload.getFilePath();
         String contentMimeType = FacesContext.getCurrentInstance().getExternalContext().getMimeType(absolutePathOfFileToDownload);
-
-        /*
-        System.out.println prints under the GlassFish tab of the Output window.
-        Print out intermediate values to effectively debug your application logic.
-        
-        System.out.println("*** Name of the file to download = " + nameOfFileToDownload + " ***\n");
-        System.out.println("*** Path of the file to download = " + absolutePathOfFileToDownload + " ***\n");
-        System.out.println("*** MIME Type of the file to download = " + contentMimeType + " ***");
-         */
         InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().
                 getContext()).getResourceAsStream(absolutePathOfFileToDownload);
 

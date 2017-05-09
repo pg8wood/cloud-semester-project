@@ -15,8 +15,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
     <!-- This page is constructed based on the siteTemplate -->
     <ui:composition template="template/siteTemplate.xhtml">
 
+        <!-- Set the page title -->
         <ui:define name="title">
-            <!-- Set the page title -->
             <h:outputText value="My Meetings"></h:outputText>
         </ui:define>   
 
@@ -24,32 +24,41 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
         <ui:define name="editableContent">
             <h:outputStylesheet library="css" name="myMeetingsStyles.css" />
 
+            <!-- Growl that shows messages to the user -->
             <h:form id="growlForm">
-                <!-- Growl that shows messages to the user -->
                 <p:growl id="growl" life="5000" /> 
             </h:form>
 
             <div class="main" align="center">
 
+                <!-- Meeting Invitations Section -->
                 <h1>Invitations</h1>
                 <h:panelGroup id="meetingInvitations" >
-                    <ui:param name="meetingInvitations" value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />
+                    <ui:param name="meetingInvitations" 
+                              value="#{meetingController.getMeetingInvitations(accountManager.selected)}" />
 
+                    <!-- Display a message when there are no meetings to show -->
                     <c:if test="#{meetingInvitations.size() == 0}" >
                         You have no new meeting invitations.
                     </c:if>
 
+                    <!-- Display all of the user's meeting invitation -->
                     <c:if test="#{meetingInvitations.size() != 0}" >
-                        <p:repeat value="#{meetingInvitations}" offset="0" step="1" size="#{meetingInvitations.size()}" var="meetingInvitation" varStatus="status"> 
+                        <p:repeat value="#{meetingInvitations}" offset="0" 
+                                  step="1" size="#{meetingInvitations.size()}" 
+                                  var="meetingInvitation" varStatus="status"> 
                             <ui:include src="meetings/MeetingInvitation.xhtml"/>
                             <br />
                         </p:repeat>
                     </c:if>
                 </h:panelGroup>
                 <br />
+                
+                <!-- Upcoming Meetings Section -->
                 <h1>Upcoming Meetings</h1>
                 <h:panelGroup id="upcomingMeetings">
-                    <ui:param name="upcomingMeetings" value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" />
+                    <ui:param name="upcomingMeetings" 
+                              value="#{meetingController.getUpcomingMeetings(accountManager.selected)}" />
 
                     <!-- User has no upcoming meetings -->
                     <c:if test="#{upcomingMeetings.size() == 0}" >
@@ -65,6 +74,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                     </c:if>
                 </h:panelGroup>
 
+                <!-- Global confirmDialog to be used by all child pages -->
                 <p:confirmDialog id="confirmDialogBox" widgetVar="confirmDialog" global="true">
                     <div align="center">
                         <!-- The value of the first button listed below will be shown as 
@@ -79,8 +89,10 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 </p:confirmDialog>
 
                 <!-- Script for Google Maps -->
-                <script async="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap"></script>
-            </div>
+                <script async="defer" 
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX_25HBwVQYvr31Dcz3MJUryv5Aak5okQ&amp;callback=initMap">
+                </script>
+            </div> <!-- .main -->
         </ui:define>
     </ui:composition>
 </html>

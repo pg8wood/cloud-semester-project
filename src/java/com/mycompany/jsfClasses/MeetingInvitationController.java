@@ -8,7 +8,6 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -22,18 +21,12 @@ public class MeetingInvitationController {
     private com.mycompany.sessionBeans.MeetingFacade meetingFacade;
     
     
-    public void setSelectedDate(Date selectedDate, String toUpdate) {
+    /**
+     * Sets the selected Date. 
+     * 
+     * @param selectedDate the Date to set 
+     */
+    public void setSelectedDate(Date selectedDate) {
          meetingFacade.setSelectedDate(selectedDate);
-        
-//        System.out.println("updating: " + toUpdate);
-//        
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        context.update(toUpdate + ":timePanel");
-
-        if (selectedDate != null) {
-            System.out.printf("Date set to %s", selectedDate.toString());
-        } else {
-            System.out.println("Date set to NULL!!!");
-        }
     }
 }

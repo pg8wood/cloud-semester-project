@@ -9,9 +9,7 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
     <html xmlns="http://www.w3.org/1999/xhtml"
           xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
           xmlns:h="http://xmlns.jcp.org/jsf/html"
-          xmlns:f="http://xmlns.jcp.org/jsf/core"
-          xmlns:p="http://primefaces.org/ui"
-          xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+          xmlns:p="http://primefaces.org/ui">
 
         <ui:composition>
             <!-- CSS for meetings -->
@@ -19,8 +17,10 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 <h:outputStylesheet library="css" name="meetingStyles.css" />
             </h:head>
 
+            <!-- Font Awesome CSS -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" />
 
+            <!-- Meeting Wrapper: contains all Meeting Invitation content -->
             <div id="meetingWrapper#{meetingInvitation.id}" class="card-panel green lighten-1" align="center">
                 <!-- Meeting Invitation Preview with Respond Button -->
                 <h2>#{meetingInvitation.topic}</h2>
@@ -36,16 +36,19 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 included right here. -->
                 <script type="text/javascript">
                     function collapseOtherInvitations(keepOpenId) {
+                        // Special case to prevent collapsing the panel just expanded
                         if (keepOpenId === -1) {
                             return;
                         }
+                        // Variable declaration
                         var widgets = PrimeFaces.widgets;
                         var dayPanelKeepOpen = "dayPanel" + keepOpenId;
                         var timePanelKeepOpen = "timePanel" + keepOpenId;
                         var property;
 
+                        // Find all expanded panels
                         for (property in widgets) {
-                            // Don't collapsae the panel currently being opened
+                            // Don't collapse the panel currently being opened
                             if (property.includes(dayPanelKeepOpen)
                                     || property.includes(timePanelKeepOpen)) {
                                 continue;
@@ -75,7 +78,8 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                 response choices to the user -->
                 <p:commandButton action="#{userController.clearPotentialTimes()}"
                                  actionListener="#{meetingUsersController.setSelected(accountManager.selected, meetingInvitation)}"
-                                 widgetVar="respondButton#{meetingInvitation.id}" value="Respond" 
+                                 widgetVar="respondButton#{meetingInvitation.id}" 
+                                 value="Respond" 
                                  onclick="PF('respondButton#{meetingInvitation.id}').disable();
                                          PF('dayPanel#{meetingInvitation.id}').expand();
                                          collapseOtherInvitations('#{meetingInvitation.id}');" 
@@ -85,8 +89,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
 
                 <!-- Response section: user indicates their availability -->
                 <h:form enctype="multipart/form-data" class="timeform">
-                    <p:panel class="dayPanel green lighten-2" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" widgetVar="dayPanel#{meetingInvitation.id}" style="border: none;padding: 0px;" >
+                    <p:panel class="dayPanel green lighten-2" toggleable="true" 
+                             closable="true" toggleSpeed="500" closeSpeed="500" 
+                             collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" 
+                             widgetVar="dayPanel#{meetingInvitation.id}" 
+                             style="border: none;padding: 0px;" >
                         <h4>When can you make it?</h4>
+
                         <!-- Can't go button --> 
                         <p:commandLink actionListener="#{userController.clearPotentialTimes()}"
                                        action="#{meetingUsersController.finalizeMeetingAvailability(userController.potentialTimes, accountManager.selected, meetingController.selected.ownerId.email)}"
@@ -105,16 +114,24 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                         to fill the content width up to #declineLine -->
                         <div style="float: left;"></div>
 
-                        <p:scrollPanel class="green lighten-2" id="horizontalScrollArea#{meetingInvitation.id}" styleClass="horizontalScrollArea" mode="native">
-                            <!-- Get list of times for the selected meetingInvitation -->
-                            <ui:param name="times" value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
+                        <!-- Horizontally-scrollable panel that displays 
+                        the available days -->
+                        <p:scrollPanel id="horizontalScrollArea#{meetingInvitation.id}"
+                                       class="green lighten-2" 
+                                       styleClass="horizontalScrollArea" 
+                                       mode="native">
+
+                            <!-- Get list of days and times for the selected meetingInvitation -->
+                            <ui:param name="times" 
+                                      value="#{meetingController.getMeetingFacade().getTimeslotsForMeeting(meetingInvitation)}" />
 
                             <p:repeat value="#{meetingController.getUniqueDateListForMeeting(meetingInvitation)}" offset="0" step="1" size="#{meetingController.getUniqueDateListForMeeting(meetingInvitation).size()}" var="timeslot" varStatus="status"> 
                                 <!-- Clicking this link updates the collapsed time panel and displays it -->
                                 <p:commandLink class="calendarLink" 
                                                action="#{meetingController.setSelectedDate(timeslot, component.namingContainer.parent.namingContainer.clientId, meetingInvitation)}" 
                                                onclick="PF('timePanel#{meetingInvitation.id}').expand()" 
-                                               ajax="true" update="#{component.namingContainer.parent.namingContainer.clientId}" >
+                                               ajax="true" 
+                                               update="#{component.namingContainer.parent.namingContainer.clientId}" >
                                     <time datetime="" class="icon">
                                         <em>#{meetingController.getDayOfWeek(timeslot.getDay())}</em>
                                         <strong>#{meetingController.getMonthName(timeslot.getMonth())}</strong>
@@ -122,29 +139,41 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                     </time>
                                 </p:commandLink>
                             </p:repeat>
-                        </p:scrollPanel>
+                        </p:scrollPanel> <!-- #horizontalScrollArea -->
                     </p:panel>  <!-- .dayPanel -->
 
                     <!-- Available time options shown after the user selects a date --> 
                     <p:panel rendered="true" toggleable="true" closable="true" 
                              toggleSpeed="500" closeSpeed="500" 
                              collapsed="#{!meetingController.shouldHideTimeForMeeting(meetingInvitation)}" 
-                             widgetVar="timePanel#{meetingInvitation.id}" style="border: none;padding: 0px;" class="green lighten-3">
-                     
+                             widgetVar="timePanel#{meetingInvitation.id}" 
+                             style="border: none;padding: 0px;" 
+                             class="green lighten-3">
+
                         <p style="text-align: center;">Times for <b>#{meetingController.getSelectedDateAsString()}</b></p>
                         <p style="text-align: center;">Double click to select a time.</p>
-                       
+
                         <!-- Time selection: user indicates their availability -->
-                        <p:panelGrid id="timePanel#{meetingInvitation.id}" columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" style="padding: 0;" class="green lighten-5">
+                        <p:panelGrid id="timePanel#{meetingInvitation.id}" 
+                                     columns="4" columnClasses="columnOne, columnTwo, columnOne, columnTwo" 
+                                     style="padding: 0;" 
+                                     class="green lighten-5">
                             <h:panelGroup id="timeGroup#{meetingInvitation.id}" >
-                                <ui:param name="timesForDay" value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" />
-                                <p:repeat value="#{timesForDay}" offset="0" step="1" size="#{timesForDay.size()}" var="timeslot" varStatus="status"> 
+                                <!-- All times open for the selected day -->
+                                <ui:param name="timesForDay" 
+                                          value="#{meetingController.getTimesForDay(times, meetingController.selectedDate)}" />
+                                
+                                <!-- Display the open times -->
+                                <p:repeat value="#{timesForDay}" offset="0" 
+                                          step="1" size="#{timesForDay.size()}" 
+                                          var="timeslot" varStatus="status"> 
 
                                     <!-- On/Off switch --> 
                                     <p:commandLink id="switch#{meetingInvitation.id}"
                                                    action="#{userController.updatePotentialAvailability(timeslot)}"
                                                    ajax="true"
-                                                   update="@form" style='text-decoration: none; padding-bottom: 10px;'>
+                                                   update="@form" 
+                                                   style='text-decoration: none; padding-bottom: 10px;'>
                                         <div class="green lighten-3 center">
                                             <label class="switch">
                                                 <ui:fragment rendered="#{userController.checkboxShouldBeChecked(timeslot)}">
@@ -157,12 +186,13 @@ Copyright © 2017 Patrick Gatewood. All rights reserved.
                                                 <div class="slider round" style="height: 3em;"></div>
                                             </label>
                                             &nbsp;
-                                            <h:outputText styleClass="onOffLabel" value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}" />
+                                            <h:outputText styleClass="onOffLabel" 
+                                                          value="#{meetingController.getMeetingFacade().getMeetingString(timeslot)}" />
                                         </div>
                                     </p:commandLink>
                                 </p:repeat>
-                            </h:panelGroup>
-                        </p:panelGrid>
+                            </h:panelGroup> <!-- #timeGroup -->
+                        </p:panelGrid> <!-- #timePanel -->
 
                         <br /><br/>
 

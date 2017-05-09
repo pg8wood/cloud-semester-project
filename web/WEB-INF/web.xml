@@ -55,13 +55,14 @@
         <param-value>auto</param-value>
     </context-param>
     
+    <!-- Login filter for restricted site access -->
     <filter>
         <filter-name>Login Filter</filter-name>
         <filter-class>com.mycompany.filters.LoginFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Login Filter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/*</url-pattern> <!-- Filter every request -->
     </filter-mapping>
   
     <!-- The session-timeout element defines the time in minutes after which the user's

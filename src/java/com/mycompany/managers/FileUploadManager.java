@@ -176,8 +176,8 @@ public class FileUploadManager implements Serializable {
             }
 
             //---------------------------------------------------------------
-            //
-            // Create the new MeetingFile entity (row) in the CloudDriveDB
+            
+            // Create the new MeetingFile entity (row) in the MeetingsDB
             System.out.println("creating meetingFile");
             getMeetingFileFacade().create(newMeetingFile);
             
@@ -208,13 +208,6 @@ public class FileUploadManager implements Serializable {
         return "UploadFile?faces-redirect=true";
     }
 
-//    public void upload() throws IOException {
-//
-//        if (getUploadedFile().getSize() != 0) {
-//            copyFile(getUploadedFile());
-//        }
-//    }
-
     /**
      * cancel an upload
      *
@@ -224,53 +217,6 @@ public class FileUploadManager implements Serializable {
         //message = "";
         return "Profile?faces-redirect=true";
     }
-
-    /**
-     * Used to copy a uploadedFile
-     *
-     * @param file
-     * @return
-     * @throws java.io.IOException
-     */
-//    public FacesMessage copyFile(UploadedFile file) throws IOException {
-//        try {
-//            String meeting_name = (String) FacesContext.getCurrentInstance()
-//                    .getExternalContext().getSessionMap().get("meetingname");
-//
-//            Meeting meeting = getMeetingFacade().findByMeetingname(meeting_name);
-//
-//            /*
-//            To associate the file to the meeting, record "meetingId_filename" in the database.
-//            Since each file has its own primary key (unique id), the meeting can upload
-//            multiple files with the same name.
-//             */
-//            String meetingId_filename = meeting.getId() + "_" + file.getFileName();
-//
-//            /*
-//            "The try-with-resources statement is a try statement that declares one or more resources. 
-//            A resource is an object that must be closed after the program is finished with it. 
-//            The try-with-resources statement ensures that each resource is closed at the end of the
-//            statement." [Oracle] 
-//             */
-//            try (InputStream inputStream = file.getInputstream();) {
-//
-//                // The method inputStreamToFile is given below.
-//                inputStreamToFile(inputStream, meetingId_filename);
-//                inputStream.close();
-//            }
-//
-//            resultMsg = new FacesMessage("");  // No need to show a result message
-//
-//        } catch (IOException e) {
-//            resultMsg = new FacesMessage("Something went wrong during file copy! See:" + e.getMessage());
-//        }
-//
-//        // This sets the necessary flag to ensure the messages are preserved.
-//        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-//
-//        FacesContext.getCurrentInstance().addMessage(null, resultMsg);
-//        return resultMsg;
-//    }
 
     private File inputStreamToFile(InputStream inputStream, String file_name)
             throws IOException {

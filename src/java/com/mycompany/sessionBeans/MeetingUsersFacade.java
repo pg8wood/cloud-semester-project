@@ -8,7 +8,6 @@ package com.mycompany.sessionBeans;
 import com.mycompany.entityClasses.Meeting;
 import com.mycompany.entityClasses.MeetingUsers;
 import com.mycompany.entityClasses.User;
-import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -1,3 +1,7 @@
+/*
+ * Created by Patrick Gatewood on 2017.04.15  * 
+ * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ */
 package com.mycompany.jsfClasses;
 
 import com.mycompany.entityClasses.User;
@@ -113,6 +117,8 @@ public class UserController implements Serializable {
             }
         }
     }
+    
+    // Getters and Setters
 
     public User getUser(java.lang.Integer id) {
         return getFacade().find(id);
@@ -152,22 +158,26 @@ public class UserController implements Serializable {
         this.potentialTimes = new ArrayList();
     }
 
+    /**
+     * Returns true if a user is available at the selected time
+     * 
+     * @param timeslot the timeslot String to evaluate
+     * @return true if the string is contained in the user's availability String
+     */
     public boolean determineAvailabilityPotentialAtTime(String timeslot) {
         if (potentialTimes != null) {
-            boolean timeSelected = potentialTimes.contains(timeslot);
-            return timeSelected;
+            return potentialTimes.contains(timeslot);
         }
         return false;
     }
     
     /**
-     * Re
-     * @param d
-     * @return 
+     * Returns true if the time checkbox should be checked 
+     * @param d the date to evaluate 
+     * @return true if the selected user's potential times contains
+     * the selected Date. 
      */
     public boolean checkboxShouldBeChecked(Date d) {
-//        System.out.println("potential times: " + potentialTimes);
-//        System.out.println("checking for: " + d.toString());
         return potentialTimes.contains(d.toString());
     }
     

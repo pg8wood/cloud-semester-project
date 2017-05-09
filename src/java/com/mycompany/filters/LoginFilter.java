@@ -1,12 +1,13 @@
 /*
- * Created by Patrick Gatewood on 2017.04.24  * 
- * Copyright © 2017 Patrick Gatewood. All rights reserved. * 
+ * Created by Patrick Gatewood on 2017.04.24  
+ * Adapted from the accepted answer at: 
+ * http://stackoverflow.com/questions/13274279/authentication-filter-and-servlet-for-login
+ * 
+ * Copyright © 2017 Patrick Gatewood. All rights reserved. 
  */
 package com.mycompany.filters;
 
 import java.io.IOException;
-import javax.faces.context.FacesContext;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,7 +25,10 @@ import javax.servlet.http.HttpSession;
 public class LoginFilter implements Filter {
 
     /**
-     * @see Filter#init(FilterConfig)
+     * Required method override. Nothing to initialize for now
+     * 
+     * @param filterConfig the filter's configuration 
+     * @throws javax.servlet.ServletException
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -42,14 +46,15 @@ public class LoginFilter implements Filter {
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res, 
+            FilterChain chain) throws IOException, ServletException {
         // Cast parameters to usable types
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
         // Path to the webpage requested
-        String path = request.getRequestURI().substring(request.getContextPath().length());
-        System.out.println(path);
+        String path = request.getRequestURI()
+                .substring(request.getContextPath().length());
 
         HttpSession session = request.getSession(false);
 

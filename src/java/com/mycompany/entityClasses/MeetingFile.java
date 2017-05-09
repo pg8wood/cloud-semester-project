@@ -6,7 +6,6 @@ package com.mycompany.entityClasses;
 
 import com.mycompany.managers.Constants;
 import java.io.Serializable;
-import java.util.ArrayList;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +60,7 @@ public class MeetingFile implements Serializable {
         this.id = id;
         this.filename = filename;
     }
-    
+
     public MeetingFile(String filename, Meeting id) {
         this.filename = filename;
         meetingId = id;
@@ -90,7 +89,7 @@ public class MeetingFile implements Serializable {
     public void setMeetingId(Meeting meetingId) {
         this.meetingId = meetingId;
     }
-    
+
     public String getFilePath() {
         return Constants.FILES_ABSOLUTE_PATH + getFilename();
     }
@@ -109,15 +108,14 @@ public class MeetingFile implements Serializable {
             return false;
         }
         MeetingFile other = (MeetingFile) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        
+        return !((this.id == null && other.id != null) 
+                || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.mycompany.entityClasses.MeetingFile[ id=" + id + "  meetingId=" + meetingId +"]";
+        return "com.mycompany.entityClasses.MeetingFile[ id=" + id + "  meetingId=" + meetingId + "]";
     }
-    
+
 }

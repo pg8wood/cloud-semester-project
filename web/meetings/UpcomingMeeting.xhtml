@@ -91,7 +91,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 </h:form>
 
             </p:panel>
-            
+
 
             <p:panelGrid columns="3" columnClasses="green lighten-1, green lighten-1, green lighten-1" 
                          class="green lighten-1" 
@@ -106,7 +106,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <h:outputText value="#{upcomingMeeting.getFinaltime()}" style="font-weight: bolder" rendered="#{upcomingMeeting.isFinalized()}"/>
                 <h:outputText value="Final Time Not Yet Set" style="font-weight: bolder" rendered="#{!upcomingMeeting.isFinalized()}"/>
             </p:panelGrid>
-            
+
             <!-- Clicking this button shows more info about the meeting -->
             <p:commandButton widgetVar="seeMoreButton#{upcomingMeeting.id}" value="See More" 
                              onclick="PF('moreInfoPanel#{upcomingMeeting.id}').show(); initMap(#{upcomingMeeting.id}, '#{upcomingMeeting.getFullAddress()}');" 
@@ -118,9 +118,9 @@ Copyright © 2017 Erin Kocis. All rights reserved.
 
             <!-- More info about the meeting follows -->
             <p:panel visible="false" widgetVar="moreInfoPanel#{upcomingMeeting.id}" 
-                      closable="true"
-                      class="card-panel green lighten-2"
-                      style="border: none !important;">
+                     closable="true"
+                     class="card-panel green lighten-2"
+                     style="border: none !important;">
 
                 <!-- Participants portion -->
                 <div style="text-align:center">
@@ -146,7 +146,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                     <hr/>
                 </center>
 
-                
+
                 <!-- Attachments portion -->
                 <div style="text-align:center">
                     <h2>Attachments</h2>
@@ -223,7 +223,7 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                         </p:panel>
                     </h:form>
                 </div>
-                   
+
                 <br />
                 <hr/>
 
@@ -251,10 +251,10 @@ Copyright © 2017 Erin Kocis. All rights reserved.
                 <script>
                     function initMap(id, address) {
                         var mapId = 'map' + id;
-                       
-                       if (typeof(id) === 'undefined') {
-                           return;
-                       }
+
+                        if (typeof (id) === 'undefined') {
+                            return;
+                        }
 
                         geocoder = new google.maps.Geocoder();
                         var latlng = new google.maps.LatLng(-34.397, 150.644);

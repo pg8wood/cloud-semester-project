@@ -4,7 +4,6 @@
  */
 package com.mycompany.jsfClasses;
 
-import com.mycompany.entityClasses.User;
 import com.mycompany.entityClasses.MeetingFile;
 import com.mycompany.jsfClasses.util.JsfUtil;
 import com.mycompany.jsfClasses.util.JsfUtil.PersistAction;
@@ -29,7 +28,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.primefaces.component.graphicimage.GraphicImage;
 
 @Named("meetingFileController")
 @SessionScoped

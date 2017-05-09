@@ -1,6 +1,6 @@
 /*
- * Created by Osman Meeting Scheduler on 2017.01.28  * 
- * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
+ * Created by  Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017  Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.validators;
 

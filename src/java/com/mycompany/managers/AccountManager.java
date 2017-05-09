@@ -1,6 +1,6 @@
 /*
- * Created by Osman Meeting Scheduler on 2017.01.28  * 
- * Copyright © 2017 Osman Meeting Scheduler. All rights reserved. * 
+ * Created by Meeting Scheduler on 2017.01.28  * 
+ * Copyright © 2017 Meeting Scheduler. All rights reserved. * 
  */
 package com.mycompany.managers;
 
@@ -336,9 +336,6 @@ public class AccountManager implements Serializable {
     upon successful account creation, redirect to show the SignIn page.
      */
     public String createAccount() {
-        
-        // First, check if the entered username is already being used
-
         // Obtain the object reference of a User object with username
         User aUser = getUserFacade().findByUsername(username);
 
