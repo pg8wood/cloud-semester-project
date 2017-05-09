@@ -51,7 +51,7 @@ public class CalendarManager implements Serializable {
     private com.mycompany.sessionBeans.MeetingUsersFacade meetingUsersFacade;
 
     private Collection<Meeting> meetingsList;
-    
+
     private Meeting selectedMeeting = new Meeting();
 
     public Meeting getSelectedMeeting() {
@@ -77,32 +77,18 @@ public class CalendarManager implements Serializable {
                     if (user.getMeetingCollection().isEmpty()) {
                         System.out.print("no meetings");
                     } else {
-                        
-//                        meetingsList = user.getMeetingCollection();
-//                        for (Meeting m : meetingsList) {
-//                            System.out.print(m.getDescription());
-//                            Meeting updatedM = meetingFacade.getMeetingById(m.getId());
-//                            
-//                            if (updatedM.getFinaltime() != null && updatedM.getFinaltime().length() > 0) {
-//                                System.out.print("Final Start Time: " + updatedM.getFinaltime());
-//                                ArrayList<Date> dateObj = meetingFacade.deserialize(updatedM.getFinaltime());
-//                                System.out.print("AFter deserialized: " + dateObj.get(0).toString());
-//                                Date endTime = addHour(dateObj.get(0));
-//                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), yearCheck(dateObj.get(0)), endTime));
-//                                System.out.print("Shouldve Added");
-//                            }
-//                        }
-                        
+
+//                        
                         List<MeetingUsers> muL = meetingUsersFacade.getMeetings(user);
-                        for(MeetingUsers mu: muL){
-                            Meeting updatedM = meetingFacade.getMeetingById(mu.getMeeting().getId());
-                            
+                        for (int i = 0; i < muL.size(); i++) {
+                            Meeting updatedM = meetingFacade.getMeetingById(muL.get(i).getMeeting().getId());
+
                             if (updatedM.getFinaltime() != null && updatedM.getFinaltime().length() > 0) {
                                 //System.out.print("Final Start Time: " + updatedM.getFinaltime());
                                 ArrayList<Date> dateObj = meetingFacade.deserialize(updatedM.getFinaltime());
                                 //System.out.print("AFter deserialized: " + dateObj.get(0).toString());
                                 Date endTime = addHour(dateObj.get(0));
-                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), yearCheck(dateObj.get(0)), endTime));
+                                addEvent(new DefaultScheduleEvent(updatedM.getTopic(), dateObj.get(0), endTime));
                                 //System.out.print("Shouldve Added");
                             }
                         }
@@ -114,32 +100,31 @@ public class CalendarManager implements Serializable {
         return lazyEventModel;
     }
 
-
-    private Date yearCheck(Date date){
-        Calendar cl = Calendar.getInstance(); 
+    private Date yearCheck(Date date) {
+        Calendar cl = Calendar.getInstance();
         cl.setTime(date);
         int year = cl.get(Calendar.YEAR);
-        if(year > 3000){
+        if (year > 3000) {
             cl.add(Calendar.YEAR, -1900);
         }
         System.out.print("Year check: " + cl.getTime().toString());
         return cl.getTime();
     }
-    
+
     private Date addHour(Date date) {
-        
-        Calendar cl = Calendar.getInstance(); 
+
+        Calendar cl = Calendar.getInstance();
         cl.setTime(date);
         cl.add(Calendar.HOUR, 1);
         cl.add(Calendar.DAY_OF_WEEK, -1);
         cl.add(Calendar.DATE, 1);
         int year = cl.get(Calendar.YEAR);
-        if(year > 3000){
+        if (year > 3000) {
             cl.add(Calendar.YEAR, -1900);
         }
         System.out.print("Add hour: " + cl.getTime().toString());
         return cl.getTime();
-        
+
     }
 
     public ScheduleEvent getEvent() {
@@ -163,45 +148,44 @@ public class CalendarManager implements Serializable {
     public void onEventSelect(SelectEvent selectEvent) {
 
         event = (ScheduleEvent) selectEvent.getObject();
-        
-        for(Meeting m: meetingsList){
-            if(event.getTitle().equals(m.getTopic())){
+
+        for (Meeting m : meetingsList) {
+            if (event.getTitle().equals(m.getTopic())) {
                 selectedMeeting = m;
                 break;
             }
         }
-       
+
     }
-    
-    public ArrayList<User> getParticipants(){
+
+    public ArrayList<User> getParticipants() {
         Collection<MeetingUsers> participants = selectedMeeting.getMeetingUsersList();
         ArrayList<User> results = new ArrayList<>();
-        if(participants == null || participants.size() < 1){
+        if (participants == null || participants.size() < 1) {
             return results;
         }
-        for(MeetingUsers mu : participants){
-                results.add(mu.getUser());
+        for (MeetingUsers mu : participants) {
+            results.add(mu.getUser());
         }
-        
+
         return results;
     }
-    
-    public String getSelectedParticipants(){
+
+    public String getSelectedParticipants() {
         String out = "";
-        
+
         Collection<MeetingUsers> participants = selectedMeeting.getMeetingUsersList();
-        if(participants == null || participants.size() < 1){
+        if (participants == null || participants.size() < 1) {
             return out;
         }
-        for(MeetingUsers u: participants){
+        for (MeetingUsers u : participants) {
             out += u.getUser().getFirstName() + " " + u.getUser().getLastName() + ", ";
-            
+
         }
-        
-        return out.substring(0,out.length() - 2);
+
+        return out.substring(0, out.length() - 2);
     }
-    
-   
+
     public void onDateSelect(SelectEvent selectEvent) {
 
     }
